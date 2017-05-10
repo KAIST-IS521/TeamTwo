@@ -3,9 +3,14 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+    res.render('index');
 });
 
+
+/* register */
+router.get('/register', function(req, res, next) {
+    res.render('register'); 
+});
 
 
 // node-mysql
@@ -25,6 +30,7 @@ var queues = require('mysql-queues');
 const DEBUG = true;
 queues(client, DEBUG);
 var q = client.createQueue();
+
 
 /* login */
 router.post('/login', function(req, res, next) {
@@ -63,11 +69,12 @@ router.post('/login', function(req, res, next) {
     q.execute(); 
 });
 
+
 /* logout */
 router.get('/logout', function(req, res, next) {
-  req.session.destroy(function(){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-    res.redirect('/');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-  });    
+    req.session.destroy(function(){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+        res.redirect('/');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    });    
 });
 
 module.exports = router;
