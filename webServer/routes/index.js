@@ -6,13 +6,13 @@ var router = express.Router();
 var mysql = require('mysql');
 var client = mysql.createConnection({ 
   host : 'localhost',
-  database : 'sktiotdb',
-  user: 'is521',
+  database : 'shoppingmalldb',
+  user: 'root',
   password : 'is521'
 });
   
 // running queries as normal...
-client.query('USE shoppingmall');
+client.query('USE shoppingmalldb');
 
 // mysql-queues
 var queues = require('mysql-queues');
@@ -41,16 +41,17 @@ router.get('/register', function(req, res, next) {
 /* 
  * register new customer  
  */
-router.pos('/register', function(req, res, next) {
+router.post('/register', function(req, res, next) {
     var id = req.param('id'); 
     var pw = req.param('pw'); 
 
     // SQL query for checking id, pw 
-    var qString = 'INSERT INTO users VALUES( ? , ? )'; 
+    var qString = 'INSERT INTO users SET ?'; 
+    var p = { id:id, pw:pw}; 
 
     console.log(qString); 
 
-    q.query( qString, [ id, pw ], function( err, result, fields ){
+    q.query( qString, p, function( err, result, fields ){
         if (err) {
           console.log(err); 
         }
@@ -72,9 +73,9 @@ router.post('/login', function(req, res, next) {
     var pw = req.param('pw'); 
 
     // SQL query for checking id, pw 
-    var qString = 'SELECT users.user_id AS id \
+    var qString = 'SELECT users.id AS id \
                   FROM users \
-                  WHERE users.user_id = ? AND users.passwd = ?' ; 
+                  WHERE users.id = ? AND users.pw = ?' ; 
 
     console.log(qString); 
 
