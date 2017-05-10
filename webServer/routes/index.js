@@ -63,4 +63,11 @@ router.post('/login', function(req, res, next) {
     q.execute(); 
 });
 
+/* logout */
+router.get('/logout', function(req, res, next) {
+  req.session.destroy(function(){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    res.redirect('/');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  });    
+});
+
 module.exports = router;
