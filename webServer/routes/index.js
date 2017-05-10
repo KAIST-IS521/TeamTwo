@@ -1,18 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index');
-});
-
-
-/* register */
-router.get('/register', function(req, res, next) {
-    res.render('register'); 
-});
-
-
+// DataBase Config 
 // node-mysql
 var mysql = require('mysql');
 var client = mysql.createConnection({ 
@@ -30,6 +19,50 @@ var queues = require('mysql-queues');
 const DEBUG = true;
 queues(client, DEBUG);
 var q = client.createQueue();
+
+
+
+/*
+ * default home page  
+ */
+router.get('/', function(req, res, next) {
+    res.render('index');
+});
+
+
+/* 
+ * show page for registering new customer  
+ */
+router.get('/register', function(req, res, next) {
+    res.render('register'); 
+});
+
+
+/* 
+ * register new customer  
+ */
+router.pos('/register', function(req, res, next) {
+    var id = req.param('id'); 
+    var pw = req.param('pw'); 
+
+    // SQL query for checking id, pw 
+    var qString = 'INSERT INTO users VALUES( ? , ? )'; 
+
+    console.log(qString); 
+
+    q.query( qString, [ id, pw ], function( err, result, fields ){
+        if (err) {
+          console.log(err); 
+        }
+        else {
+            console.log(result);
+            res.redirect('/');   
+        }
+    }); 
+
+    q.execute();
+});
+
 
 
 /* login */
