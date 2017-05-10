@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-// DataBase Config 
+// DataBase Config
 // node-mysql
 var mysql = require('mysql');
-var client = mysql.createConnection({ 
+var client = mysql.createConnection({
   host : 'localhost',
   database : 'shoppingmalldb',
   user: 'root',
   password : 'is521'
 });
-  
+
 // running queries as normal...
 client.query('USE shoppingmalldb');
 
@@ -23,43 +23,43 @@ var q = client.createQueue();
 
 
 /*
- * default home page  
+ * default home page
  */
 router.get('/', function(req, res, next) {
     res.render('index');
 });
 
 
-/* 
- * show page for registering new customer  
+/*
+ * show page for registering new customer
  */
 router.get('/register', function(req, res, next) {
-    res.render('register'); 
+    res.render('register');
 });
 
 
-/* 
- * register new customer  
+/*
+ * register new customer
  */
 router.post('/register', function(req, res, next) {
-    var id = req.param('id'); 
-    var pw = req.param('pw'); 
+    var id = req.param('id');
+    var pw = req.param('pw');
 
-    // SQL query for checking id, pw 
-    var qString = 'INSERT INTO users SET ?'; 
-    var p = { id:id, pw:pw}; 
+    // SQL query for checking id, pw
+    var qString = 'INSERT INTO users SET ?';
+    var p = { id:id, pw:pw};
 
-    console.log(qString); 
+    console.log(qString);
 
     q.query( qString, p, function( err, result, fields ){
         if (err) {
-          console.log(err); 
+          console.log(err);
         }
         else {
             console.log(result);
-            res.redirect('/');   
+            res.redirect('/');
         }
-    }); 
+    });
 
     q.execute();
 });
@@ -69,46 +69,46 @@ router.post('/register', function(req, res, next) {
 /* login */
 router.post('/login', function(req, res, next) {
 
-    var id = req.param('id'); 
-    var pw = req.param('pw'); 
+    var id = req.param('id');
+    var pw = req.param('pw');
 
-    // SQL query for checking id, pw 
+    // SQL query for checking id, pw
     var qString = 'SELECT users.id AS id \
                   FROM users \
-                  WHERE users.id = ? AND users.pw = ?' ; 
+                  WHERE users.id = ? AND users.pw = ?' ;
 
-    console.log(qString); 
+    console.log(qString);
 
     q.query( qString, [ id, pw ], function( err, result, fields ){
         if (err) {
-          console.log(err); 
+          console.log(err);
         }
         else {
           	console.log(result);
-          
-            // log-in success 
+
+            // log-in success
           	if (result.length == 1 ) {
                 req.session.regenerate(function(){
-                    console.log(result[0].id);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                    req.session.user = result[0].id;  
+                    console.log(result[0].id);
+                    req.session.user = result[0].id;
                     res.redirect('/user');
                 });
             }
             else {
-             	res.redirect('/');   
+             	res.redirect('/');
             }
     	}
-    }); 
+    });
 
-    q.execute(); 
+    q.execute();
 });
 
 
 /* logout */
 router.get('/logout', function(req, res, next) {
-    req.session.destroy(function(){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-        res.redirect('/');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-    });    
+    req.session.destroy(function(){
+        res.redirect('/');
+    });
 });
 
 module.exports = router;
