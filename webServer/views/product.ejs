@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>List product : IS521 Shopping Mall</title>
+<body>
+	<p>
+	    Welcome <%= user %>! <br> 
+    	<a href="./logout">log out</a> 
+    	<ul>
+    		<li><a href="./cart">Shopping cart</a></li>
+    		<li><a href="./order">My order</a></li>
+    	</ul> 
+    </p>
+	<% products.forEach( function(product){ %>
+	    <p>
+	        Product Name: <%= product.name %> <br>
+	        Price: <%= product.price %> <br>
+	        <a href="./product/add?id=<%= product.product_id %>">Add to shopping cart</a>
+	    </p>
+	<%}) %>
+</body>
+</html>
