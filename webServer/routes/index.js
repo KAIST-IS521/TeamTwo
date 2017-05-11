@@ -21,7 +21,6 @@ queues(client, DEBUG);
 var q = client.createQueue();
 
 
-
 /*
  * default home page
  */
@@ -45,9 +44,9 @@ router.post('/register', function(req, res, next) {
     var id = req.param('id');
     var pw = req.param('pw');
 
-    // SQL query for checking id, pw
+    // SQL query for registering new user
     var qString = 'INSERT INTO users SET ?';
-    var p = { id:id, pw:pw};
+    var p = { user_id:id, pw:pw};
 
     console.log(qString);
 
@@ -73,9 +72,9 @@ router.post('/login', function(req, res, next) {
     var pw = req.param('pw');
 
     // SQL query for checking id, pw
-    var qString = 'SELECT users.id AS id \
+    var qString = 'SELECT users.user_id AS id \
                   FROM users \
-                  WHERE users.id = ? AND users.pw = ?' ;
+                  WHERE users.user_id = ? AND users.pw = ?' ;
 
     console.log(qString);
 
@@ -84,20 +83,20 @@ router.post('/login', function(req, res, next) {
           console.log(err);
         }
         else {
-          	console.log(result);
+            console.log(result);
 
             // log-in success
-          	if (result.length == 1 ) {
+            if (result.length == 1 && result[0].id == id ) {
                 req.session.regenerate(function(){
                     console.log(result[0].id);
                     req.session.user = result[0].id;
-                    res.redirect('/user');
+                    res.redirect('/product');
                 });
             }
             else {
-             	res.redirect('/');
+              res.redirect('/');
             }
-    	}
+      }
     });
 
     q.execute();
