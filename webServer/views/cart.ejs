@@ -5,18 +5,18 @@
 <title>Shopping Cart : IS521 Shopping Mall</title>
 <body>
 	<p>
-	    Welcome <%= user %>! <br> 
-    	<a href="./logout">log out</a> 
+	    Welcome <%= user %>! <br>
+    	<a href="./logout">log out</a>
     	<ul>
     		<li><a href="./product">Products list</a></li>
     		<li><a href="./order">My order</a></li>
-    	</ul> 
+    	</ul>
     </p>
 	<% items.forEach( function(item){ %>
 	    <p>
 	        Product Name: <%= item.name %> <br>
 	        Price: <%= item.price %> <br>
-	        Number: <%= item.num %> 
+	        Number: <%= item.num %>
 	    </p>
 	<%}) %>
 </body>
