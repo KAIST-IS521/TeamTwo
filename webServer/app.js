@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var product = require('./routes/product');
+var cart = require('./routes/cart');
+var order = require('./routes/order');
 
 var app = express();
 
@@ -15,14 +17,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use( session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    saveUninitialized: false    
+    // cookie: { secure: true }  // only for https 
   })); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,22 +40,11 @@ function checkAuth(req, res, next) {
 };
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/product', checkAuth, product);
+app.use('/cart', checkAuth, cart);
+app.use('/order', checkAuth, order);
 
 
-// app.use('/login', index);
-// app.use('/logout', index);
-// app.use('/space', checkAuth, space);
-// app.use('/controller', checkAuth, controller);
-// app.use('/agent', checkAuth, agent);
-// app.use('/policy', checkAuth, policy);
-
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
 
 // error handler
 app.use(function(err, req, res, next) {
