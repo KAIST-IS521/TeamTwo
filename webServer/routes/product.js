@@ -53,7 +53,7 @@ router.get('/search', function(req, res, next)
 {
   var keyword = req.param('keyword');
 
-  q.query('SELECT * FROM products WHERE products.name LIKE %?%', [ keyword ], function( err, result, fields ){
+  q.query('SELECT * FROM products WHERE products.name LIKE ?', [ keyword ], function( err, result, fields ){
     if (err) {
       console.log(err);
     }
