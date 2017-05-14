@@ -17,7 +17,7 @@
   }
   h3, h4 {
       margin: 10px 0 30px 0;
-      letter-spacing: 10px;      
+      letter-spacing: 10px;
       font-size: 20px;
       color: #111;
   }
@@ -35,8 +35,8 @@
       border-color: #f1f1f1;
   }
   .carousel-inner img {
-      
-       /*-webkit-filter: grayscale(90%); filter: grayscale(90%); make all photos black and white */ 
+
+       /*-webkit-filter: grayscale(90%); filter: grayscale(90%); make all photos black and white */
       width: 100%; /* Set width to 100% */
       margin: auto;
   }
@@ -95,7 +95,7 @@
   .modal-body {
       padding: 50px 40px;
   }
-   
+
 
   .nav-tabs li a {
       color: #777;
@@ -105,7 +105,7 @@
       height: 400px;
       -webkit-filter: grayscale(100%);
       filter: grayscale(100%);
-  }  
+  }
   .navbar {
       font-family: Montserrat, sans-serif;
       margin-bottom: 0;
@@ -115,7 +115,7 @@
       letter-spacing: 4px;
       opacity: 0.9;
   }
-  .navbar li a, .navbar .navbar-brand { 
+  .navbar li a, .navbar .navbar-brand {
       color: #d5d5d5 !important;
   }
   .navbar-nav li a:hover {
@@ -149,7 +149,7 @@
   footer a:hover {
       color: #777;
       text-decoration: none;
-  }  
+  }
   .form-control {
       border-radius: 0;
   }
@@ -219,7 +219,7 @@ span.psw {
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#myPage">Flagrus</a>
     </div>
@@ -251,7 +251,7 @@ span.psw {
         <div class="carousel-caption">
           <h3>Football Manager 2017</h3>
           <p>Try this game.</p>
-        </div>      
+        </div>
       </div>
 
       <div class="item">
@@ -259,15 +259,15 @@ span.psw {
         <div class="carousel-caption">
           <h3>League of Legend</h3>
           <p>Play the LoL Right Now</p>
-        </div>      
+        </div>
       </div>
-    
+
       <div class="item">
         <img src="star.jpg" alt="Game3" width="1200" height="700">
         <div class="carousel-caption">
           <h3>StarCraft</h3>
           <p>Try StarCraft REMASTERED!</p>
-        </div>      
+        </div>
       </div>
     </div>
 
@@ -287,7 +287,7 @@ span.psw {
   <div class="container">
     <h3 class="text-center">Products</h3>
     <p class="text-center">Let's play the game<br> Buy serial-key and flag!</p>
-    
+
     <div class="row text-center">
       <div class="col-sm-4">
         <div class="thumbnail">
@@ -376,11 +376,11 @@ span.psw {
   </div>
 
 
-  
+
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -391,22 +391,22 @@ span.psw {
           <form role="form">
             <div class="form-group" align="center">
               <img src="lol.jpg" alt="Game3" width="400" height="200">
-              
+
             </div>
             <div class="form-group">
               <p><strong>Description</strong></p>
-              
+
             </div>
-              
+
           </form>
         </div>
-        
-        
+
+
         <div class="modal-footer">
           <button type="submit" class="btn btn-block">Add to cart </button>
           <button type="submit" class="btn btn-block">Buy </button>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -443,7 +443,7 @@ span.psw {
     </div>
   </div>
   <br>
-  
+
 </div>
 
 <!-- Footer -->
@@ -451,21 +451,21 @@ span.psw {
   <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a><br><br>
-  <p>Capture the Flag If you can</a></p> 
+  <p>Capture the Flag If you can</a></p>
 </footer>
 
 <!-- Login Modal -->
 <div id="modal_login" class="modal">
-  
+
   <form class="modal-content animate" action="/login" method="post">
-    
+
     <div class="container-modal">
       <label><b>Username</b></label>
       <input type="text" id="id" placeholder="Enter Username" name="id" required>
 
       <label><b>Password</b></label>
       <input type="password" id="pw" placeholder="Enter Password" name="pw" required>
-        
+
       <input type="checkbox" checked="checked"> Remember me<p></p>
       <button type="submit" class="signupbtn" value="Log in">Login</button>
       <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button>
@@ -497,7 +497,7 @@ span.psw {
 
       <div class="clearfix">
         <button type="submit" class="signupbtn" value="Register">Sign Up</button>
-        <button type="button" onclick="document.getElementById('modal_signup').style.display='none'" class="cancelbtn">Cancel</button>        
+        <button type="button" onclick="document.getElementById('modal_signup').style.display='none'" class="cancelbtn">Cancel</button>
       </div>
     </div>
   </form>
@@ -508,8 +508,8 @@ span.psw {
 <script>
 $(document).ready(function(){
   // Initialize Tooltip
-  $('[data-toggle="tooltip"]').tooltip(); 
-  
+  $('[data-toggle="tooltip"]').tooltip();
+
   // Add smooth scrolling to all links in navbar + footer link
   $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
 
@@ -527,7 +527,7 @@ $(document).ready(function(){
       $('html, body').animate({
         scrollTop: $(hash).offset().top
       }, 900, function(){
-   
+
         // Add hash (#) to URL when done scrolling (default click behavior)
         window.location.hash = hash;
       });
