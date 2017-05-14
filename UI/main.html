@@ -156,6 +156,65 @@
   textarea {
       resize: none;
   }
+
+/* Add modal-login */
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+/* center the container*/
+.container-modal {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+
+
   </style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -175,7 +234,7 @@
         <li><a href="#myPage">HOME</a></li>
         <li><a href="#product">PRODUCT</a></li>
         <li><a href="#contact">CONTACT</a></li>
-        <li><a href="#account">ACCOUNT</a></li>
+        <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#account">ACCOUNT</a></li>
         <li><a href="#cart">CART</a></li>
         <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
       </ul>
@@ -321,6 +380,8 @@
 
     </div>
   </div>
+
+
   
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -399,6 +460,30 @@
   <p>Capture the Flag If you can</a></p> 
 </footer>
 
+<!-- Login Modal -->
+<div id="modal_login" class="modal">
+  
+  <form class="modal-content animate" action="/login" method="post">
+    
+    <div class="container-modal">
+      <label><b>Username</b></label>
+      <input type="text" id="id" placeholder="Enter Username" name="id" required>
+
+      <label><b>Password</b></label>
+      <input type="password" id="pw" placeholder="Enter Password" name="pw" required>
+        
+      <button type="submit" value="Log in">Login</button>
+      <input type="checkbox" checked="checked"> Remember me
+    </div>
+
+    <div class="container-modal" style="background-color:#f1f1f1">
+      <span class="pw">Join Flagrus <a href="/register">sign up</a></span>
+    </div>
+
+  </form>
+</div>
+
+
 <script>
 $(document).ready(function(){
   // Initialize Tooltip
@@ -428,6 +513,17 @@ $(document).ready(function(){
     } // End if
   });
 })
+
+// Get the Login modal
+var modal = document.getElementById('modal_login');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
 </script>
 
 </body>
