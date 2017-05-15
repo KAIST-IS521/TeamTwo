@@ -12,12 +12,20 @@
     		<li><a href="/order">My order</a></li>
     	</ul>
     </p>
+    <% var total = 0; %>
 	<% items.forEach( function(item){ %>
 	    <p>
 	        Product Name: <%= item.name %> <br>
 	        Price: <%= item.price %> <br>
 	        Number: <%= item.num %>
+	        <% total += item.price * item.num; %>
 	    </p>
 	<%}) %>
+	<p>
+    	Total : <%= total %> <br>
+    	<form action="/product/purchase" method="get">
+			<input type="submit" value="Purchase">
+    	</form>
+    </p>
 </body>
 </html>
