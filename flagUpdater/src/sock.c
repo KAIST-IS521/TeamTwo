@@ -89,7 +89,7 @@ int sock_read(int sockfd, char *buffer, size_t size)
         }
 
         /* store in destination buffer */
-        buffer[ret] = c;
+        buffer[i] = c;
         i++;
 
         /* read til newline given */
