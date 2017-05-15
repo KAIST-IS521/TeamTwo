@@ -7,11 +7,24 @@
 
 void sock_cb(int sockfd)
 {
-    /* TODO: authenticate */
+    char *username;
+    char buf[MAX_BUF] = { '\0' };
 
-    /* TODO: do something useful */
-    char *s = "hello! and bye bye\n";
-    sock_write(sockfd, s, strlen(s));
+    log_infof("connection %d", sockfd);
+
+    sprintf(buf, "username: ");
+    sock_write(sockfd, buf, strlen("username: "));
+
+    bzero(buf, MAX_BUF);
+    sock_read(sockfd, buf, MAX_BUF);
+    username = strdup(buf);
+
+    log_infof("username: %s", username);
+
+
+    /* generate pseudo-random number */
+    /* TODO: secure enough? */
+    /* int r = rand(); */
 }
 
 int main(int argc, char *argv[])
@@ -43,6 +56,8 @@ int main(int argc, char *argv[])
         log_err("failed to open socket");
         exit(EXIT_FAILURE);
     }
+
+    log_infof("listening port %d...", port);
 
     /* synchronously handle clients */
     ret = sock_listen(srv_fd, sock_cb);
