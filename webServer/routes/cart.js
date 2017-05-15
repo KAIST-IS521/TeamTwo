@@ -12,7 +12,8 @@ router.get('/', function(req, res, next) {
             	FROM ( users JOIN shopping_cart ) JOIN products \
                	ON users.user_id = shopping_cart.user_id \
                 	AND shopping_cart.product_id = products.product_id\
-                WHERE users.user_id = ? ' ;
+                WHERE users.user_id = ?  \
+                ORDER BY shopping_cart.added_time ASC';
 
 	q.query( qString, [ req.session.user ], function( err, result, fields ){
 		if (err) {

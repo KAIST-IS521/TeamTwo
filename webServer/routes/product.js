@@ -57,7 +57,6 @@ router.get('/add', function(req, res, next) {
 
     var id = req.param('id');
     var num = req.param('num');
-    var valid_value = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
 
     // input check
     if ( num < 1 || 8 < num ) {
@@ -67,7 +66,7 @@ router.get('/add', function(req, res, next) {
 
     // SQL query for adding
     var qString = 'INSERT INTO shopping_cart SET ?';
-    var p = { user_id: req.session.user, product_id:id, product_num: 1};
+    var p = { user_id: req.session.user, product_id: id, product_num: num };
 
     console.log(qString);
 
