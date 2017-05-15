@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "logger.h"
+#include "ip.h"
 #include "sock.h"
 
 int main(int argc, char *argv[])
@@ -19,10 +20,15 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /* parse ip */
     ip = strdup(argv[1]);
-    port = atoi(argv[2]);
+    if (!ip_valid(ip)) {
+        log_errf("failed to parse ip '%s'", ip);
+        exit(EXIT_FAILURE);
+    }
 
-    /* TODO: error handling */
+    /* parse port */
+    port = atoi(argv[2]);
 
     /* open socket */
     srv_fd = sock_open(ip, port);
