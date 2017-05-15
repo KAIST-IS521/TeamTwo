@@ -22,6 +22,5 @@ int sock_listen(int sockfd, sock_listen_cb_t cb);
 int sock_read(int sockfd, char *buffer, size_t size);
 int sock_write(int sockfd, char *buffer, size_t size);
 int sock_close(int sockfd);
-/* int sock_auth(int sockfd, const char *id, const char *pw); */
 
 #endif /* SOCK_H */
