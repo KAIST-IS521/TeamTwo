@@ -41,6 +41,38 @@ int sock_open(const char* ip, int port)
     return sockfd;
 }
 
+int sock_listen(int sockfd, sock_listen_cb_t cb)
+{
+    int ret;
+    int cli_fd;
+    struct sockaddr_in cli_addr;
+    socklen_t cli_len = sizeof(cli_addr);
+
+    ret = listen(sockfd, SOMAXCONN);
+    if (ret != 0) {
+        log_perr("listen");
+        return -1;
+    }
+
+    while (1) {
+        /* accept connection */
+        cli_fd = accept(sockfd, (struct sockaddr *) &cli_addr, &cli_len);
+        if (cli_fd == -1) {
+            log_perr("accept");
+            continue;
+        }
+
+        cb(cli_fd);
+
+        ret = sock_close(cli_fd);
+        if (ret < 0) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
 int sock_read(int sockfd, char *buffer, size_t size)
 {
     int ret, i;
