@@ -30,22 +30,22 @@ router.get('/', function(req, res, next) {
  */
 router.get('/search', function(req, res, next)
 {
-  var keyword = req.param('keyword');
+    var keyword = req.param('keyword');
 
-  q.query('SELECT * FROM products WHERE products.name LIKE ?', [ keyword ], function( err, result, fields ){
-    if (err) {
-      console.log(err);
-    }
-    else {
-      var products = result;
-      console.log(result);
-      // client.end();
+    q.query('SELECT * FROM products WHERE products.name LIKE ?', [ keyword ], function( err, result, fields ){
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var products = result;
+            console.log(result);
+            // client.end();
 
-      res.render('product', { 'products' : products , 'user' : req.session.user });
-    }
-  });
+            res.render('product', { 'products' : products , 'user' : req.session.user });
+        }
+    });
 
-  q.execute();
+    q.execute();
 
 });
 
@@ -55,8 +55,15 @@ router.get('/search', function(req, res, next)
  */
 router.get('/add', function(req, res, next) {
 
-	var id = req.param('id');
-	var num = req.param('num');
+    var id = req.param('id');
+    var num = req.param('num');
+    var valid_value = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
+
+    // input check
+    if ( num < 1 || 8 < num ) {
+        res.json( { message: 'Not valid input...' } );
+        return;
+    }
 
     // SQL query for adding
     var qString = 'INSERT INTO shopping_cart SET ?';
@@ -75,7 +82,6 @@ router.get('/add', function(req, res, next) {
     });
 
     q.execute();
-
 });
 
 
