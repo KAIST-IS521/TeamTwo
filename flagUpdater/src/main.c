@@ -4,16 +4,18 @@
 #include "logger.h"
 #include "ip.h"
 #include "sock.h"
+#include "gpg.h"
 
 void sock_cb(int sockfd)
 {
-    char *username;
+    int ret;
+    char *username, *key;
     char buf[MAX_BUF] = { '\0' };
 
     log_infof("connection %d", sockfd);
 
     sprintf(buf, "username: ");
-    sock_write(sockfd, buf, strlen("username: "));
+    sock_write(sockfd, buf, strlen(buf));
 
     bzero(buf, MAX_BUF);
     sock_read(sockfd, buf, MAX_BUF);
@@ -21,10 +23,26 @@ void sock_cb(int sockfd)
 
     log_infof("username: %s", username);
 
+    /* try to find key */
+    bzero(buf, MAX_BUF);
+    ret = gpg_find_key(username, &key);
+    if (ret < 0) {
+        log_infof("failed to find key");
+        /* TODO: gracious exit */
+        exit(EXIT_FAILURE);
+    }
+    else if (ret == EGPG_UNKNOWN) {
+        log_info("no key found");
 
-    /* generate pseudo-random number */
-    /* TODO: secure enough? */
-    /* int r = rand(); */
+        sprintf(buf, "access denied\n");
+        sock_write(sockfd, buf, strlen(buf));
+        return;
+    }
+
+    /* log_infof("found key:\n%s", key); */
+
+    sprintf(buf, "welcome\n");
+    sock_write(sockfd, buf, strlen(buf));
 }
 
 int main(int argc, char *argv[])
