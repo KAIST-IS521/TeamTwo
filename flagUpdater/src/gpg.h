@@ -2,15 +2,29 @@
 #define GPG_H
 
 #include <stdlib.h>
-#include <fts.h>
+#include <unistd.h>
+#include <errno.h>
+#include <locale.h>
 #include <string.h>
+#include <gpgme.h>
 
 #include "logger.h"
 
+#define log_gpgerr(err) fprintf(stderr, "[\x1B[31m!\x1B[0m] %s: %s\n", \
+                                gpgme_strsource(err), gpgme_strerror(err));
+
+/* errors */
 #define EGPG_UNKNOWN (1)
 
+/* constants */
+#define GPG_PRIV_KEY "priv_key.asc"
+#define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "./keys"
 
-int gpg_find_key(const char *name, char **key);
+int gpg_init();
+void gpg_free();
+int gpg_import_key(char *keypath, char **fp);
+int gpg_encrypt(const char *fpr, const char *plain, char **cipher);
+int gpg_sign(const char *plain, char **cipher);
 
 #endif /* GPG_H */
