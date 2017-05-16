@@ -10,8 +10,15 @@
 
 #include "logger.h"
 
-#define log_gpgerr(err) fprintf(stderr, "[\x1B[31m!\x1B[0m] %s: %s\n", \
-                                gpgme_strsource(err), gpgme_strerror(err));
+#define gpg_fail_if_err(err)                                            \
+    do {                                                                \
+        if (err != GPG_ERR_NO_ERROR) {                                  \
+            fprintf(stderr, "[\x1B[31m!\x1B[0m] %s: %s\n",              \
+                    gpgme_strsource(err), gpgme_strerror(err));         \
+            return -1;                                                  \
+        }                                                               \
+    }                                                                   \
+    while (0)
 
 /* errors */
 #define EGPG_UNKNOWN (1)
@@ -19,7 +26,7 @@
 /* constants */
 #define GPG_PRIV_KEY "priv_key.asc"
 #define GPG_PUB_KEY "pub_key.asc"
-#define GPG_KEYS_DIR "./keys"
+#define GPG_KEYS_DIR "keys"
 
 int gpg_init();
 void gpg_free();

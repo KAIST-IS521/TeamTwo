@@ -11,6 +11,7 @@ void sock_cb(int sockfd)
     int ret;
     char *username, *key;
     char buf[MAX_BUF] = { '\0' };
+    char keypath[MAX_BUF] = { '\0' };
 
     log_infof("connection %d", sockfd);
 
@@ -23,23 +24,27 @@ void sock_cb(int sockfd)
 
     log_infof("username: %s", username);
 
+    /* construct path for where key should be */
+    sprintf(keypath, "%s/%s.pub", GPG_KEYS_DIR, username);
+
+    log_infof("looking for key %s", keypath);
+
     /* try to find key */
     bzero(buf, MAX_BUF);
-    ret = gpg_find_key(username, &key);
-    if (ret < 0) {
-        log_infof("failed to find key");
-        /* TODO: gracious exit */
-        exit(EXIT_FAILURE);
-    }
-    else if (ret == EGPG_UNKNOWN) {
-        log_info("no key found");
+    ret = gpg_import_key(keypath, &key);
+    if (ret == EGPG_UNKNOWN) {
+        log_info("not found");
 
         sprintf(buf, "access denied\n");
         sock_write(sockfd, buf, strlen(buf));
         return;
     }
+    else if (ret != 0) {
+        log_warnf("failed to find key '%s'", keypath);
+        return;
+    }
 
-    /* log_infof("found key:\n%s", key); */
+    log_infof("found key %s", key);
 
     sprintf(buf, "welcome\n");
     sock_write(sockfd, buf, strlen(buf));
@@ -50,8 +55,9 @@ int main(int argc, char *argv[])
     int ret;
     char *ip;
     int port;
-
     int srv_fd;
+
+    gpg_init();
 
     if (argc < 3) {
         log_errf("usage: %s <ip> <port>", argv[0]);
@@ -82,6 +88,8 @@ int main(int argc, char *argv[])
     if (ret < 0) {
         exit(EXIT_FAILURE);
     }
+
+    gpg_free();
 
     return 0;
 }
