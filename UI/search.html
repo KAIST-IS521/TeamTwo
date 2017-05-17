@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Welcome to Flag are us</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/search.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/search.js"></script>
+  </head>
+
+  <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+<p>　</p>
+<p>　</p>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#myPage">Flagrus</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a> Welcome <%= user %>!</a></li>
+        <li><a href="#myPage">HOME</a></li>
+        <li><a href="#product">PRODUCT</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+        <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#account">LOGIN</a></li>
+        <li><a href="/logout">LOGOUT</a></li>
+        <li><a href="/order">ORDER</a></li>
+        <li><a href="/cart">CART</a></li>
+        <li><a href="/search"><span class="glyphicon glyphicon-search"></span></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+<ul id="myUL">
+  <li><a href="#" class="header">A</a></li>
+  <li><a href="#" >ANCIENT CIVILIZTION</a></li>
+
+  <li><a href="#" class="header">D</a></li>
+  <li><a href="#">DIABLO MOUNTAIN</a></li>
+
+  <li><a href="#" class="header">F</a></li>
+  <li><a href="#">FLAG</a></li>
+
+  <li><a href="#" class="header">H</a></li>
+  <li><a href="#">HORDE</a></li>
+  <li><a href="#">HYPER MARIO Bros</a></li>
+  <li><a href="#">HEROES OF SERGEONS</a></li>
+
+  <li><a href="#" class="header">P</a></li>
+  <li><a href="#">PLANET CRAFT</a></li>
+
+  <li><a href="#" class="header">S</a></li>
+  <li><a href="#">SOCCER MANAGER 2022</a></li>
+
+  <li><a href="#" class="header">T</a></li>
+  <li><a href="#">THE RESTORANTS</a></li>
+
+</ul>
+
+
+
+
+<!-- Footer -->
+<footer class="text-center">
+  <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a><br><br>
+  <p>Capture the Flag If you can</a></p> 
+</footer>
+
+<!-- Login Modal -->
+<div id="modal_login" class="modal">
+  
+  <form class="modal-content animate" action="/login" method="post">
+    
+    <div class="container-modal">
+      <label><b>Username</b></label>
+      <input type="text" id="id" placeholder="Enter Username" name="id" required>
+
+      <label><b>Password</b></label>
+      <input type="password" id="pw" placeholder="Enter Password" name="pw" required>
+        
+      <input type="checkbox" checked="checked"> Remember me<p></p>
+      <button type="submit" class="signupbtn" value="Log in">Login</button>
+      <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button>
+    </div>
+
+    <div class="container-modal" style="background-color:#f1f1f1">
+      <span class="pw">Join Flagrus <a onclick="document.getElementById('modal_signup').style.display='block'">sign up</a></span>
+    </div>
+
+  </form>
+</div>
+
+<!-- Sign up Modal -->
+
+<div id="modal_signup" class="modal">
+  <span onclick="document.getElementById('modal_signup').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content animate" >
+    <div class="container-modal">
+      <label><b>User Name</b></label>
+      <input type="text" id="id" placeholder="Enter Username" name="id" required>
+
+      <label><b>Password</b></label>
+      <input type="password" id="pw" placeholder="Enter Password" name="pw" required>
+
+      <label><b>Repeat Password</b></label>
+      <input type="password" id="pw2" placeholder="Repeat Password" name="pw2" required>
+      <input type="checkbox" checked="checked"> Remember me
+      <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+      <div class="clearfix">
+        <button type="submit" class="signupbtn" value="Register">Sign Up</button>
+        <button type="button" onclick="document.getElementById('modal_signup').style.display='none'" class="cancelbtn">Cancel</button>        
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
