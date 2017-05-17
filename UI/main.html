@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Theme Made By www.w3schools.com - No Copyright -->
-  <title>Welcome to Flag are us</title>
+  <title>Welcome to Flags are us</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -27,15 +27,18 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
+        <li><a> Welcome <%= user %>!</a></li>
         <li><a href="#myPage">HOME</a></li>
         <li><a href="#product">PRODUCT</a></li>
         <li><a href="#contact">CONTACT</a></li>
-        <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#account">ACCOUNT</a></li>
-        <li><a href="#cart">CART</a></li>
-        <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
+        <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#account">LOGIN</a></li>
+        <li><a href="/logout">LOGOUT</a></li>
+        <li><a href="/order">ORDER</a></li>
+        <li><a href="/cart">CART</a></li>
+        <li><a href="/search"><span class="glyphicon glyphicon-search"></span></a></li>
       </ul>
     </div>
-  </div>
+  </div> 
 </nav>
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -51,7 +54,7 @@
       <div class="item active">
         <img src="pics/soccer.png" alt="Game1" width="1200" height="700">
         <div class="carousel-caption">
-          <h3>Football Manager 2017</h3>
+          <h3>SOCCER MANAGER 2022</h3>
           <p>Try this game.</p>
         </div>
       </div>
@@ -59,16 +62,16 @@
       <div class="item">
         <img src="pics/planet.png" alt="Game2" width="1200" height="700">
         <div class="carousel-caption">
-          <h3>League of Legend</h3>
-          <p>Play the LoL Right Now</p>
+          <h3>PLANET CRAFT</h3>
+          <p>Play PLANET CRAFT Right Now</p>
         </div>
       </div>
 
       <div class="item">
         <img src="pics/hyper.png" alt="Game3" width="1200" height="700">
         <div class="carousel-caption">
-          <h3>StarCraft</h3>
-          <p>Try StarCraft REMASTERED!</p>
+          <h3>HYPER MARIO Bros</h3>
+          <p>Try Now!</p>
         </div>
       </div>
     </div>
@@ -93,81 +96,81 @@
     <div class="row text-center">
       <div class="col-sm-4">
         <div class="thumbnail">
-          <img src="pics/diablo.png" alt="Game1" width="400" height="300">
-          <p><strong>FootBall Manager 2017</strong></p>
-          <p>Price : 10,000won</p>
+          <img src="pics/ancient.png" alt="ancient" width="400" height="300">
+          <p><strong>ANCIENT CIVILIZATION</strong></p>
+          <p>Price : 29,900won</p>
           <p> </p>
           <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="thumbnail">
-          <img src="pics/ancient.png" alt="Game2" width="400" height="300">
-          <p><strong>StarCraft</strong></p>
-          <p>Price : 10,000won</p>
+          <img src="pics/diablo.png" alt="diablo" width="400" height="300">
+          <p><strong>DIABLO MOUNTAIN</strong></p>
+          <p>Price : 32,900won</p>
           <p> </p>
           <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="thumbnail">
-          <img src="pics/horde.png" alt="Game3" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/hyper.png" alt="Game4" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/planet.png" alt="Game5" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/truck.png" alt="Game6" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/restorants.png" alt="Game7" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/soccer.png" alt="Game8" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
-          <p>Price : 10,000won</p>
-          <p> </p>
-          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <img src="pics/flag.png" alt="Special Game" width="400" height="300">
-          <p><strong>League of Legend</strong></p>
+          <img src="pics/flag.png" alt="flag" width="400" height="300">
+          <p><strong>FLAG</strong></p>
           <p>Price : 1,000,000,000won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/horde.png" alt="horde" width="400" height="300">
+          <p><strong>HORDE</strong></p>
+          <p>Price : 19,800won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/hyper.png" alt="hyper" width="400" height="300">
+          <p><strong>HYPER MARIO Bros</strong></p>
+          <p>Price : 48,900won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/planet.png" alt="planet" width="400" height="300">
+          <p><strong>PLANET CRAFT</strong></p>
+          <p>Price : 27,900won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/restorants.png" alt="restorants" width="400" height="300">
+          <p><strong>THE RESTORANTS</strong></p>
+          <p>Price : 33,900won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/soccer.png" alt="soccer" width="400" height="300">
+          <p><strong>SOCCER MANAGER 2022</strong></p>
+          <p>Price : 72,900won</p>
+          <p> </p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="pics/stone.png" alt="stone" width="400" height="300">
+          <p><strong>HEROES OF SERGEONS</strong></p>
+          <p>Price : 44,900won</p>
           <p> </p>
           <button class="btn" data-toggle="modal" data-target="#myModal">Details</button>
         </div>
@@ -203,8 +206,14 @@
           </form>
         </div>
 
-
         <div class="modal-footer">
+        <p align="center"><input  name="quantity" id="quantity" style="vertical-align:middle; text-align:right" size="5" maxlength="4" value="0" />
+    <img style="vertical-align:middle;" alt="alter_quantity" src="pics/btn_cnt.gif" usemap="#map_name_quantity"/>
+    <map id="map_name_quantity" name="map_name_quantity">
+        <area href="javascript:modifyProductQuantity('quantity',1);" shape="rect" alt="plus" coords="0,0,9,10"/>
+        <area href="javascript:modifyProductQuantity('quantity',-1);" shape="rect" alt="minus" coords="0,10,9,20"/>
+    </map></p>
+
           <button type="submit" class="btn btn-block">Add to cart </button>
           <button type="submit" class="btn btn-block">Buy </button>
         </div>
