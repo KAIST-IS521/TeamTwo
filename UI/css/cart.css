@@ -176,3 +176,7 @@ span.psw {
 /* Float cancel and signup buttons and add an equal width */
 .cancelbtn,.signupbtn {float:left;width:50%}
 .yesbtn,.nobtn{float:left;width:50%}
+
+.msgpopup {
+    display: none;
+}
