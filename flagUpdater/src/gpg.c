@@ -137,6 +137,47 @@ int gpg_import_key(char *keypath, char **fp)
     return 0;
 }
 
+int gpg_export_pub_key(char **buffer)
+{
+    int ret, size;
+    gpgme_error_t err;
+    gpgme_data_t out;
+    gpgme_key_t key[2] = { 0 };
+
+    /* init temporary gpg data buffer */
+    err = gpgme_data_new(&out);
+    gpg_fail_if_err(err);
+
+    /* get public key */
+    err = gpgme_get_key(gpg_ctx, gpg_fp, &key[0], 0);
+    gpg_fail_if_err(err);
+
+    /* export key to data buffer */
+    err = gpgme_op_export_keys(gpg_ctx, key, 0, out);
+    gpg_fail_if_err(err);
+
+    /* seek to end of buffer to get size of output */
+    ret = gpgme_data_seek(out, 0, SEEK_END);
+    if (ret < 0) { gpg_fail_if_err(err); }
+
+    /* offset from start equals size of buffer */
+    size = ret;
+
+    /* allocate memory at given size */
+    *buffer = malloc(size);
+
+    /* now copy data directly over to allocated buffer */
+    ret = gpgme_data_seek(out, 0, SEEK_SET);
+    if (ret < 0) { gpg_fail_if_err(err); }
+    ret = gpgme_data_read(out, *buffer, size);
+    if (ret < 0) { gpg_fail_if_err(err); }
+
+    /* clean up */
+    gpgme_data_release(out);
+
+    return 0;
+}
+
 /* debug functions */
 
 void gpg_list_keys(const char *pattern)

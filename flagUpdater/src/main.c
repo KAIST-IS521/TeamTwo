@@ -53,15 +53,28 @@ void sock_cb(int sockfd)
     bzero(buf, MAX_BUF);
     sprintf(buf, "%d", r);
 
+    /* encrypt */
     ret = gpg_encrypt(key, buf, &cipher);
     if (ret < 0) {
         log_warnf("failed to encrypt nonce '%d'", r);
         return;
     }
 
+    /* send random number */
     log_infof("sending nonce '%d' as cipher\n%s", r, cipher);
-
     sock_write(sockfd, cipher, strlen(cipher));
+
+    /* export key */
+    char *pub_key;
+    ret = gpg_export_pub_key(&pub_key);
+    if (ret < 0) {
+        log_warn("failed to export public key");
+        return;
+    }
+
+    /* send public key */
+    log_infof("sending public key");
+    sock_write(sockfd, pub_key, strlen(pub_key));
 }
 
 int main(int argc, char *argv[])
