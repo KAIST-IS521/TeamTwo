@@ -125,6 +125,26 @@ input[type=text], input[type=password] {
     width: 100%;
 }
 
+.yesbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.nobtn {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
 button:hover {
     opacity: 0.8;
 }
@@ -155,3 +175,4 @@ span.psw {
 
 /* Float cancel and signup buttons and add an equal width */
 .cancelbtn,.signupbtn {float:left;width:50%}
+.yesbtn,.nobtn{float:left;width:50%}
