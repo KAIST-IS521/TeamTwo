@@ -184,3 +184,7 @@ span.psw {
 .product-id {
     display: none;
 }
+
+.order-item-list {
+    display: none;
+}
