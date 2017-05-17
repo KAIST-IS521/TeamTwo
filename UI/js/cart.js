@@ -15,5 +15,6 @@ $(document).ready(function() {
 
     $('button.nobtn').click(function() {
         $('div.msgpopup').hide();
+        location.reload();
     });
 });
