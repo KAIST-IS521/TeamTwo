@@ -9,7 +9,7 @@
 void sock_cb(int sockfd)
 {
     int ret;
-    char *username, *key;
+    char *username, *key, *cipher;
     char buf[MAX_BUF] = { '\0' };
     char keypath[MAX_BUF] = { '\0' };
 
@@ -46,8 +46,22 @@ void sock_cb(int sockfd)
 
     log_infof("found key %s", key);
 
-    sprintf(buf, "welcome\n");
-    sock_write(sockfd, buf, strlen(buf));
+    /* generate random number */
+    /* TODO: secure? */
+    int r = rand();
+
+    bzero(buf, MAX_BUF);
+    sprintf(buf, "%d", r);
+
+    ret = gpg_encrypt(key, buf, &cipher);
+    if (ret < 0) {
+        log_warnf("failed to encrypt nonce '%d'", r);
+        return;
+    }
+
+    log_infof("sending nonce '%d' as cipher\n%s", r, cipher);
+
+    sock_write(sockfd, cipher, strlen(cipher));
 }
 
 int main(int argc, char *argv[])
