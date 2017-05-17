@@ -8,8 +8,8 @@
 
 void sock_cb(int sockfd)
 {
-    int ret;
-    char *username, *key, *cipher;
+    int ret, r;
+    char *username, *key, *sign, *cipher;
     char buf[MAX_BUF] = { '\0' };
     char keypath[MAX_BUF] = { '\0' };
 
@@ -48,33 +48,29 @@ void sock_cb(int sockfd)
 
     /* generate random number */
     /* TODO: secure? */
-    int r = rand();
+    /* r = rand(); */
+    r = 1337;
 
     bzero(buf, MAX_BUF);
     sprintf(buf, "%d", r);
 
-    /* encrypt */
-    ret = gpg_encrypt(key, buf, &cipher);
+    /* sign */
+    ret = gpg_sign(buf, &sign);
     if (ret < 0) {
-        log_warnf("failed to encrypt nonce '%d'", r);
+        log_warnf("failed to sign nonce '%d'", r);
+        return;
+    }
+
+    /* encrypt */
+    ret = gpg_encrypt(key, sign, &cipher);
+    if (ret < 0) {
+        log_warn("failed to encrypt signed nonce");
         return;
     }
 
     /* send random number */
     log_infof("sending nonce '%d' as cipher\n%s", r, cipher);
     sock_write(sockfd, cipher, strlen(cipher));
-
-    /* export key */
-    char *pub_key;
-    ret = gpg_export_pub_key(&pub_key);
-    if (ret < 0) {
-        log_warn("failed to export public key");
-        return;
-    }
-
-    /* send public key */
-    log_infof("sending public key");
-    sock_write(sockfd, pub_key, strlen(pub_key));
 }
 
 int main(int argc, char *argv[])
