@@ -36,3 +36,22 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+//count product quantity
+function modifyProductQuantity(id, quantity){
+        
+         if(isNaN($("#"+id).val())){
+              alert( 'Only use number' );
+              $("#"+id).focus();
+              $("#"+id).val(0);
+              return;
+         }
+        
+         //var v = parseFloat($("#"+id).val())+parseFloat(quantity);    
+         //$("#"+id).val(Math.round(v*10)/10);
+          
+         var q = parseInt($("#"+id).val())+parseInt(quantity);    
+         $("#"+id).val(q);
+
+
+    };
