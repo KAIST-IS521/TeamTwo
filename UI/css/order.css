@@ -188,3 +188,8 @@ span.psw {
 .order-item-list {
     display: none;
 }
+
+.account-number {
+    float: right;
+    font-weight: bold;
+}
