@@ -2,38 +2,16 @@ body {
     font: 400 15px/1.8 Lato, sans-serif;
     color: #777;
 }
+
 h3, h4 {
     margin: 10px 0 30px 0;
     letter-spacing: 10px;
     font-size: 20px;
     color: #111;
 }
+
 .container {
     padding: 80px 120px;
-}
-.person {
-    border: 10px solid transparent;
-    margin-bottom: 25px;
-    width: 80%;
-    height: 80%;
-    opacity: 0.7;
-}
-.person:hover {
-    border-color: #f1f1f1;
-}
-.carousel-inner img {
-
-    /*-webkit-filter: grayscale(90%); filter: grayscale(90%); make all photos black and white */
-    width: 100%; /* Set width to 100% */
-    margin: auto;
-}
-.carousel-caption h3 {
-    color: #fff !important;
-}
-@media (max-width: 600px) {
-    .carousel-caption {
-        display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
-    }
 }
 
 .bg-1 {
@@ -74,45 +52,6 @@ h3, h4 {
 .navbar-default .navbar-toggle {
     border-color: transparent;
 }
-.open .dropdown-toggle {
-    color: #fff;
-    background-color: #555 !important;
-}
-.dropdown-menu li a {
-    color: #000 !important;
-}
-.dropdown-menu li a:hover {
-    background-color: red !important;
-}
-footer {
-    background-color: #2d2d30;
-    color: #f5f5f5;
-    padding: 32px;
-}
-footer a {
-    color: #f5f5f5;
-}
-footer a:hover {
-    color: #777;
-    text-decoration: none;
-}
-.form-control {
-    border-radius: 0;
-}
-textarea {
-    resize: none;
-}
-
-/* Add modal-login */
-/* Full-width input fields */
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
 
 /* Set a style for order button */
 #orderbutton {
@@ -148,33 +87,6 @@ input[type=text], input[type=password] {
 button:hover {
     opacity: 0.8;
 }
-/* center the container*/
-.container-modal {
-    padding: 16px;
-}
-
-span.psw {
-    float: right;
-    padding-top: 16px;
-}
-/* The Modal (background) */
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* Extra styles for the cancel button */
-.cancelbtn {
-    padding: 14px 20px;
-    background-color: #f44336;
-}
-
-/* Float cancel and signup buttons and add an equal width */
-.cancelbtn,.signupbtn {float:left;width:50%}
 .yesbtn,.nobtn{float:left;width:50%}
 
 .msgpopup {
@@ -183,4 +95,8 @@ span.psw {
 
 .product-id {
     display: none;
+}
+
+.bottom-space {
+    margin: 10px 0 30px 0;
 }

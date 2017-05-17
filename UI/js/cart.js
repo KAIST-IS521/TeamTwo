@@ -6,15 +6,19 @@ $(document).ready(function() {
         var p_id = $.trim($(this).find('span.product-id').text());
         $('div span#id-to-send').text(p_id);
 
-        $('div.msgpopup').show();
+        $('div#remove-popup').show();
     });
 
     $('button.yesbtn').click(function() {
-        $('div.msgpopup').hide();
+        $('div#remove-popup').hide();
     });
 
     $('button.nobtn').click(function() {
-        $('div.msgpopup').hide();
+        $('div#remove-popup').hide();
         location.reload();
+    });
+
+    $('button#orderbutton').click(function() {
+        $('div#order-popup').show();
     });
 });
