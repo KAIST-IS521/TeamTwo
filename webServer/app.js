@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var fileUpload = require('express-fileupload');
 
 var index = require('./routes/index');
 var product = require('./routes/product');
@@ -21,12 +22,13 @@ app.use(logger('dev'));
 app.use( session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false    
-    // cookie: { secure: true }  // only for https 
-  })); 
+    saveUninitialized: false
+    // cookie: { secure: true }  // only for https
+  }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload({ safeFileNames: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 function checkAuth(req, res, next) {
