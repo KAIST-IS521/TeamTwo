@@ -22,3 +22,49 @@ $(document).ready(function() {
         $('div#order-popup').show();
     });
 });
+
+function reqFunction() {
+  if(id_git.value.length < 4)
+  {
+    alert("Insert correct Github Account");
+  }
+  else{
+    alert("Request the PGP Key value");
+  }
+  
+  
+}
+function verFunction() {
+
+  //should send value to server 
+
+  var verify = true;
+
+  if(verify == true)
+  {
+    alert("Verified");
+  }
+  else{
+    alert("Insert the correct value again!");
+  }
+  
+  
+}
+
+//password check
+
+//sign up alert button 
+function signupFunction() {
+
+  var signup= true;
+
+  if(signup == true)
+  {
+    alert("Success");
+  }
+  else{
+    alert("Failed!");
+  }
+  
+  
+}

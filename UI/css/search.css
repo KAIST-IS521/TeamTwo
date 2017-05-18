@@ -154,6 +154,22 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+input[type=text_git] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+input[type=text_auth] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 /* Set a style for all buttons */
 button {
     background-color: #4CAF50;
@@ -252,3 +268,7 @@ span.psw {
 #myUL li a:hover:not(.header) {
   background-color: #eee;
 }
+
+.verifybtn {float:right;width:30%}
+.reqbtn {float:right;width:30%}
+.confirmbtn {float:right;width:30%}
