@@ -55,3 +55,69 @@ function modifyProductQuantity(id, quantity){
 
 
     };
+
+function msgFunction(session, comments) {
+  var session = false;
+  
+  // if($(comments).value.length < 10)
+  // {
+  //   alert("Please insert more than 10byte.");
+  //   return;
+  // }
+
+  if(session == true)
+  {
+    //send msg
+    return;
+  } 
+  else 
+  {
+    alert("If you want to use it, You should Log-in first.");
+  }
+}
+
+function reqFunction() {
+  if(id_git.value.length < 4)
+  {
+    alert("Insert correct Github Account");
+  }
+  else{
+    alert("Request the PGP Key value");
+  }
+  
+  
+}
+function verFunction() {
+
+  //should send value to server 
+
+  var verify = true;
+
+  if(verify == true)
+  {
+    alert("Verified");
+  }
+  else{
+    alert("Insert the correct value again!");
+  }
+  
+  
+}
+
+//password check
+
+//sign up alert button 
+function signupFunction() {
+
+  var signup= true;
+
+  if(signup == true)
+  {
+    alert("Success");
+  }
+  else{
+    alert("Failed!");
+  }
+  
+  
+}
