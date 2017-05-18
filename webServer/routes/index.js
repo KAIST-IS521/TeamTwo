@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var q = require('./db.js');
 var cp = require('child_process');
 var fs = require("fs");
+
+var q = require('./db.js');
+var config = require('./config.js');
 
 /*
  * default home page
@@ -58,7 +60,8 @@ router.post('/generate', function(req, res, next) {
 
                     // GPG excution.
                     cp.exec('gpg --armor --encrypt --yes --recipient '
-                                + result[0].email + ' ./tmp/' + result[0].id + '.txt '
+                                + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
+                                + 'cp ./tmp/' + result[0].id + '.txt.asc ./public/' + result[0].id + '.asc'
                                 , function(error, stdout, stderr)
                     {
                         if (error) {
@@ -73,7 +76,11 @@ router.post('/generate', function(req, res, next) {
 
                             // sending encrypted file
                             console.log("Asynchronous read: " + data.toString());
-                            res.json( { status: 1, encrypt: data.toString() } );
+                            res.json( {
+                                status: 1,
+                                encrypt: data.toString(),
+                                url: req.protocol + '://' + req.host + '/' + result[0].id + '.asc'
+                            });
                         });
                     });
                 });
@@ -95,30 +102,29 @@ router.post('/upload', function(req, res) {
     if (!req.files)
         return res.json( { status: 0, message:'File not uploaded...' });
 
-    var github_id = req.param('github-id');
+    var old_test;
+    var test = req.param('github-id');
 
-    // SQL query for checking github_id
-    var qString = 'SELECT github_id, email \
-                  FROM github_users \
-                  WHERE github_id = ? ';
+    do {
+        old_test = test;
+        test = test.replace("/", "");
+        test = test.replace(".", "");
+        test = test.replace(" ", "");
+        test = test.replace("\\", "");
+        test = test.replace("\n", "");
+        test = test.replace("\t", "");
+    } while ( old_test != test );
 
-    console.log(qString + ':' + github_id );
+    github_id = test;
 
-    q.query( qString, [github_id], function( err, result, fields ){
-        if (err) {
-          return console.log(err);
-        }
-        else {
-            // moving encrypted tile
-            console.log( req.files.encFile.name );
+    // moving encrypted tile
+    console.log( req.files.encFile.name );
 
-            req.files.encFile.mv('./tmp/' + github_id + '_client.asc', function(err) {
-                if (err)
-                  return res.json( { status: 0, message:'Uploaded file is not saved in the server...' });
+    req.files.encFile.mv('./tmp/' + github_id + '_client.asc', function(err) {
+        if (err)
+          return res.json( { status: 0, message:'Uploaded file is not saved in the server...' });
 
-                res.json( { status: 1, message:'File uploaded...' });
-            });
-        }
+        res.json( { status: 1, message:'File uploaded...' });
     });
 });
 

@@ -1,4 +1,7 @@
 // Set your PGP password
-var PASSWORD = '*******';
+var PASSWORD = '******';
 
-module.exports = q;
+var c = {};
+c.PASSWORD = PASSWORD;
+
+module.exports = c;
