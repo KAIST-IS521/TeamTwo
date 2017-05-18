@@ -14,9 +14,11 @@ CREATE TABLE  github_users (
 
 
 CREATE TABLE  users (
-    user_id              varchar(32)   NOT NULL  ,
+    user_id              varchar(32)   NOT NULL ,
     pw                   varchar(256)  NOT NULL ,
-    CONSTRAINT pk_users PRIMARY KEY ( user_id )
+    github_id            varchar(32)   NOT NULL ,
+    CONSTRAINT pk_users PRIMARY KEY ( user_id ),
+    CONSTRAINT fk_users_github_id FOREIGN KEY ( github_id ) REFERENCES  github_users( github_id )
 ) engine=InnoDB;
 
 

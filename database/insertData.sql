@@ -28,7 +28,7 @@ INSERT INTO github_users ( github_id, email ) VALUES('seongil', 'su3604@kaist.ac
 INSERT INTO github_users ( github_id, email ) VALUES('seungwonwoo', 'seungwonwoo@kaist.ac.kr');
 INSERT INTO github_users ( github_id, email ) VALUES('soomin-kim', 'soomink@kaist.ac.kr');
 
-INSERT INTO users VALUES( 'test',  'test');
+INSERT INTO users VALUES( 'test',  'test', 'nohkwak');
 
 INSERT INTO products ( price, name ) VALUES( '1000', 'p1' );
 INSERT INTO products ( price, name ) VALUES( '2000', 'p2' );
