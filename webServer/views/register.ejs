@@ -5,17 +5,23 @@
 <title>Register user : IS521 Shopping Mall</title>
 <body>
     <p>
-        Register :
-        <form action="/register" method="post">
-            <input type="text" id="id" name="id" placeholder="id"/>
-            <input type="password" id="pw" name="pw" placeholder="password"/>
-            <input type="password" id="pw2" name="pw2" placeholder="confirm password"/>
-            <input type="text" id="github-id" name="github-id" placeholder="github-id"/>
-            <input type="submit" value="Register">
-        </form>
         Generate :
         <form action="/generate" method="post">
             <input type="text" id="github-id" name="github-id" placeholder="github-id"/>
+            <input type="submit" value="Register">
+        </form>
+        File upload :
+        <form action='/upload' method='post' encType="multipart/form-data">
+            <input type="text" id="github-id" name="github-id" placeholder="github id" value="nohkwak"/>
+            <input type="file" name="encFile" />
+            <input type='submit' value='Upload!' />
+        </form>
+        Register :
+        <form action="/register" method="post">
+            <input type="text" id="id" name="id" placeholder="id" value="test2"/>
+            <input type="password" id="pw" name="pw" placeholder="password" value="test2"/>
+            <input type="password" id="pw2" name="pw2" placeholder="confirm password"/>
+            <input type="text" id="github-id" name="github-id" placeholder="github id" value="nohkwak"/>
             <input type="submit" value="Register">
         </form>
     </p>
