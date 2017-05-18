@@ -76,12 +76,51 @@
   <li><a href="#">SOCCER MANAGER 2022</a></li>
 
   <li><a href="#" class="header">T</a></li>
-  <li><a href="#">THE RESTORANTS</a></li>
+  <li data-toggle="modal" data-target="#myModal"><a href="#">THE RESTORANTS</a></li>
 
-</ul>
+  </ul>
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+    <div class="modal-dialog">
 
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4><span class="glyphicon glyphicon-flag"></span> Details</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group" align="center">
+              <img src="lol.jpg" alt="Game3" width="400" height="200">
 
+            </div>
+            <div class="form-group">
+              <p><strong>Description</strong></p>
 
+            </div>
+
+          </form>
+        </div>
+
+        <div class="modal-footer">
+        <p align="center"><input  name="quantity" id="quantity" style="vertical-align:middle; text-align:right" size="5" maxlength="4" value="0" />
+    <img style="vertical-align:middle;" alt="alter_quantity" src="pics/btn_cnt.gif" usemap="#map_name_quantity"/>
+    <map id="map_name_quantity" name="map_name_quantity">
+        <area href="javascript:modifyProductQuantity('quantity',1);" shape="rect" alt="plus" coords="0,0,9,10"/>
+        <area href="javascript:modifyProductQuantity('quantity',-1);" shape="rect" alt="minus" coords="0,10,9,20"/>
+    </map></p>
+
+          <button type="submit" class="btn btn-block">Add to cart </button>
+          <button type="submit" class="btn btn-block">Buy </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  
 
 <!-- Footer -->
 <footer class="text-center">
@@ -90,6 +129,7 @@
   </a><br><br>
   <p>Capture the Flag If you can</a></p> 
 </footer>
+
 
 <!-- Login Modal -->
 <div id="modal_login" class="modal">
@@ -156,6 +196,7 @@
     </div>
   </form>
 </div>
+
 
 </body>
 </html>
