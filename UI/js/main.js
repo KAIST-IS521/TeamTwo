@@ -71,7 +71,7 @@ $(document).ready(function(){
         $.ajax({url: '/mypage/sendMessage',
                 method: 'post',
                 dataType: 'json',
-                data: {'msg': $('#comments').text()},
+                data: {'msg': $('#comments').val()},
                 success: function(result) {
                     alert(result.message);
                 }
