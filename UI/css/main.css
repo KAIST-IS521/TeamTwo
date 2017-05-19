@@ -205,3 +205,7 @@ span.psw {
 .verifybtn {float:right;width:30%}
 .reqbtn {float:right;width:30%}
 .confirmbtn {float:right;width:30%}
+
+.hidden-id-store {
+    display: none;
+}

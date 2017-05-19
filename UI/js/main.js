@@ -1,75 +1,118 @@
+var currently_selected = '';
+
 $(document).ready(function(){
-  // Initialize Tooltip
-  $('[data-toggle="tooltip"]').tooltip();
+    // Initialize Tooltip
+    $('[data-toggle="tooltip"]').tooltip();
 
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+    // Add smooth scrolling to all links in navbar + footer link
+    $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
 
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
 
-      // Prevent default anchor click behavior
-      event.preventDefault();
+            // Prevent default anchor click behavior
+            event.preventDefault();
 
-      // Store hash
-      var hash = this.hash;
+            // Store hash
+            var hash = this.hash;
 
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 900, function(){
+            // Using jQuery's animate() method to add smooth page scroll
+            // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 900, function(){
 
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
+                // Add hash (#) to URL when done scrolling (default click behavior)
+                window.location.hash = hash;
+            });
+        } // End if
+    });
+
+    $('#detail-button').click(function() {
+        var product_id = $(this).parent().find('h3').val();
+        currently_selected = product_id;
+
+        $('#selected-img').attr('src', $(this).parent().find('img').attr('src'));
+        $('#selected-game-name').text($(this).parent().find('strong').text());
+        $('#quantity').val(0);
+    });
+
+    $('#add-to-cart-button').click(function() {
+        $.ajax({url: '/product/add',
+                method: 'get',
+                dataType: 'json',
+                data: {'product-id': currently_selected,
+                       'product-num': $('#quantity').val()},
+                success: function(result) {
+                    alert(result.message);
+                    if (result.status == 1) {
+                        $('#detail-close-button').click();
+                    }
+                }
+        });
+    });
+
+    $('#buy-button').click(function() {
+        $.ajax({url: '/product/purchase',
+                method: 'get',
+                dataType: 'json',
+                data: {'product-id': currently_selected,
+                       'product-num': $('#quantity').val()},
+                success: function(result) {
+                    alert(result.message);
+                    if (result.status == 1) {
+                        location.href = '/order';
+                    }
+                }
+        });
+    });
+
+    $('#button-send-message').click(function() {
+        $.ajax({url: '/mypage/sendMessage',
+                method: 'post',
+                dataType: 'json',
+                data: {'msg': $('#comments').text()},
+                success: function(result) {
+                    alert(result.message);
+                }
+        });
+    });
 })
-
-// // Get the Login modal
-// var modal = document.getElementById('modal_login');
-
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function(event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
 
 //count product quantity
 function modifyProductQuantity(id, quantity){
-        
-         if(isNaN($("#"+id).val())){
-              alert( 'Only use number' );
-              $("#"+id).focus();
-              $("#"+id).val(0);
-              return;
-         }
-        
-         //var v = parseFloat($("#"+id).val())+parseFloat(quantity);    
-         //$("#"+id).val(Math.round(v*10)/10);
-          
-         var q = parseInt($("#"+id).val())+parseInt(quantity);    
-         $("#"+id).val(q);
-    };
 
+    if(isNaN($("#"+id).val())){
+        alert( 'Only use number' );
+        $("#"+id).focus();
+        $("#"+id).val(0);
+        return;
+    }
+
+    //var v = parseFloat($("#"+id).val())+parseFloat(quantity);
+    //$("#"+id).val(Math.round(v*10)/10);
+
+    var q = parseInt($("#"+id).val())+parseInt(quantity);
+    $("#"+id).val(q);
+};
+
+/*
 function msgFunction(session, comments) {
-  var session = false;
-  
-  // if($(comments).value.length < 10)
-  // {
-  //   alert("Please insert more than 10byte.");
-  //   return;
-  // }
-  if(session == true)
-  {
-    //send msg
-    return;
-  } 
-  else 
-  {
-    alert("If you want to use it, You should Log-in first.");
-  }
-}
+    var session = false;
 
+    // if($(comments).value.length < 10)
+    // {
+    //   alert("Please insert more than 10byte.");
+    //   return;
+    // }
+    if(session == true)
+    {
+        //send msg
+        return;
+    }
+    else
+    {
+        alert("If you want to use it, You should Log-in first.");
+    }
+}
+*/
