@@ -1,8 +1,10 @@
+// basic module for web app
 var express = require('express');
 var router = express.Router();
 var cp = require('child_process');
 var fs = require("fs");
 
+// module for database and configuration
 var q = require('./db.js');
 var config = require('./config.js');
 
@@ -12,12 +14,66 @@ var config = require('./config.js');
  */
 router.get('/', function(req, res, next)
 {
-    if ( typeof(req.session) === 'undefined' ) {
-        res.render('main');
-    }
-    else {
-        res.render('main', { 'user' : req.session.user });
-    }
+    // SQL for listing
+    q.query('SELECT * FROM products', function( err, result, fields ){
+        // when SQL error
+        if (err) {
+            console.log(err);
+        }
+        // when SQL success
+        else {
+            var products = result;
+            console.log(result);
+
+            // show product.ejs
+            if ( typeof(req.session) === 'undefined' ) {
+                res.render('main', { 'products' : products });
+            }
+            else {
+                res.render('main', { 'products' : products , 'user' : req.session.user });
+            }
+
+
+        }
+    });
+
+    // execute SQL
+    q.execute();
+});
+
+
+/*
+ * This function searches product item.
+ */
+router.get('/search', function(req, res, next)
+{
+    // parameter from client
+    var keyword = '%' + req.param('keyword') + '%';
+
+    // SQL for searching
+    q.query('SELECT * FROM products WHERE products.name LIKE ?', [ keyword ], function( err, result, fields ){
+        // when SQL error
+        if (err) {
+            console.log(err);
+        }
+        // when SQL success
+        else {
+            var products = result;
+            console.log(result);
+
+            // show main.ejs
+            if ( typeof(req.session) === 'undefined' ) {
+                res.render('main', { 'products' : products });
+            }
+            else {
+                res.render('main', { 'products' : products , 'user' : req.session.user });
+            }
+        }
+    });
+
+    // execute SQL
+    q.execute();
+
 });
 
 
@@ -26,7 +82,12 @@ router.get('/', function(req, res, next)
  */
 router.get('/register', function(req, res, next)
 {
-    res.render('register');
+    if ( typeof(req.session) === 'undefined' ) {
+        res.render('register');
+    }
+    else {
+        res.render('register', { 'user' : req.session.user });
+    }
 });
 
 
@@ -129,14 +190,8 @@ router.post('/register', function(req, res, next)
     // parameter from the client
     var id = req.param('id');
     var pw = req.param('pw');
-    var pw2 = req.param('pw2');
     var github_id = req.param('github-id');
     var enc_data = req.param('enc-data');
-
-    // check whether two passwords are same or not
-    if ( pw != pw2 ) {
-        return res.json( { status: 0, message: "Two password are differnt"} );
-    }
 
     // SQL query for registering new user
     var qString = 'SELECT github_id, email \
