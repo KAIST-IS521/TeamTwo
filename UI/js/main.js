@@ -41,8 +41,8 @@ $(document).ready(function(){
         $.ajax({url: '/product/add',
                 method: 'get',
                 dataType: 'json',
-                data: {'product-id': currently_selected,
-                       'product-num': $('#quantity').val()},
+                data: {'product-id': parseInt(currently_selected),
+                       'product-num': parseInt($('#quantity').val())},
                 success: function(result) {
                     alert(result.message);
                     if (result.status == 1) {
@@ -56,8 +56,8 @@ $(document).ready(function(){
         $.ajax({url: '/product/purchase',
                 method: 'get',
                 dataType: 'json',
-                data: {'product-id': currently_selected,
-                       'product-num': $('#quantity').val()},
+                data: {'product-id': parseInt(currently_selected),
+                       'product-num': parseInt($('#quantity').val())},
                 success: function(result) {
                     alert(result.message);
                     if (result.status == 1) {
