@@ -55,14 +55,14 @@ void sock_cb(int sockfd)
     sprintf(buf, "%d", r);
 
     /* sign */
-    ret = gpg_sign(buf, &sign);
+    ret = gpg_sign(buf, sizeof(int), &sign);
     if (ret < 0) {
         log_warnf("failed to sign nonce '%d'", r);
         return;
     }
 
     /* encrypt */
-    ret = gpg_encrypt(key, sign, &cipher);
+    ret = gpg_encrypt(key, sign, strlen(sign), &cipher);
     if (ret < 0) {
         log_warn("failed to encrypt signed nonce");
         return;

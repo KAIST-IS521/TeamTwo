@@ -42,10 +42,9 @@ void gpg_free()
     gpgme_release(gpg_ctx);
 }
 
-int gpg_encrypt(const char *fpr, const char *plain, char **cipher)
+int gpg_encrypt(const char *fpr, const char *plain, size_t size, char **cipher)
 {
-    int ret;
-    size_t size;
+    size_t out_size;
     gpgme_error_t err;
     gpgme_data_t in, out;
     gpgme_encrypt_result_t result;
@@ -56,7 +55,7 @@ int gpg_encrypt(const char *fpr, const char *plain, char **cipher)
     gpg_fail_if_err(err);
 
     /* get plain text to encrypt */
-    err = gpgme_data_new_from_mem(&in, plain, strlen(plain), 0);
+    err = gpgme_data_new_from_mem(&in, plain, size, 0);
     gpg_fail_if_err(err);
 
     /* init out data buffer */
@@ -97,9 +96,9 @@ int gpg_encrypt(const char *fpr, const char *plain, char **cipher)
     return 0;
 }
 
-int gpg_sign(const char *plain, char **cipher)
+int gpg_sign(const char *plain, size_t size, char **cipher)
 {
-    return gpg_encrypt(gpg_fp, plain, cipher);
+    return gpg_encrypt(gpg_fp, plain, size, cipher);
 }
 
 int gpg_import_key(char *keypath, char **fp)
