@@ -31,4 +31,38 @@ router.get('/', function(req, res, next)
 });
 
 
+/*
+ * This function is to send message to mypage.
+ */
+router.post('/sendMessage', function(req, res, next)
+{
+    // parameter from client
+    var msg = req.param('msg');
+
+    // SQL statement
+    var iString = 'INSERT INTO messages SET ? ';
+    var p = { user_id: req.session.user, msg: msg };
+
+    // inserting messages to mypage
+    q.query( iString, p, function( err, result, fields ){
+        // when SQL error
+        if (err) {
+            console.log(err);
+            return res.json( { status: 0, message: "Wrong parameter..."} );
+        }
+        // when SQL success
+        else {
+            var items = result;
+            console.log(result);
+
+            // send success message
+            res.json({ status: 1 , message: 'Sent message...'});
+        }
+    });
+
+    // execute SQL
+    q.execute();
+});
+
+
 module.exports = router;
