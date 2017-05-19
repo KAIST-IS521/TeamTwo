@@ -50,7 +50,7 @@
           <button type="button" class="list-group-item game-item">
             <%= item.name %>
             <span class="badge"> <%= item.num %> </span>
-            <span class="product-id"> <%= item.product_id %> </span>
+            <span class="cart-id"> <%= item.cart_id %> </span>
             <% total += item.price * item.num %>
           </button>
           <% }) %>
@@ -70,7 +70,7 @@
     <div id="remove-popup" class="msgpopup">
       <h2 class="text-center"> Do you really want to remove this item from cart? </h2>
       <h3 class="text-center name-to-remove"> YOYOYO </h3>
-      <span class="product-id" id="id-to-send"> a </span>
+      <span class="cart-id" id="id-to-send"> a </span>
       <button type="button" class="yesbtn"> NO </button>
       <button type="button" class="nobtn"> YES </button>
     </div> <!-- end of popup -->

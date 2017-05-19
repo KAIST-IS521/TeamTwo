@@ -3,7 +3,7 @@ $(document).ready(function() {
         var item_name = $.trim($(this).text().split('\n')[1]);
         $('div h3.name-to-remove').text(item_name);
 
-        var p_id = $.trim($(this).find('span.product-id').text());
+        var p_id = $.trim($(this).find('span.cart-id').text());
         $('div span#id-to-send').text(p_id);
 
         $('div#remove-popup').show();
@@ -15,7 +15,15 @@ $(document).ready(function() {
 
     $('button.nobtn').click(function() {
         $('div#remove-popup').hide();
-        location.reload();
+        $.ajax({url: '/cart/remove',
+                method: 'post',
+                dataType: 'json',
+                data: {'cart_id': $('#id-to-send').text()},
+                success: function(result) {
+                    alert(result.message);
+                    location.reload();
+                },
+        });
     });
 
     $('button#orderbutton').click(function() {
