@@ -73,25 +73,12 @@ int gpg_encrypt(const char *fpr, const char *plain, size_t size, char **cipher)
         return -1;
     }
 
-    /* seek to end of buffer to get size of output */
-    ret = gpgme_data_seek(out, 0, SEEK_END);
-    if (ret < 0) { gpg_fail_if_err(err); }
-
-    /* offset from start equals size of buffer */
-    size = ret;
-
-    /* allocate memory at given size */
-    *cipher = malloc(size);
-
-    /* now copy data directly over to allocated buffer */
-    ret = gpgme_data_seek(out, 0, SEEK_SET);
-    if (ret < 0) { gpg_fail_if_err(err); }
-    ret = gpgme_data_read(out, *cipher, size);
-    if (ret < 0) { gpg_fail_if_err(err); }
+    /* get result */
+    *cipher = gpgme_data_release_and_get_mem(out, &out_size);
+    (*cipher)[out_size - 1] = '\0';
 
     /* clean up */
     gpgme_data_release(in);
-    gpgme_data_release(out);
 
     return 0;
 }
