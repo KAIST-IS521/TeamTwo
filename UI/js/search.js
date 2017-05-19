@@ -1,22 +1,22 @@
 // Get the Login modal
-var modal = document.getElementById('modal');
+// var modal = document.getElementById('myModal');
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+// // When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//     if (event.target == modal) {
+//         modal.style.display = "none";
+//     }
+// }
 
 //count product quantity
 function modifyProductQuantity(id, quantity){
 
-         if(isNaN($("#"+id).val())){
-              alert( 'Only use number' );
-              $("#"+id).focus();
-              $("#"+id).val(0);
-              return;
-         }
+   if(isNaN($("#"+id).val())){
+      alert( 'Only use number' );
+      $("#"+id).focus();
+      $("#"+id).val(0);
+      return;
+  }
 
          //var v = parseFloat($("#"+id).val())+parseFloat(quantity);
          //$("#"+id).val(Math.round(v*10)/10);
@@ -25,10 +25,10 @@ function modifyProductQuantity(id, quantity){
          $("#"+id).val(q);
 
 
-    };
+     };
 
 // search function
-function myFunction() {
+function searchFunction() {
     var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();

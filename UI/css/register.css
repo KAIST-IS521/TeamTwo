@@ -11,6 +11,16 @@ h3, h4 {
 .container {
     padding: 80px 120px;
 }
+.person {
+    border: 10px solid transparent;
+    margin-bottom: 25px;
+    width: 80%;
+    height: 80%;
+    opacity: 0.7;
+}
+.person:hover {
+    border-color: #f1f1f1;
+}
 .carousel-inner img {
 
     /*-webkit-filter: grayscale(90%); filter: grayscale(90%); make all photos black and white */
@@ -25,56 +35,23 @@ h3, h4 {
         display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
     }
 }
+
 .bg-1 {
     background: #2d2d30;
     color: #bdbdbd;
 }
+
 .bg-1 h3 {color: #fff;}
 .bg-1 p {font-style: italic;}
-.list-group-item:first-child {
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-}
-.list-group-item:last-child {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.thumbnail {
-    padding: 0 0 15px 0;
-    border: none;
-    border-radius: 0;
-}
-.thumbnail p {
-    margin-top: 15px;
-    color: #555;
-}
-.btn {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #f1f1f1;
-    border-radius: 0;
-    transition: .2s;
-}
-.btn:hover, .btn:focus {
-    border: 1px solid #333;
-    background-color: #fff;
+
+.list-group-item {
     color: #000;
 }
-.modal-header, h4, .close {
-    background-color: #333;
-    color: #fff !important;
-    text-align: center;
-    font-size: 30px;
-}
-.modal-header{
-    padding: 10px 10px;
-}
-.modal-body {
-    padding: 50px 40px;
-}
+
 .nav-tabs li a {
     color: #777;
 }
+
 .navbar {
     font-family: Montserrat, sans-serif;
     margin-bottom: 0;
@@ -126,7 +103,7 @@ textarea {
     resize: none;
 }
 
-/* Add modal-login */
+/* Add login */
 /* Full-width input fields */
 input[type=text], input[type=password] {
     width: 100%;
@@ -136,7 +113,8 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-input[type=password_confirm] {
+
+input[type=text_git], input[type=text_auth] {
     width: 70%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -144,23 +122,38 @@ input[type=password_confirm] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-input[type=text_git] {
-    width: 70%;
-    padding: 12px 20px;
+
+
+/* Set a style for order button */
+#orderbutton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
     margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+    width: 100%;
 }
-input[type=text_auth] {
-    width: 70%;
-    padding: 12px 20px;
+
+.yesbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
     margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+    width: 100%;
 }
-/* Set a style for all buttons */
+
+.nobtn {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
 button {
     background-color: #4CAF50;
     color: white;
@@ -175,7 +168,7 @@ button:hover {
     opacity: 0.8;
 }
 /* center the container*/
-.container-modal {
+.container-signup {
     padding: 16px;
 }
 
@@ -186,7 +179,7 @@ span.psw {
 /* The Modal (background) */
 
 /* Modal Content/Box */
-.modal-content {
+.signup-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
@@ -201,7 +194,31 @@ span.psw {
 
 /* Float cancel and signup buttons and add an equal width */
 .cancelbtn,.signupbtn {float:left;width:50%}
+.yesbtn,.nobtn{float:left;width:50%}
 
-.verifybtn {float:right;width:30%}
-.reqbtn {float:right;width:30%}
-.confirmbtn {float:right;width:30%}
+.msgpopup {
+    display: none;
+}
+
+.product-id {
+    display: none;
+}
+
+.verifybtn, .reqbtn, .confirmbtn {float:right;width:30%}
+
+/* random value text area*/
+.form-random_value {
+    border-radius: 0;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.checkpw {
+    
+    font: 400 15px/1.8 Lato, sans-serif;
+    color: #FF0000
+}

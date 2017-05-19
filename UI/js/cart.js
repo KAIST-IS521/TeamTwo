@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     $('button#orderbutton').click(function() {
-        $.ajax({url: '/cart/purchase',
+        $.ajax({url: '/cart/purchaseCart',
                 method: 'get',
                 dataType : 'json',
                 success: function(result) {

@@ -262,51 +262,49 @@
         </div>
         <div class="col-md-8">
 
-    <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
-    <br>
-    <div class="row">
-      <div class="col-md-12 form-group">
-        <button class="btn pull-right" type="submit" onclick="msgFunction()">Send</button>
+          <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
+          <br>
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <button class="btn pull-right" type="submit" onclick="msgFunction()">Send</button>
+            </div>
+          </div>
+
+        </div>
       </div>
+      <br>
+
     </div>
 
-  </div>
-</div>
-<br>
+    <!-- Footer -->
+    <footer class="text-center">
+      <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+      </a><br><br>
+      <p>Capture the Flag If you can</a></p>
+    </footer>
 
-</div>
+    <!-- Login Modal -->
+    <div id="modal_login" class="modal">
 
-<!-- Footer -->
-<footer class="text-center">
-  <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
-    <span class="glyphicon glyphicon-chevron-up"></span>
-  </a><br><br>
-  <p>Capture the Flag If you can</a></p>
-</footer>
+      <form class="modal-content animate" action="/login" method="post">
+        <div class="container-modal">
+          <label><b>Username</b></label><br>
+          <input type="text" id="id" placeholder="Enter Username" name="id" required><br>
 
-<!-- Login Modal -->
-<div id="modal_login" class="modal">
+          <label><b>Password</b></label><br>
+          <input type="password" id="pw" placeholder="Enter Password" name="pw" required><br>
 
-  <form class="modal-content animate" action="/login" method="post">
-    <div class="container-modal">
-    
-      <label><b>Username</b></label><br>
-      <input type="text" id="id" placeholder="Enter Username" name="id" required><br>
+          <input type="checkbox" checked="checked"> Remember me<p></p>
+          <button type="submit" class="signupbtn" value="Log in">Login</button>
+          <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button><br>
+        </div>
+        <div class="container-modal" style="background-color:#f1f1f1">
+          <br><span class="pw">Join Flagrus <a href="signup.html">sign up</a></span>
+        </div>
 
-      <label><b>Password</b></label><br>
-      <input type="password" id="pw" placeholder="Enter Password" name="pw" required><br>
-
-      <input type="checkbox" checked="checked"> Remember me<p></p>
-      <button type="submit" class="signupbtn" value="Log in">Login</button>
-      <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button><br>
+      </form>
     </div>
 
-    <div class="container-modal" style="background-color:#f1f1f1">
-      <br><span class="pw">Join Flagrus <a href="signup.html">sign up</a></span>
-    </div>
-
-  </form>
-</div>
-
-</body>
-</html>
+  </body>
+  </html>

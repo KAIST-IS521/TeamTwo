@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Cart Page: Flag are us </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/register.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/register.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#myPage">Flagrus</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">WELCOME dinggul</a></li>
+          <li><a href="main.html">HOME</a></li>
+          <li><a href="main.html#product">PRODUCT</a></li>
+          <li><a href="main.html#contact">CONTACT</a></li>
+          <li><a href="cart.html">CART</a></li>
+          <li><a href="order.html">ORDERS</a></li>
+          <li><a href="mypage.html">MYPAGE</a></li>
+          <li><a href="login.html">LOGIN</a></li>
+          <li><a href="logout.html">LOGOUT</a></li>
+          <li><a href="search.html"><span class="glyphicon glyphicon-search"></span></a></li>
+        </ul>
+      </div> <!-- end of menues -->
+    </div>
+  </nav>
+
+  <div id="mypageMain" class="bg-1">
+    <div class="container">
+      <h3 class="text-center"> Sign up</h3>
+
+      <form action="#" class="signup-content animate" >
+        <div class="container-signup">
+
+          <label><b>Github Account</b></label><br>
+          <input type="text_git" id="id_git" placeholder="Enter Github Account" name="id" required size="5">
+          <button type="submit" class="reqbtn" onclick="reqFunction()">Request</button><br>
+
+          <label><b>Recieved Value</b></label><br>
+          <textarea class="form-random_value" rows="3" id= "randomvalue"  readonly>
+            <%= auth_num %>! mI0EWL+zvgEEAL00UZAFOliOnxG6o3iINch8wLyLPg2jpZho0i9bbdW6JEKDxkuJ
+            UujYNSJZPX28w7hogFG8mcN3AjVlQuvz8mJr6339CZQmukcz284z7DvqWYr2FbDd
+            SOWc1lUSVD2THSLtRNJWlOHtAMRlSt4Ze7VXW7KuNFBxo6nQO9qBGKL1ABEBAAG0
+            Ik5hLCBZdW4gU2VvayA8YWxpbmdoaUBrYWlzdC5hYy5rcj6IuAQTAQIAIgUCWL+z
+            vgIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAp00tSKeoQ5k3gQAnigY
+            BxQHuj199dagApnA9BzEhqLRrDmM6QzqsanY5E8rr64Axsb5J+Kt1UH7XJEMrYgu
+            gWvPO5IFIAO8Uh7BU094v6kAlqdb84KmJrSsWRnrq4vkgwhuWInOamCVySxPdzNh
+            vRcxqHQvcxPMGWDmadHBAwFk+mhHBYUhWNc8mTu4jQRYv7O+AQQAptJM4tjkPeVa
+            Ymsd1GtB2BwjXfa6800YzptiXMfQpTbfBnM20l7uH9DcFqs0cod3VpqVfipz3FlA
+            TzIRxPm4V2y7UEOKH+bT+QKXYLTERwDWhrxV85pq+N6TnvP/EsAAkpAmzbqs7fxm
+            5jpoz+tNuhChaU/p1ocpl8cjidls/tMAEQEAAYifBBgBAgAJBQJYv7O+AhsMAAoJ
+            EAKdNLUinqEOudoEAJjEAM2/fisuw+JwEmd0Y/q4pZlXnBD1qhdNStqVJ5uPZfZA
+            ysnJNpIKdwVZOUFYasJZQALZjykUTpc45SoQ8j6UJrnmKH3OU07okZonW+g48cKg
+            uGeVCKRa08X3th3fKbhCtCMG+ot9hWUednzyVWaiuOrzLzfY9a9UTBVun1WL=t9TY
+          </textarea>
+          <br>
+
+          <label><b>Authentication Number</b></label><br>
+          <input type="text_auth" id="authnum" placeholder="Enter Authentication Number" name="id" required>
+          <button type="submit" class="verifybtn" onclick="verFunction()">Verify</button><br>
+
+          <label><b>User Name</b></label><br>
+          <input type="text" id="id" placeholder="Enter Username" name="id" required><br>
+
+          <label><b>Password</b></label><br>
+          <input type="password" id="pw" placeholder="Enter Password" name="pw" required><br>
+
+          <label><b>Repeat Password</b></label> &nbsp; <font class="checkpw" name="check" size="2" color="red"></font> <br> 
+          <input type="password" id="pw2" placeholder="Repeat Password" name="pw2" required>
+          <!-- <button type="submit" class="confirmbtn" onclick="confirmFunction()">Confirm</button><br> -->
+
+          <input type="checkbox" checked="checked"> Remember me<br>
+          <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+          <div class="clearfix">
+            <button type="submit" class="signupbtn" value="Register" onclick="signupFunction()">Sign Up</button>
+            <button type="button" onclick="document.getElementById('modal_signup').style.display='none'" class="cancelbtn">Cancel</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</body>
+</html>

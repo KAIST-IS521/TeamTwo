@@ -27,17 +27,15 @@ $(document).ready(function(){
   });
 })
 
-// Get the Login modal
-var modal = document.getElementById('modal_login');
+// // Get the Login modal
+// var modal = document.getElementById('modal_login');
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-
+// // When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//     if (event.target == modal) {
+//         modal.style.display = "none";
+//     }
+// }
 
 //count product quantity
 function modifyProductQuantity(id, quantity){
@@ -54,8 +52,6 @@ function modifyProductQuantity(id, quantity){
           
          var q = parseInt($("#"+id).val())+parseInt(quantity);    
          $("#"+id).val(q);
-
-
     };
 
 function msgFunction(session, comments) {
@@ -66,7 +62,6 @@ function msgFunction(session, comments) {
   //   alert("Please insert more than 10byte.");
   //   return;
   // }
-
   if(session == true)
   {
     //send msg
