@@ -57,6 +57,7 @@ CREATE TABLE  orders (
     user_id              varchar(30)  NOT NULL  ,
     product_id           int  NOT NULL ,
     product_num          int  NOT NULL  ,
+    added_time           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_orders_user_id FOREIGN KEY ( user_id ) REFERENCES  users( user_id ),
     CONSTRAINT fk_orders_product_id FOREIGN KEY ( product_id ) REFERENCES  products( product_id ),
     CONSTRAINT pk_orders_order_id PRIMARY KEY ( order_id )
