@@ -11,7 +11,7 @@ var q = require('./db.js');
 router.get('/', function(req, res, next)
 {
 	// SQL query for showing items in the shopping cart
-	var qString = 'SELECT products.product_id AS product_id, products.name AS name, products.price AS price, shopping_cart.product_num AS num  \
+	var qString = 'SELECT products.product_id AS product_id, products.name AS name, products.price AS price, shopping_cart.product_num AS num, shopping_cart.cart_id AS cart_id \
             	FROM ( users JOIN shopping_cart ) JOIN products \
                	ON users.user_id = shopping_cart.user_id \
                 	AND shopping_cart.product_id = products.product_id\
@@ -37,6 +37,42 @@ router.get('/', function(req, res, next)
     // SQL execution
 	q.execute();
 });
+
+
+
+/*
+ * add the item to the shopping cart
+ */
+router.post('/remove', function(req, res, next)
+{
+    // parameter from client
+    var id = req.param('cart_id');
+
+    // SQL query for adding
+    var dString = 'DELETE shopping_cart  \
+            	FROM shopping_cart \
+                WHERE shopping_cart.cart_id = ? ';
+
+    console.log(dString);
+
+    // add the item to the shopping cart table
+    q.query( dString, [ id ], function( err, result, fields ){
+        // when SQL error
+        if (err) {
+            console.log(err);
+            return res.json( { status: 0, message: "Wrong parameter..."} );
+        }
+        // when SQL success
+        else {
+            console.log(result);
+            res.json( { status: 1, message: 'Deleted from shopping cart...' } );
+        }
+    });
+
+    // execute SQL
+    q.execute();
+});
+
 
 
 /*
