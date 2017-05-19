@@ -7,10 +7,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var fileUpload = require('express-fileupload');
 
-var index = require('./routes/index');
+var main = require('./routes/main');
 var product = require('./routes/product');
 var cart = require('./routes/cart');
 var order = require('./routes/order');
+var mypage = require('./routes/mypage');
 
 var app = express();
 
@@ -41,11 +42,11 @@ function checkAuth(req, res, next) {
     }
 };
 
-app.use('/', index);
+app.use('/', main);
 app.use('/product', checkAuth, product);
 app.use('/cart', checkAuth, cart);
 app.use('/order', checkAuth, order);
-
+app.use('/mypage', checkAuth, mypage);
 
 
 // error handler
