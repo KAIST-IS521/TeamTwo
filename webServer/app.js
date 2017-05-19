@@ -1,3 +1,4 @@
+// modules for web app
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,18 +8,21 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var fileUpload = require('express-fileupload');
 
+// making routing object from the files in the ./routes directory
 var main = require('./routes/main');
 var product = require('./routes/product');
 var cart = require('./routes/cart');
 var order = require('./routes/order');
 var mypage = require('./routes/mypage');
 
+// making web app
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// applying modules to web app
 app.use(logger('dev'));
 app.use( session({
     secret: 'keyboard cat',
@@ -32,6 +36,7 @@ app.use(cookieParser());
 app.use(fileUpload({ safeFileNames: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// function for checking session
 function checkAuth(req, res, next) {
     console.log( 'checkAuth' );
 
@@ -42,6 +47,7 @@ function checkAuth(req, res, next) {
     }
 };
 
+// mapping url to the routing object after checking session
 app.use('/', main);
 app.use('/product', checkAuth, product);
 app.use('/cart', checkAuth, cart);
