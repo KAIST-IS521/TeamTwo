@@ -1,31 +1,89 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title> Cart Page: Flag are us </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/cart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/cart.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#myPage">Flagrus</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">WELCOME dinggul</a></li>
+            <li><a href="main.html">HOME</a></li>
+            <li><a href="main.html#product">PRODUCT</a></li>
+            <li><a href="main.html#contact">CONTACT</a></li>
+            <li><a href="cart.html">CART</a></li>
+            <li><a href="order.html">ORDERS</a></li>
+            <li><a href="mypage.html">MYPAGE</a></li>
+            <li><a href="login.html">LOGIN</a></li>
+            <li><a href="logout.html">LOGOUT</a></li>
+            <li><a href="search.html"><span class="glyphicon glyphicon-search"></span></a></li>
+          </ul>
+        </div> <!-- end of menues -->
+      </div>
+    </nav>
 
-<html>
-<head>
-<title>Shopping Cart : IS521 Shopping Mall</title>
-<body>
-	<p>
-	    Welcome <%= user %>! <br>
-    	<a href="/logout">log out</a>
-    	<ul>
-    		<li><a href="/product">Products list</a></li>
-    		<li><a href="/order">My order</a></li>
-    	</ul>
-    </p>
-    <% var total = 0; %>
-	<% items.forEach( function(item){ %>
-	    <p>
-	        Product Name: <%= item.name %> <br>
-	        Price: <%= item.price %> <br>
-	        Number: <%= item.num %>
-	        <% total += item.price * item.num; %>
-	    </p>
-	<%}) %>
-	<p>
-    	Total : <%= total %> <br>
-    	<form action="/cart/purchase" method="get">
-			<input type="submit" value="Purchase">
-    	</form>
-    </p>
-</body>
+    <div id="cartMain" class="bg-1">
+      <div class="container">
+        <h3 class="text-center"> Carts </h3>
+        <p class="text-center"> Check your items carefully :P </p>
+
+        <div class="list-group game-item-group">
+          <button type="button" class="list-group-item game-item">
+            Planet craft
+            <span class="badge"> 2 </span>
+            <span class="product-id"> 1 </span>
+          </button>
+          <button type="button" class="list-group-item game-item">
+            Planet craft 2
+            <span class="badge"> 3 </span>
+            <span class="product-id"> 2 </span>
+          </button>
+          <button type="button" class="list-group-item game-item">
+            Soccer manager 2022
+            <span class="badge"> 4 </span>
+            <span class="product-id"> 3 </span>
+          </button>
+          <button type="button" class="list-group-item game-item">
+            Flag
+            <span class="badge"> 5 </span>
+            <span class="product-id"> 4 </span>
+          </button>
+        </div>
+
+        <button type="button" id="orderbutton"> Order Now! </button>
+      </div> <!-- end of container -->
+    </div> <!-- end of cart Main -->
+
+    <div id="remove-popup" class="msgpopup">
+      <h2 class="text-center"> Do you really want to remove this item from cart? </h2>
+      <h3 class="text-center name-to-remove"> YOYOYO </h3>
+      <span class="product-id" id="id-to-send"> a </span>
+      <button type="button" class="yesbtn"> NO </button>
+      <button type="button" class="nobtn"> YES </button>
+    </div> <!-- end of popup -->
+
+    <div id="order-popup" class="msgpopup">
+      <h2 class="text-center bottom-space"> Send money here </h2>
+      <h3 class="text-center"> Total : 100000000 </h3>
+      <h3 class="text-center"> Account: TempAccount1 </h3>
+    </div>
+  </body>
 </html>
