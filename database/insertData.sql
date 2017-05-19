@@ -30,6 +30,8 @@ INSERT INTO github_users ( github_id, email ) VALUES('soomin-kim', 'soomink@kais
 
 INSERT INTO users VALUES( 'test',  'test', 'nohkwak');
 
+INSERT INTO messages ( user_id, msg ) VALUES( 'test',  'test' );
+
 INSERT INTO products ( price, name ) VALUES( '1000', 'p1' );
 INSERT INTO products ( price, name ) VALUES( '2000', 'p2' );
 INSERT INTO products ( price, name ) VALUES( '3000', 'p3' );

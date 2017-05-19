@@ -22,6 +22,14 @@ CREATE TABLE  users (
 ) engine=InnoDB;
 
 
+CREATE TABLE  messages (
+    user_id              varchar(32)   NOT NULL ,
+    msg                  varchar(2048)  NOT NULL ,
+    added_time           DATETIME  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    CONSTRAINT fk_messages_user_id FOREIGN KEY ( user_id ) REFERENCES  users( user_id )
+) engine=InnoDB;
+
+
 CREATE TABLE  products (
     product_id           int  NOT NULL  AUTO_INCREMENT,
     price                varchar(30)   NOT NULL  ,
