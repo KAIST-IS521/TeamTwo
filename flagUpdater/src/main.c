@@ -80,12 +80,12 @@ int main(int argc, char *argv[])
     int port;
     int srv_fd;
 
-    gpg_init();
-
     if (argc < 3) {
         log_errf("usage: %s <ip> <port>", argv[0]);
         exit(EXIT_FAILURE);
     }
+
+    gpg_init();
 
     /* parse ip */
     ip = strdup(argv[1]);
