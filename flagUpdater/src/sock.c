@@ -73,6 +73,49 @@ int sock_listen(int sockfd, sock_listen_cb_t cb)
     return 0;
 }
 
+int sock_connect(int *sockfd, const char *hostname, int port)
+{
+    int ret;
+    struct sockaddr_in server;
+    struct hostent* host;
+
+    /* create socket */
+    *sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (*sockfd < 0) {
+        log_perr("on create");
+        return -1;
+    }
+
+    /* set socket timeout */
+    struct timeval tv;
+    tv.tv_sec = SOCK_TIMEOUT;   /* timeout */
+    tv.tv_usec = 0;  /* should be set */
+    setsockopt(*sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof(struct timeval));
+
+    /* get host */
+    host = gethostbyname(hostname);
+    if (host == NULL) {
+        log_perr("no such host");
+        close(*sockfd);
+        return -1;
+    }
+
+    /* setup target server */
+    bzero((char *) &server, sizeof(server));
+    server.sin_family = AF_INET;
+    server.sin_port = htons(port);
+    memcpy((char *) &server.sin_addr, (char *) host->h_addr, host->h_length);
+
+    /* connect */
+    ret = connect(*sockfd, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
+    if (ret < 0) {
+        log_perr("on connect");
+        return -1;
+    }
+
+    return 0;
+}
+
 int sock_read(int sockfd, char *buffer, size_t size)
 {
     int ret, i;
