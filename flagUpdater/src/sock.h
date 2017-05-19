@@ -14,7 +14,6 @@
 
 #include "logger.h"
 
-#define MAX_BUF   (1024)
 #define SOCK_TIMEOUT (5)
 
 typedef void (*sock_listen_cb_t)(int sockfd);
@@ -23,6 +22,7 @@ int sock_open(const char* ip, int port);
 int sock_listen(int sockfd, sock_listen_cb_t cb);
 int sock_connect(int *sockfd, const char *hostname, int port);
 int sock_read(int sockfd, char *buffer, size_t size);
+int sock_read_multiline(int sockfd, char *buffer, size_t size, char *pattern);
 int sock_write(int sockfd, char *buffer, size_t size);
 int sock_close(int sockfd);
 

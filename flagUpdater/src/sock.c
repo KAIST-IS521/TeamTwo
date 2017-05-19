@@ -147,6 +147,38 @@ int sock_read(int sockfd, char *buffer, size_t size)
     return 0;
 }
 
+int sock_read_multiline(int sockfd, char *buffer, size_t size, char *pattern)
+{
+    int ret, i;
+    char c, *ptr;
+
+    /* read until buffer capacity is reached */
+    i = 0;
+    while((size_t) i < size) {
+        /* read char by char */
+        ret = recv(sockfd, &c, 1, 0);
+        if (ret != 1) {
+            log_perr("recv");
+            return -1;
+        }
+
+        /* store in destination buffer */
+        buffer[i] = c;
+        i++;
+
+        /* read til pattern is found */
+        ptr = strstr(buffer, pattern);
+        if (ptr != NULL)
+            break;
+    }
+
+    /* close string in buffer */
+    if (i > 0)
+        buffer[i - 1] = '\0';
+
+    return 0;
+}
+
 int sock_write(int sockfd, char *buffer, size_t size)
 {
     int ret;
