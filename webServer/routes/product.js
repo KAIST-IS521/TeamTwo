@@ -33,43 +33,13 @@ router.get('/', function(req, res, next)
 
 
 /*
- * This function searches product item.
- */
-router.get('/search', function(req, res, next)
-{
-    // parameter from client
-    var keyword = req.param('keyword');
-
-    // SQL for searching
-    q.query('SELECT * FROM products WHERE products.name LIKE ?', [ keyword ], function( err, result, fields ){
-        // when SQL error
-        if (err) {
-            console.log(err);
-        }
-        // when SQL success
-        else {
-            var products = result;
-            console.log(result);
-
-            // show product.ejs
-            res.render('product', { 'products' : products , 'user' : req.session.user });
-        }
-    });
-
-    // execute SQL
-    q.execute();
-
-});
-
-
-/*
  * add the item to the shopping cart
  */
 router.get('/add', function(req, res, next)
 {
     // parameter from client
-    var id = req.param('id');
-    var num = req.param('num');
+    var id = req.param('product-id');
+    var num = req.param('product-num');
 
     // input check
     if ( num < 1 || 8 < num ) {
@@ -93,7 +63,7 @@ router.get('/add', function(req, res, next)
         // when SQL success
         else {
             console.log(result);
-            res.json( { message: 'Added to shopping cart...' } );
+            res.json( { status: 1, message: 'Added to shopping cart...' } );
         }
     });
 
@@ -113,8 +83,10 @@ router.get('/purchase', function(req, res, next)
     var product_num = req.param('product-num');
 
     // SQL statement
-    var iString = 'INSERT INTO orders ( user_id, product_id, product_num ) SET ? ';
+    var iString = 'INSERT INTO orders SET ? ';
     var p = { user_id: req.session.user, product_id: product_id, product_num: product_num };
+
+    console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num );
 
     // bank connection needed
 
@@ -132,7 +104,7 @@ router.get('/purchase', function(req, res, next)
             console.log(result);
 
             // show empty list in shopping cart
-            res.json({ status: 1 , account: 'temp_account2'});
+            res.json({ status: 1 , message: "Success...", account: 'temp_account2'});
         }
     });
 
