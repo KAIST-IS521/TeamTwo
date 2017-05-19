@@ -32,12 +32,17 @@ INSERT INTO users VALUES( 'test',  'test', 'nohkwak');
 
 INSERT INTO messages ( user_id, msg ) VALUES( 'test',  'test' );
 
-INSERT INTO products ( price, name ) VALUES( '1000', 'p1' );
-INSERT INTO products ( price, name ) VALUES( '2000', 'p2' );
-INSERT INTO products ( price, name ) VALUES( '3000', 'p3' );
-INSERT INTO products ( price, name ) VALUES( '4000', 'p4' );
-INSERT INTO products ( price, name ) VALUES( '5000', 'p5' );
-INSERT INTO products ( price, name ) VALUES( '6000', 'p6' );
-INSERT INTO products ( price, name ) VALUES( '7000', 'p7' );
-INSERT INTO products ( price, name ) VALUES( '8000', 'p8' );
-INSERT INTO products ( price, name ) VALUES( '9000', 'p9' );
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '5', 'ANCIENT CIVILIZATION', '/pics/ancient.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '10', 'DIABLO MOUNTAIN', '/pics/diablo.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '1000000000', 'FLAG', '/pics/flag.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '20', 'HORDE', '/pics/horde.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '20', 'HYPER MARIO Bros', '/pics/hyper.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '30', 'PLANET CRAFT', '/pics/planet.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '30', 'THE RESTORANTS', '/pics/restorants.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '50', 'SOCCER MANAGER 2022', '/pics/soccer.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '50', 'HEROES OF SERGEONS', '/pics/stone.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '10', 'KOREAN TRUCK SIMULATOR', '/pics/truck.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '10', 'PLANET CRAFT 2', '/pics/planet2.png');
+INSERT INTO products ( price, name, imgsrc ) VALUES ( '5', 'REAL WATCH', '/pics/watch.png');
+
+INSERT INTO shopping_cart ( user_id, product_id, product_num ) VALUES( 'test', '1', '3' );

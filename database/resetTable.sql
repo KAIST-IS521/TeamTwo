@@ -3,6 +3,7 @@ use shoppingmalldb;
 drop table orders;
 drop table shopping_cart;
 drop table products;
+drop table messages;
 drop table users;
 drop table github_users;
 
