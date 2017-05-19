@@ -26,7 +26,7 @@ $(document).ready(function() {
                     if (result.status != 1) {
                         alert('invalid github id, try again :P');
                     } else {
-                        $('randomvalue').text(result.encrypt);
+                        $('#randomvalue').text(result.encrypt);
                     }
                 }
         });
