@@ -19,6 +19,20 @@ $(document).ready(function() {
     });
 
     $('button#orderbutton').click(function() {
-        $('div#order-popup').show();
+        $.ajax({url: '/cart/purchase',
+                method: 'get',
+                dataType : 'json',
+                success: function(result) {
+                    var account = '';
+                    if (result.status != 1) {
+                        account = 'error'
+                    } else  {
+                        account = result.account;
+                    }
+
+                    $('#account-container').text(' Account: ' + account + ' ');
+                    $('div#order-popup').show();
+                }
+        });
     });
 });
