@@ -29,7 +29,7 @@ $(document).ready(function(){
     });
 
     $('.detail-button').click(function() {
-        var product_id = $(this).parent().find('h3').val();
+        var product_id = $(this).parent().find('h3').text();
         currently_selected = product_id;
 
         $('#selected-img').attr('src', $(this).parent().find('img').attr('src'));
