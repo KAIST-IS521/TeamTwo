@@ -12,75 +12,75 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/search.js"></script>
-  </head>
+</head>
 
-  <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
-<p>　</p>
-<p>　</p>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+  <p>　</p>
+  <p>　</p>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#myPage">Flagrus</a>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#myPage">Flagrus</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">WELCOME dinggul</a></li>
+          <li><a href="main.html">HOME</a></li>
+          <li><a href="main.html#product">PRODUCT</a></li>
+          <li><a href="main.html#contact">CONTACT</a></li>
+          <li><a href="cart.html">CART</a></li>
+          <li><a href="order.html">ORDERS</a></li>
+          <li><a href="mypage.html">MYPAGE</a></li>
+          <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#login">LOGIN</a></li>
+          <li><a href="logout.html">LOGOUT</a></li>
+          <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
+        </ul>
+      </div>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">WELCOME dinggul</a></li>
-            <li><a href="main.html">HOME</a></li>
-            <li><a href="main.html#product">PRODUCT</a></li>
-            <li><a href="main.html#contact">CONTACT</a></li>
-            <li><a href="cart.html">CART</a></li>
-            <li><a href="order.html">ORDERS</a></li>
-            <li><a href="mypage.html">MYPAGE</a></li>
-            <li onclick="document.getElementById('modal_login').style.display='block'"><a href="#login">LOGIN</a></li>
-            <li><a href="logout.html">LOGOUT</a></li>
-            <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+  <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search for names.." title="Type in a name">
 
-<ul id="myUL">
-  <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">A</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#" >ANCIENT CIVILIZTION</a></li>
+  <ul id="myUL">
+    <li><a href="#" class="header">A</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#" >ANCIENT CIVILIZTION</a></li>
 
-  <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">D</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">DIABLO MOUNTAIN</a></li>
+    <li><a href="#" class="header">D</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">DIABLO MOUNTAIN</a></li>
 
-  <li><a href="#" class="header">F</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">FLAG</a></li>
+    <li><a href="#" class="header">F</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">FLAG</a></li>
 
-  <li><a href="#" class="header">H</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">HORDE</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">HYPER MARIO Bros</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">HEROES OF SERGEONS</a></li>
+    <li><a href="#" class="header">H</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">HORDE</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">HYPER MARIO Bros</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">HEROES OF SERGEONS</a></li>
 
-  <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">K</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">KOREAN TRUCK SIMULATOR</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">K</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">KOREAN TRUCK SIMULATOR</a></li>
 
-  <li><a href="#" class="header">P</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">PLANET CRAFT</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">PLANET CRAFT 2</a></li>
+    <li><a href="#" class="header">P</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">PLANET CRAFT</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">PLANET CRAFT 2</a></li>
 
-  <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">R</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">REAL WATCH</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#" class="header">R</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">REAL WATCH</a></li>
 
-  <li><a href="#" class="header">S</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">SOCCER MANAGER 2022</a></li>
+    <li><a href="#" class="header">S</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">SOCCER MANAGER 2022</a></li>
 
-  <li ><a href="#" class="header">T</a></li>
-  <li data-toggle="modal" data-target="#myModal"><a href="#">THE RESTORANTS</a></li>
+    <li ><a href="#" class="header">T</a></li>
+    <li data-toggle="modal" data-target="#myModal"><a href="#">THE RESTORANTS</a></li>
 
   </ul>
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="false" >
     <div class="modal-dialog">
 
       <!-- Modal content-->
@@ -97,63 +97,52 @@
             </div>
             <div class="form-group">
               <p><strong>Description</strong></p>
-
             </div>
-
           </form>
         </div>
-
         <div class="modal-footer">
-        <p align="center"><input  name="quantity" id="quantity" style="vertical-align:middle; text-align:right" size="5" maxlength="4" value="0" />
-    <img style="vertical-align:middle;" alt="alter_quantity" src="pics/btn_cnt.gif" usemap="#map_name_quantity"/>
-    <map id="map_name_quantity" name="map_name_quantity">
-        <area href="javascript:modifyProductQuantity('quantity',1);" shape="rect" alt="plus" coords="0,0,9,10"/>
-        <area href="javascript:modifyProductQuantity('quantity',-1);" shape="rect" alt="minus" coords="0,10,9,20"/>
-    </map></p>
-
-          <button type="submit" class="btn btn-block">Add to cart </button>
-          <button type="submit" class="btn btn-block">Buy </button>
+          <p align="center"><input  name="quantity" id="quantity" style="vertical-align:middle; text-align:right" size="5" maxlength="4" value="0" />
+            <img style="vertical-align:middle;" alt="alter_quantity" src="pics/btn_cnt.gif" usemap="#map_name_quantity"/>
+            <map id="map_name_quantity" name="map_name_quantity">
+              <area href="javascript:modifyProductQuantity('quantity',1);" shape="rect" alt="plus" coords="0,0,9,10"/>
+              <area href="javascript:modifyProductQuantity('quantity',-1);" shape="rect" alt="minus" coords="0,10,9,20"/>
+            </map></p>
+            <button type="submit" class="btn btn-block">Add to cart </button>
+            <button type="submit" class="btn btn-block">Buy </button>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
-</div>
 
+  <!-- Footer -->
+  <footer class="text-center">
+    <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+      <span class="glyphicon glyphicon-chevron-up"></span>
+    </a><br><br>
+    <p>Capture the Flag If you can</a></p>
+  </footer>
 
+  <!-- Login Modal -->
+  <div id="modal_login" class="modal">
 
-<!-- Footer -->
-<footer class="text-center">
-  <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
-    <span class="glyphicon glyphicon-chevron-up"></span>
-  </a><br><br>
-  <p>Capture the Flag If you can</a></p>
-</footer>
+    <form class="modal-content animate" action="/login" method="post">
 
+      <div class="container-modal">
+        <label><b>Username</b></label><br>
+        <input type="text" id="id" placeholder="Enter Username" name="id" required><br>
 
-<!-- Login Modal -->
-<div id="modal_login" class="modal">
+        <label><b>Password</b></label><br>
+        <input type="password" id="pw" placeholder="Enter Password" name="pw" required><br>
 
-  <form class="modal-content animate" action="/login" method="post">
-
-    <div class="container-modal">
-      <label><b>Username</b></label><br>
-      <input type="text" id="id" placeholder="Enter Username" name="id" required><br>
-
-      <label><b>Password</b></label><br>
-      <input type="password" id="pw" placeholder="Enter Password" name="pw" required><br>
-
-      <input type="checkbox" checked="checked"> Remember me<p></p>
-      <button type="submit" class="signupbtn" value="Log in">Login</button>
-      <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button><br>
-    </div>
-
-    <div class="container-modal" style="background-color:#f1f1f1">
-      <br><span class="pw">Join Flagrus <a href="signup.html">sign up</a></span>
-    </div>
-
-  </form>
-</div>
-
+        <input type="checkbox" checked="checked"> Remember me<p></p>
+        <button type="submit" class="signupbtn" value="Log in">Login</button>
+        <button type="button" onclick="document.getElementById('modal_login').style.display='none'" class="cancelbtn">Cancel</button><br>
+      </div>
+      <div class="container-modal" style="background-color:#f1f1f1">
+        <br><span class="pw">Join Flagrus <a href="signup.html">sign up</a></span>
+      </div>
+    </form>
+  </div>
 </body>
 </html>

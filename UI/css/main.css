@@ -11,16 +11,6 @@ h3, h4 {
 .container {
     padding: 80px 120px;
 }
-.person {
-    border: 10px solid transparent;
-    margin-bottom: 25px;
-    width: 80%;
-    height: 80%;
-    opacity: 0.7;
-}
-.person:hover {
-    border-color: #f1f1f1;
-}
 .carousel-inner img {
 
     /*-webkit-filter: grayscale(90%); filter: grayscale(90%); make all photos black and white */
@@ -82,16 +72,8 @@ h3, h4 {
 .modal-body {
     padding: 50px 40px;
 }
-
-
 .nav-tabs li a {
     color: #777;
-}
-#googleMap {
-    width: 100%;
-    height: 400px;
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
 }
 .navbar {
     font-family: Montserrat, sans-serif;
