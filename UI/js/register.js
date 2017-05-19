@@ -42,7 +42,7 @@ $(document).ready(function() {
                        'pw': $('#pw').val(),
                        'github-id': $('#id_git').val(),
                        'enc-data': $('#response-value').val(),
-                }
+                },
                 success: function(result) {
                     alert(result.message);
                     if (result.status == 1) {
