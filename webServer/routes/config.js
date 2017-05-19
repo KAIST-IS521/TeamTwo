@@ -1,7 +1,11 @@
-// Set your PGP password
-var PASSWORD = '******';
-
+// configuration file for global variable
 var c = {};
-c.PASSWORD = PASSWORD;
+
+// Set your PGP password
+c.PASSWORD = '******';
+
+// Random number for user authentication
+c.MAX = 650000;
+c.MIN = 0;
 
 module.exports = c;
