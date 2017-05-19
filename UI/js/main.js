@@ -28,7 +28,7 @@ $(document).ready(function(){
         } // End if
     });
 
-    $('#detail-button').click(function() {
+    $('.detail-button').click(function() {
         var product_id = $(this).parent().find('h3').val();
         currently_selected = product_id;
 
