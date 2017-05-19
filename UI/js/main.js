@@ -34,6 +34,7 @@ $(document).ready(function(){
 
         $('#selected-img').attr('src', $(this).parent().find('img').attr('src'));
         $('#selected-game-name').text($(this).parent().find('strong').text());
+        $('#selected-game-price').text('Price : ' + $(this).parent().find('em').text().split(' ')[2] + ' won');
         $('#quantity').val(0);
     });
 
