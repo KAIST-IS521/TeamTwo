@@ -101,6 +101,42 @@ int gpg_sign(const char *plain, size_t size, char **cipher)
     return gpg_encrypt(gpg_fp, plain, size, cipher);
 }
 
+int gpg_decrypt(const char *cipher, char **plain)
+{
+    size_t size;
+    gpgme_error_t err;
+    gpgme_data_t in, out;
+    gpgme_decrypt_result_t result;
+
+    /* get cipher text to decrypt */
+    err = gpgme_data_new_from_mem(&in, cipher, strlen(cipher), 0);
+    gpg_fail_if_err(err);
+
+    /* init out data buffer */
+    err = gpgme_data_new(&out);
+    gpg_fail_if_err(err);
+
+    /* decrypt */
+    err = gpgme_op_decrypt(gpg_ctx, in, out);
+    gpg_fail_if_err(err);
+
+    /* check result */
+    result = gpgme_op_decrypt_result(gpg_ctx);
+    if (result->unsupported_algorithm) {
+        log_errf("unsupported algorithm '%s'", result->unsupported_algorithm);
+        return -1;
+    }
+
+    /* get result */
+    *plain = gpgme_data_release_and_get_mem(out, &size);
+    (*plain)[size - 1] = '\0';
+
+    /* clean up */
+    gpgme_data_release(in);
+
+    return 0;
+}
+
 int gpg_import_key(char *keypath, char **fp)
 {
     gpgme_error_t err;

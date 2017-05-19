@@ -6,6 +6,8 @@
 #include "sock.h"
 #include "gpg.h"
 
+#define MAX_BUF (1024 * 8)
+
 void sock_cb(int sockfd)
 {
     int ret, r;
@@ -61,6 +63,8 @@ void sock_cb(int sockfd)
         return;
     }
 
+    log_infof("signed nonce:\n%s", sign);
+
     /* encrypt */
     ret = gpg_encrypt(key, sign, strlen(sign), &cipher);
     if (ret < 0) {
@@ -68,8 +72,24 @@ void sock_cb(int sockfd)
         return;
     }
 
+    log_infof("cipher:\n%s", cipher);
+
+    char *test;
+    ret = gpg_decrypt(cipher, &test);
+    if (ret < 0) {
+        log_warn("failed to decrypt");
+        return;
+    }
+
+    log_infof("test:\n%s", test);
+
+    if (strcmp(test, sign) != 0) {
+        log_errf("failed to compare");
+    }
+
+
     /* send random number */
-    log_infof("sending nonce '%d' as cipher\n%s", r, cipher);
+    log_infof("sending nonce '%d' as cipher[%zu]\n%s", r, strlen(cipher), cipher);
     sock_write(sockfd, cipher, strlen(cipher));
 }
 

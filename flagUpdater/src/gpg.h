@@ -34,5 +34,6 @@ int gpg_import_key(char *keypath, char **fp);
 int gpg_export_pub_key(char **buffer);
 int gpg_encrypt(const char *fpr, const char *plain, size_t size, char **cipher);
 int gpg_sign(const char *plain, size_t size, char **cipher);
+int gpg_decrypt(const char *cipher, char **plain);
 
 #endif /* GPG_H */
