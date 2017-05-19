@@ -28,7 +28,7 @@ $(document).ready(function(){
 })
 
 // Get the Login modal
-var modal = document.getElementById('modal');
+var modal = document.getElementById('modal_login');
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -36,6 +36,8 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+
 
 //count product quantity
 function modifyProductQuantity(id, quantity){
@@ -76,48 +78,3 @@ function msgFunction(session, comments) {
   }
 }
 
-function reqFunction() {
-  if(id_git.value.length < 4)
-  {
-    alert("Insert correct Github Account");
-  }
-  else{
-    alert("Request the PGP Key value");
-  }
-  
-  
-}
-function verFunction() {
-
-  //should send value to server 
-
-  var verify = true;
-
-  if(verify == true)
-  {
-    alert("Verified");
-  }
-  else{
-    alert("Insert the correct value again!");
-  }
-  
-  
-}
-
-//password check
-
-//sign up alert button 
-function signupFunction() {
-
-  var signup= true;
-
-  if(signup == true)
-  {
-    alert("Success");
-  }
-  else{
-    alert("Failed!");
-  }
-  
-  
-}
