@@ -81,12 +81,33 @@ router.get('/purchase', function(req, res, next)
     // parameter from client
     var product_id = req.param('product-id');
     var product_num = req.param('product-num');
+    var price;
+
+    // get the price
+    var t = require('./db.js');
+        // SQL query for registering new user
+    var qString = 'SELECT price FROM products WHERE product_id = ?';
+    t.query(qString, [product_id], function (err, result, fields)
+    {
+        if (err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            price = result[0].price;
+            console.log('product\'s price: ' + price);
+        }
+    });
+    t.execute();
+    //alert(typeof price);
+    //console.log(String(Number(price) * Number(product_num)));
 
     // SQL statement
     var iString = 'INSERT INTO orders SET ? ';
-    var p = { user_id: req.session.user, product_id: product_id, product_num: product_num };
+    var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending' };
 
-    console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num );
+    console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending");
 
     // bank connection needed
 
