@@ -179,7 +179,54 @@ int gpg_decrypt(const char *cipher, char **plain)
     return 0;
 }
 
-int gpg_import_key(char *keypath, char **fp)
+int gpg_verify(const char *fpr, const char *sign, char **plain)
+{
+    size_t size;
+    gpgme_error_t err;
+    gpgme_key_t key[2] = { 0 };
+    gpgme_data_t in, out;
+    gpgme_verify_result_t result;
+    gpgme_signature_t sig;
+
+    /* get cipher text to decrypt */
+    err = gpgme_data_new_from_mem(&in, sign, strlen(sign), 0);
+    gpg_fail_if_err(err);
+
+    /* init out data buffer */
+    err = gpgme_data_new(&out);
+    gpg_fail_if_err(err);
+
+    /* decrypt */
+    err = gpgme_op_verify(gpg_ctx, in, NULL, out);
+    gpg_fail_if_err(err);
+
+    err = gpgme_get_key(gpg_ctx, gpg_fpr, &key[0], 0);
+    gpg_fail_if_err(err);
+
+    /* check result */
+    result = gpgme_op_verify_result(gpg_ctx);
+
+    /* check that only our private key signed */
+    sig = result->signatures;
+    do {
+        if (strcmp(sig->fpr, fpr) != 0) {
+            log_errf("signed by unexpected key '%s'", sig->fpr);
+            return -1;
+        }
+    } while ((sig = result->signatures->next) != NULL);
+
+
+    /* get result */
+    *plain = gpgme_data_release_and_get_mem(out, &size);
+    (*plain)[size] = '\0';
+
+    /* clean up */
+    gpgme_data_release(in);
+
+    return 0;
+}
+
+int gpg_import_key(const char *keypath, char **fp)
 {
     gpgme_error_t err;
     gpgme_import_result_t result;

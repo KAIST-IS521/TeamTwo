@@ -23,17 +23,13 @@
 /* errors */
 #define EGPG_UNKNOWN (1)
 
-/* constants */
-#define GPG_PRIV_KEY "priv_key.asc"
-#define GPG_PUB_KEY "pub_key.asc"
-#define GPG_KEYS_DIR "keys"
-
-int gpg_init();
+int gpg_init(const char *priv_key);
 void gpg_free();
-int gpg_import_key(char *keypath, char **fp);
+int gpg_import_key(const char *keypath, char **fp);
 int gpg_export_pub_key(char **buffer);
 int gpg_encrypt(const char *fpr, const char *plain, size_t size, char **cipher);
 int gpg_sign(const char *plain, size_t size, char **cipher);
 int gpg_decrypt(const char *cipher, char **plain);
+int gpg_verify(const char *fpr, const char *sign, char **plain);
 
 #endif /* GPG_H */
