@@ -44,11 +44,20 @@
         <p class="text-center"> Check your orders :/ </p>
 
         <!-- TEST LOOP -->
-        <% orders.forEach( function(order) {%>
-        <div class="panel panel-primary order-item">
+        <% orders.forEach( function(order) { %>
+        
+        <% if(order.status == 'pending') { %>
+          <div class="panel panel-primary order-item">
+        <% } else if (order.status == 'completed'){ %>
+          <div class="panel panel-success order-item">
+        <% } else { %>
+          <div class="panel panel-danger order-item">
+        <% } %>
+
+        
           <div class="panel-heading order-item-head">
             <%= order.product_id %>
-            <div class="account-number"> Account: TempAccount1 </div>
+            <div class="account-number"> Account: <%= order.user_id %> </div>
           </div>
           <div cl.ass="panel-body">
 
