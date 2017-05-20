@@ -67,20 +67,8 @@
 
             <div class="list-group order-item-list">
               <div class="list-group-item">
-                Planet craft
-                <span class="badge"> 2 </span>
-              </div>
-              <div class="list-group-item">
-                Planet craft 2
-                <span class="badge"> 3 </span>
-              </div>
-              <div class="list-group-item">
-                Soccer manager 2022
-                <span class="badge"> 4 </span>
-              </div>
-              <div class="list-group-item">
-                Flag
-                <span class="badge"> 5 </span>
+                <%= order.product_id %>
+                <span class="badge"> <%= order.product_num %> </span>
               </div>
               <strong> Order time : <%= order.added_time %> </strong>
               </br>
