@@ -1,20 +1,26 @@
 var express = require('express');
 var router = express.Router();
+
+// module for database
 var q = require('./db.js');
 
 
 /* list ordersre */
-router.get('/', function(req, res, next) {
-  q.query('SELECT * FROM orders', function( err, result, fields ){
-    if (err) {
+router.get('/', function(req, res, next)
+{
+  q.query('SELECT * FROM orders', function( err, result, fields )
+  {
+    if (err)
+    {
       console.log(err);
     }
-    else {
+    else
+    {
       var orders = result;
       console.log(result);
       // client.end();
 
-      res.render('order', { 'products' : orders , 'user' : req.session.user });
+      res.render('order', { 'orders' : orders , 'user' : req.session.user });
     }
   });
 
@@ -24,15 +30,18 @@ router.get('/', function(req, res, next) {
 /*
  * list order list
  */
+ /*
 router.get('/search', function(req, res, next)
 {
     var keyword = req.param('keyword');
 
     q.query('SELECT * FROM orders WHERE orders.order_id LIKE ?', [ keyword ], function( err, result, fields ){
-        if (err) {
+        if (err)
+        {
             console.log(err);
         }
-        else {
+        else
+        {
             var orders = result;
             console.log(result);
             // client.end();
@@ -44,7 +53,7 @@ router.get('/search', function(req, res, next)
     q.execute();
 
 });
-
+*/
 /*
 TODO: make the add function
 */
