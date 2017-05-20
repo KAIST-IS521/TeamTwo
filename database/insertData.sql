@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 INSERT INTO github_users ( github_id, email ) VALUES('alinghi', 'alinghi@kaist.ac.kr');
 INSERT INTO github_users ( github_id, email ) VALUES('asdfljh', 'cjdhlds08@gmail.com');
 INSERT INTO github_users ( github_id, email ) VALUES('bjgwak', 'bjgwak@kaist.ac.kr');
@@ -46,3 +47,5 @@ INSERT INTO products ( price, name, imgsrc ) VALUES ( '10', 'PLANET CRAFT 2', '/
 INSERT INTO products ( price, name, imgsrc ) VALUES ( '5', 'REAL WATCH', '/pics/watch.png');
 
 INSERT INTO shopping_cart ( user_id, product_id, product_num ) VALUES( 'test', '1', '3' );
+
+INSERT INTO orders (user_id, product_id, product_num) VALUES('test', 2, 5);
