@@ -1,16 +1,17 @@
 #include "gpg.h"
 
 gpgme_ctx_t gpg_ctx;
-char *gpg_fp;
+char *gpg_fpr;
 
 /* debug protos */
 int gpg_print_data(gpgme_data_t data);
 void gpg_list_keys(const char *pattern);
 
-int gpg_init()
+int gpg_init(const char *priv_key)
 {
-    int ret = 0;
+    int ret;
     gpgme_error_t err;
+    gpgme_key_t key[2] = { 0 };
 
     /* TODO: clean */
     gpgme_check_version(NULL);
@@ -28,15 +29,28 @@ int gpg_init()
     gpgme_set_armor(gpg_ctx, 1);
 
     /* import private key */
-    ret = gpg_import_key(GPG_PRIV_KEY, &gpg_fp);
+    /* ret = gpg_import_key("pub_key.asc", &gpg_fpr); */
+    ret = gpg_import_key(priv_key, &gpg_fpr);
+    if (ret < 0) {
+        log_errf("failed to import key '%s'", priv_key);
+        return -1;
+    }
 
-    return ret;
+    /* get imported key */
+    err = gpgme_get_key(gpg_ctx, gpg_fpr, &key[0], 0);
+    gpg_fail_if_err(err);
+
+    /* set as signing key */
+    err = gpgme_signers_add(gpg_ctx, key[0]);
+    gpg_fail_if_err(err);
+
+    return 0;
 }
 
 void gpg_free()
 {
-    if (gpg_fp != NULL) {
-        free(gpg_fp);
+    if (gpg_fpr != NULL) {
+        free(gpg_fpr);
     }
 
     gpgme_release(gpg_ctx);
@@ -171,7 +185,7 @@ int gpg_export_pub_key(char **buffer)
     gpg_fail_if_err(err);
 
     /* get public key */
-    err = gpgme_get_key(gpg_ctx, gpg_fp, &key[0], 0);
+    err = gpgme_get_key(gpg_ctx, gpg_fpr, &key[0], 0);
     gpg_fail_if_err(err);
 
     /* export key to data buffer */
