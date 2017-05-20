@@ -7,29 +7,20 @@
 #include "gpg.h"
 
 #define MAX_BUF (1024 * 8)
+#define GPG_PRIV_KEY "priv_key.asc"
+#define GPG_PUB_KEY "pub_key.asc"
+#define GPG_KEYS_DIR "keys"
+#define GPG_PATTERN "-----END PGP MESSAGE-----"
 
-void sock_cb(int sockfd)
+int authenticate(int sockfd, char *username, char **fpr)
 {
-    int ret, r;
-    char *username, *key, *sign, *cipher;
+    int ret, r, r2;
+    char *key, *sign, *cipher, *cipher_response, *sign_response, *plain_response;
     char buf[MAX_BUF] = { '\0' };
     char keypath[MAX_BUF] = { '\0' };
 
-    log_infof("connection %d", sockfd);
-
-    sprintf(buf, "username: ");
-    sock_write(sockfd, buf, strlen(buf));
-
-    bzero(buf, MAX_BUF);
-    sock_read(sockfd, buf, MAX_BUF);
-    username = strdup(buf);
-
-    log_infof("username: %s", username);
-
     /* construct path for where key should be */
     sprintf(keypath, "%s/%s.pub", GPG_KEYS_DIR, username);
-
-    log_infof("looking for key %s", keypath);
 
     /* try to find key */
     bzero(buf, MAX_BUF);
@@ -39,58 +30,113 @@ void sock_cb(int sockfd)
 
         sprintf(buf, "access denied\n");
         sock_write(sockfd, buf, strlen(buf));
-        return;
+        return 1;
     }
     else if (ret != 0) {
         log_warnf("failed to find key '%s'", keypath);
-        return;
+        return -1;
     }
 
     log_infof("found key %s", key);
 
     /* generate random number */
     /* TODO: secure? */
-    /* r = rand(); */
-    r = 1337;
+    r = rand();
 
     bzero(buf, MAX_BUF);
     sprintf(buf, "%d", r);
 
     /* sign */
-    ret = gpg_sign(buf, sizeof(int), &sign);
+    ret = gpg_sign(buf, strlen(buf), &sign);
     if (ret < 0) {
         log_warnf("failed to sign nonce '%d'", r);
-        return;
+        return -1;
     }
-
-    log_infof("signed nonce:\n%s", sign);
 
     /* encrypt */
     ret = gpg_encrypt(key, sign, strlen(sign), &cipher);
     if (ret < 0) {
         log_warn("failed to encrypt signed nonce");
-        return;
+        return -1;
     }
 
-    log_infof("cipher:\n%s", cipher);
+    /* send challenge */
+    log_infof("sending nonce '%d' as %zu byte cipher", r, strlen(cipher));
+    sock_write(sockfd, cipher, strlen(cipher));
 
-    char *test;
-    ret = gpg_decrypt(cipher, &test);
+    /* get response */
+    bzero(buf, MAX_BUF);
+    sock_read_multiline(sockfd, buf, MAX_BUF, GPG_PATTERN);
+
+    cipher_response = strdup(buf);
+
+    /* decrypt response */
+    ret = gpg_decrypt(cipher_response, &sign_response);
     if (ret < 0) {
         log_warn("failed to decrypt");
-        return;
+        return -1;
     }
 
-    log_infof("test:\n%s", test);
-
-    if (strcmp(test, sign) != 0) {
-        log_errf("failed to compare");
+    /* verify */
+    ret = gpg_verify(key, sign_response, &plain_response);
+    if (ret < 0) {
+        log_warn("failed to verify");
+        return -1;
     }
 
+    r2 = atoi(plain_response);
 
-    /* send random number */
-    log_infof("sending nonce '%d' as cipher[%zu]\n%s", r, strlen(cipher), cipher);
-    sock_write(sockfd, cipher, strlen(cipher));
+    /* set client fingerprint */
+    *fpr = strdup(key);
+
+    /* clean up */
+    free(key);
+    free(sign);
+    free(cipher);
+    free(sign_response);
+    free(cipher_response);
+    free(plain_response);
+
+    /* check correct number */
+    return (r2 == r ? 0 : 1);
+}
+
+void new_client_cb(int sockfd)
+{
+    int ret;
+    char buf[MAX_BUF] = { '\0' };
+    char *s, *username, *fpr;
+
+    log_infof("connection %d", sockfd);
+
+    /* prompt for username */
+    sprintf(buf, "username: ");
+    sock_write(sockfd, buf, strlen(buf));
+
+    /* read username */
+    bzero(buf, MAX_BUF);
+    sock_read(sockfd, buf, MAX_BUF);
+    username = strdup(buf);
+
+    log_infof("username: %s", username);
+
+    /* try to authenticate client */
+    ret = authenticate(sockfd, username, &fpr);
+    if (ret == 0) {
+        log_infof("authentication successful!");
+        s = "authentication successful\n";
+        sock_write(sockfd, s, strlen(s));
+    }
+    else if (ret == 1) {
+        log_infof("access denied");
+        s = "authentication failed\n";
+        sock_write(sockfd, s, strlen(s));
+    }
+    else {
+        log_errf("authentication failed");
+        s = "authentication failed\n";
+        sock_write(sockfd, s, strlen(s));
+    }
 }
 
 int main(int argc, char *argv[])
@@ -105,7 +151,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    gpg_init();
+    gpg_init(GPG_PRIV_KEY);
 
     /* parse ip */
     ip = strdup(argv[1]);
@@ -127,7 +173,7 @@ int main(int argc, char *argv[])
     log_infof("listening port %d...", port);
 
     /* synchronously handle clients */
-    ret = sock_listen(srv_fd, sock_cb);
+    ret = sock_listen(srv_fd, new_client_cb);
     if (ret < 0) {
         exit(EXIT_FAILURE);
     }
