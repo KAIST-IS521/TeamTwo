@@ -43,9 +43,46 @@
         <h3 class="text-center"> Orders </h3>
         <p class="text-center"> Check your orders :/ </p>
 
+        <!-- TEST LOOP -->
+        <% orders.forEach( function(order) {%>
         <div class="panel panel-primary order-item">
           <div class="panel-heading order-item-head">
-            Order number #1
+            <%= order.product_id %>
+            <div class="account-number"> Account: TempAccount1 </div>
+          </div>
+          <div cl.ass="panel-body">
+
+            <div class="order-status">
+              <%= order.status %>
+            </div>
+            
+            <div class="list-group order-item-list">
+              <div class="list-group-item">
+                Planet craft
+                <span class="badge"> 2 </span>
+              </div>
+              <div class="list-group-item">
+                Planet craft 2
+                <span class="badge"> 3 </span>
+              </div>
+              <div class="list-group-item">
+                Soccer manager 2022
+                <span class="badge"> 4 </span>
+              </div>
+              <div class="list-group-item">
+                Flag
+                <span class="badge"> 5 </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <% })%>
+        <!-- end of TEST LOOP -->
+
+        <div class="panel panel-primary order-item">
+          <div class="panel-heading order-item-head">
+            Order number #12
             <div class="account-number"> Account: TempAccount1 </div>
           </div>
           <div class="panel-body">
