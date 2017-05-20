@@ -20,7 +20,7 @@ router.get('/', function(req, res, next)
       console.log(result);
       // client.end();
 
-      res.render('order', { 'orders' : orders , 'user' : req.session.user });
+      res.render('orders', { 'orders' : orders , 'user' : req.session.user });
     }
   });
 
