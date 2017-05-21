@@ -85,6 +85,7 @@ int authenticate(int sockfd, char *username, char **fpr)
     }
 
     r2 = atoi(plain_response);
+    log_infof("received nonce '%d' as %zu byte cipher", r2, strlen(cipher_response));
 
     /* set client fingerprint */
     *fpr = strdup(key);
@@ -107,7 +108,7 @@ void new_client_cb(int sockfd)
     char buf[MAX_BUF] = { '\0' };
     char *s, *username, *fpr;
 
-    log_infof("connection %d", sockfd);
+    log_infof("=========== sock %d ===========", sockfd);
 
     /* prompt for username */
     sprintf(buf, "username: ");

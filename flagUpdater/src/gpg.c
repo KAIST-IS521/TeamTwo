@@ -7,6 +7,13 @@ char *gpg_fpr;
 int gpg_print_data(gpgme_data_t data);
 void gpg_list_keys(const char *pattern);
 
+/* verification protos */
+int gpg_check_sign_result(gpgme_sign_result_t result,
+                          gpgme_sig_mode_t type, const char *fpr);
+int gpg_check_verify_result(gpgme_verify_result_t result,
+                            unsigned int summary, const char *fpr,
+                            gpgme_error_t status, int notation);
+
 int gpg_init(const char *priv_key)
 {
     int ret;
@@ -97,11 +104,11 @@ int gpg_encrypt(const char *fpr, const char *plain, size_t size, char **cipher)
 
 int gpg_sign(const char *plain, size_t size, char **cipher)
 {
+    int ret;
     size_t out_size;
     gpgme_error_t err;
     gpgme_data_t in, out;
     gpgme_sign_result_t result;
-    gpgme_new_signature_t sig;
 
     /* get text to sign */
     err = gpgme_data_new_from_mem(&in, plain, size, 0);
@@ -117,19 +124,10 @@ int gpg_sign(const char *plain, size_t size, char **cipher)
 
     /* check result */
     result = gpgme_op_sign_result(gpg_ctx);
-    if (result->invalid_signers) {
-        log_errf("invalid signers '%s'", result->invalid_signers->fpr);
+    ret = gpg_check_sign_result(result, GPGME_SIG_MODE_NORMAL, gpg_fpr);
+    if (ret != 0) {
         return -1;
     }
-
-    /* check that only our private key signed */
-    sig = result->signatures;
-    do {
-        if (strcmp(sig->fpr, gpg_fpr) != 0) {
-            log_infof("signed by unexpected key '%s'", sig->fpr);
-            return -1;
-        }
-    } while ((sig = result->signatures->next) != NULL);
 
     /* get result */
     *cipher = gpgme_data_release_and_get_mem(out, &out_size);
@@ -179,12 +177,12 @@ int gpg_decrypt(const char *cipher, char **plain)
 
 int gpg_verify(const char *fpr, const char *sign, char **plain)
 {
+    int ret;
     size_t size;
     gpgme_error_t err;
     gpgme_key_t key[2] = { 0 };
     gpgme_data_t in, out;
     gpgme_verify_result_t result;
-    gpgme_signature_t sig;
 
     /* get cipher text to decrypt */
     err = gpgme_data_new_from_mem(&in, sign, strlen(sign), 0);
@@ -201,18 +199,12 @@ int gpg_verify(const char *fpr, const char *sign, char **plain)
     err = gpgme_get_key(gpg_ctx, gpg_fpr, &key[0], 0);
     gpg_fail_if_err(err);
 
-    /* check result */
+    /* get and check result */
     result = gpgme_op_verify_result(gpg_ctx);
-
-    /* check that only our private key signed */
-    sig = result->signatures;
-    do {
-        if (strcmp(sig->fpr, fpr) != 0) {
-            log_errf("signed by unexpected key '%s'", sig->fpr);
-            return -1;
-        }
-    } while ((sig = result->signatures->next) != NULL);
-
+    ret = gpg_check_verify_result(result, 0, fpr, GPG_ERR_NO_ERROR, 1);
+    if (ret != 0) {
+        return -1;
+    }
 
     /* get result */
     *plain = gpgme_data_release_and_get_mem(out, &size);
@@ -356,4 +348,150 @@ int gpg_print_data(gpgme_data_t data)
     }
 
     return 0;
+}
+
+/* checking functions */
+
+/* https://github.com/gpg/gpgme/blob/ben/master/tests/gpg/t-sign.c */
+int gpg_check_sign_result(gpgme_sign_result_t result, gpgme_sig_mode_t type, const char *fpr)
+{
+  if (result->invalid_signers) {
+      log_errf("invalid signer found: %s", result->invalid_signers->fpr);
+      return -1;
+  }
+
+  if (!result->signatures || result->signatures->next) {
+      log_err("unexpected number of signatures created");
+      return -1;
+  }
+
+  if (result->signatures->type != type) {
+      log_err("wrong type of signature created");
+      return -1;
+  }
+
+  /* if (result->signatures->pubkey_algo != GPGME_PK_DSA) { */
+  /*     log_errf("wrong pubkey algorithm reported: %i", result->signatures->pubkey_algo); */
+  /*     return -1; */
+  /* } */
+
+  /* if (result->signatures->hash_algo != GPGME_MD_SHA1) { */
+  /*     log_errf("wrong hash algorithm reported: %i", result->signatures->hash_algo); */
+  /*     return -1; */
+  /* } */
+
+  /* if (result->signatures->sig_class != 1) { */
+  /*     log_errf("wrong signature class reported: %u", result->signatures->sig_class); */
+  /*     return -1; */
+  /* } */
+
+  (void) fpr;
+  /* if (strcmp(fpr, result->signatures->fpr)) { */
+  /*     log_errf("wrong fingerprint reported: %s", result->signatures->fpr); */
+  /*     return -1; */
+  /* } */
+
+  return 0;
+}
+
+/* https://github.com/gpg/gpgme/blob/ben/master/tests/gpg/t-verify.c */
+int gpg_check_verify_result(gpgme_verify_result_t result,
+                            unsigned int summary, const char *fpr,
+                            gpgme_error_t status, int notation)
+{
+  gpgme_signature_t sig;
+
+  sig = result->signatures;
+
+  if (!sig || sig->next) {
+      log_err("unexpected number of signatures");
+      return -1;
+  }
+
+  if (sig->summary != summary) {
+      log_errf("unexpected signature summary: "
+               "want=0x%x have=0x%x",
+               summary, sig->summary);
+      return -1;
+  }
+
+  if (strcmp(sig->fpr, fpr)) {
+      log_errf("unexpected fingerprint: %s", sig->fpr);
+      return -1;
+  }
+
+  if (gpgme_err_code(sig->status) != status) {
+      log_errf("unexpected signature status: %s",
+               gpgme_strerror (sig->status));
+      return -1;
+  }
+
+  (void) notation;
+  /* if (notation) { */
+  /*     static struct { */
+  /*         const char *name; */
+  /*         const char *value; */
+  /*         int seen; */
+  /*     } expected_notations[] = { */
+  /*         { "bar", */
+  /*           "\xc3\xb6\xc3\xa4\xc3\xbc\xc3\x9f" */
+  /*           " das waren Umlaute und jetzt ein prozent%-Zeichen" }, */
+  /*         { "foobar.1", */
+  /*           "this is a notation data with 2 lines" }, */
+  /*         { NULL, */
+  /*           "http://www.gu.org/policy/" } */
+  /*     }; */
+  /*     int i; */
+  /*     gpgme_sig_notation_t r; */
+
+  /*     for (i=0; i < DIM(expected_notations); i++) */
+  /*       expected_notations[i].seen = 0; */
+
+  /*     for (r = sig->notations; r; r = r->next) { */
+  /*         int any = 0; */
+  /*         for (i=0; i < DIM(expected_notations); i++) { */
+  /*             if ( ((r->name && expected_notations[i].name */
+  /*                    && !strcmp(r->name, expected_notations[i].name) */
+  /*                    && r->name_len */
+  /*                    == strlen (expected_notations[i].name)) */
+  /*                   || (!r->name && !expected_notations[i].name */
+  /*                       && r->name_len == 0)) */
+  /*                  && r->value */
+  /*                  && !strcmp (r->value, expected_notations[i].value) */
+  /*                  && r->value_len == strlen (expected_notations[i].value)) */
+  /*                 { */
+  /*                     expected_notations[i].seen++; */
+  /*                     any++; */
+  /*                 } */
+  /*           } */
+  /*         if (!any) { */
+  /*             log_err("unexpected notation data"); */
+  /*             return -1; */
+  /*         } */
+  /*     } */
+
+  /*     for (i=0; i < DIM(expected_notations); i++) { */
+  /*         if (expected_notations[i].seen != 1) { */
+  /*             log_errf("missing or duplicate notation data"); */
+  /*             return -1; */
+  /*         } */
+  /*     } */
+  /* } */
+
+  if (sig->wrong_key_usage) {
+      log_errf("unexpectedly wrong key usage");
+      return -1;
+  }
+
+  if (sig->validity != GPGME_VALIDITY_UNKNOWN) {
+      log_errf("unexpected validity: %i", sig->validity);
+      return -1;
+  }
+
+  if (gpgme_err_code (sig->validity_reason) != GPG_ERR_NO_ERROR) {
+      log_errf("unexpected validity reason: %s", gpgme_strerror(sig->validity_reason));
+      return -1;
+  }
+
+  return 0;
 }
