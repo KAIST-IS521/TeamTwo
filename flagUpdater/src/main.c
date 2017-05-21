@@ -20,7 +20,7 @@ int authenticate(int sockfd, char *username, char **fpr)
     char keypath[MAX_BUF] = { '\0' };
 
     /* construct path for where key should be */
-    sprintf(keypath, "%s/%s.pub", GPG_KEYS_DIR, username);
+    snprintf(keypath, MAX_BUF, "%s/%s.pub", GPG_KEYS_DIR, username);
 
     /* try to find key */
     bzero(buf, MAX_BUF);
