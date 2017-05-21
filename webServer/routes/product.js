@@ -110,9 +110,9 @@ router.get('/purchase', function(req, res, next)
         price = String(Number(price) * Number(product_num));
         // SQL statement
         var iString = 'INSERT INTO orders SET ? ';
-        var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending', total: price };
+        var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending', total: price, bank_id: 'dummy_bank_account' /*Need bank connection*/ };
 
-        console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending" + ", " + price);
+        console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending" + ", " + price + ", " + "dummy_bank_account" /*Need bank connection*/);
 
         // bank connection needed
 
