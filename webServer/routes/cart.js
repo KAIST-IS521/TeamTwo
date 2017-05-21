@@ -80,6 +80,10 @@ router.post('/remove', function(req, res, next)
  */
 router.get('/purchase', function(req, res, next)
 {
+	/*
+		Need to calculate the total price here
+	*/
+
 	// SQL query for inserting items to the order list
 	var iString = 'INSERT INTO orders ( user_id, product_id, product_num ) \
 				SELECT users.user_id AS user_id, products.product_id AS product_id, shopping_cart.product_num AS product_num \

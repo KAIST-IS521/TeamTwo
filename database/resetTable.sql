@@ -55,9 +55,11 @@ CREATE TABLE  shopping_cart (
 CREATE TABLE  orders (
     order_id             int  NOT NULL  AUTO_INCREMENT,
     user_id              varchar(30)  NOT NULL  ,
+    bank_id              varchar(32),
     product_id           int  NOT NULL ,
     product_num          int  NOT NULL  ,
-    status				 varchar(30) NOT NULL DEFAULT 'pending',
+    status               varchar(30) NOT NULL DEFAULT 'pending',
+    total                varchar(30) NOT NULL ,
     added_time           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_orders_user_id FOREIGN KEY ( user_id ) REFERENCES  users( user_id ),
     CONSTRAINT fk_orders_product_id FOREIGN KEY ( product_id ) REFERENCES  products( product_id ),

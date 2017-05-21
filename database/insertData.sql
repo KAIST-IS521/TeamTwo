@@ -47,8 +47,8 @@ INSERT INTO products ( price, name, imgsrc ) VALUES ( '5', 'REAL WATCH', '/pics/
 
 INSERT INTO shopping_cart ( user_id, product_id, product_num ) VALUES( 'test', '1', '3' );
 
-INSERT INTO orders (user_id, product_id, product_num, status) VALUES('test', 2, 44, 'pending');
-INSERT INTO orders (user_id, product_id, product_num, status) VALUES('test', 4, 40, 'pending');
-INSERT INTO orders (user_id, product_id, product_num, status) VALUES('test', 6, 36, 'aborted');
-INSERT INTO orders (user_id, product_id, product_num, status) VALUES('test', 8, 32, 'pending');
-INSERT INTO orders (user_id, product_id, product_num, status) VALUES('test', 10, 28, 'completed');
+INSERT INTO orders (user_id, product_id, product_num, status, total) VALUES('test', 2, 44, 'pending', '5000');
+INSERT INTO orders (user_id, product_id, product_num, status, total) VALUES('test', 4, 40, 'pending', '5000');
+INSERT INTO orders (user_id, product_id, product_num, status, total) VALUES('test', 6, 36, 'aborted', '45000');
+INSERT INTO orders (user_id, product_id, product_num, status, total) VALUES('test', 8, 32, 'pending', '5000');
+INSERT INTO orders (user_id, product_id, product_num, status, total) VALUES('test', 10, 28, 'completed', '15000');

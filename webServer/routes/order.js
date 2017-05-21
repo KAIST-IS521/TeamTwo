@@ -5,7 +5,7 @@ var router = express.Router();
 var q = require('./db.js');
 
 
-/* list ordersre */
+/* list orders */
 router.get('/', function(req, res, next)
 {
   q.query('SELECT * FROM orders', function( err, result, fields )
@@ -25,37 +25,35 @@ router.get('/', function(req, res, next)
   });
 
   q.execute();
+
+  //updateUserBankID(2);
 });
 
-/*
- * list order list
- */
- /*
-router.get('/search', function(req, res, next)
+function getUserBankID()
 {
-    var keyword = req.param('keyword');
+    // bank connected needed
+    return "dummy_bank_id";
+}
 
-    q.query('SELECT * FROM orders WHERE orders.order_id LIKE ?', [ keyword ], function( err, result, fields ){
-        if (err)
-        {
-            console.log(err);
-        }
-        else
-        {
-            var orders = result;
-            console.log(result);
-            // client.end();
+function updateUserBankID(order_id)
+{
+  var userBankID = getUserBankID();
+  var uString = 'UPDATE orders SET bank_id = \'' + String(userBankID) + '\' WHERE order_id = ' + String(order_id);
+  q.query(uString, function( err, result, fields )
+  {
+    if (err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      console.log(result);
+      res.json( { status: 1, message: 'Updated the user\'s bank id' } );
+    }
+  });
 
-            res.render('orders', { 'orders' : orders , 'user' : req.session.user });
-        }
-    });
+  q.execute();
+}
 
-    q.execute();
-
-});
-*/
-/*
-TODO: make the add function
-*/
 
 module.exports = router;
