@@ -13,10 +13,9 @@ int gpg_init(const char *priv_key)
     gpgme_error_t err;
     gpgme_key_t key[2] = { 0 };
 
-    /* TODO: clean */
     gpgme_check_version(NULL);
     setlocale(LC_ALL, "");
-    gpgme_set_locale(NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
+    gpgme_set_locale(NULL, LC_CTYPE, setlocale(LC_CTYPE, NULL));
 
     /* check gpg is installed properly */
     err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
@@ -29,7 +28,6 @@ int gpg_init(const char *priv_key)
     gpgme_set_armor(gpg_ctx, 1);
 
     /* import private key */
-    /* ret = gpg_import_key("pub_key.asc", &gpg_fpr); */
     ret = gpg_import_key(priv_key, &gpg_fpr);
     if (ret < 0) {
         log_errf("failed to import key '%s'", priv_key);
@@ -40,7 +38,7 @@ int gpg_init(const char *priv_key)
     err = gpgme_get_key(gpg_ctx, gpg_fpr, &key[0], 0);
     gpg_fail_if_err(err);
 
-    /* set as signing key */
+    /* set as sender key when doing singing and verification */
     err = gpgme_signers_add(gpg_ctx, key[0]);
     gpg_fail_if_err(err);
 
