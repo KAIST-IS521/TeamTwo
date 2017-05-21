@@ -127,7 +127,11 @@ int sock_read(int sockfd, char *buffer, size_t size)
         /* read char by char */
         ret = recv(sockfd, &c, 1, 0);
         if (ret != 1) {
-            log_perr("recv");
+            if (ret == 0) {
+                log_errf("recv: nothing received");
+            } else {
+                log_perr("recv");
+            }
             return -1;
         }
 
@@ -158,7 +162,11 @@ int sock_read_multiline(int sockfd, char *buffer, size_t size, char *pattern)
         /* read char by char */
         ret = recv(sockfd, &c, 1, 0);
         if (ret != 1) {
-            log_perr("recv");
+            if (ret == 0) {
+                log_errf("recv: nothing received");
+            } else {
+                log_perr("recv");
+            }
             return -1;
         }
 
