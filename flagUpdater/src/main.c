@@ -9,7 +9,7 @@
 #define MAX_BUF (1024 * 8)
 #define GPG_PRIV_KEY "priv_key.asc"
 #define GPG_PUB_KEY "pub_key.asc"
-#define GPG_KEYS_DIR "keys"
+#define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
 
 int authenticate(int sockfd, char *username, char **fpr)
