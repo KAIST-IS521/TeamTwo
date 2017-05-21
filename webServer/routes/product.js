@@ -81,56 +81,67 @@ router.get('/purchase', function(req, res, next)
     // parameter from client
     var product_id = req.param('product-id');
     var product_num = req.param('product-num');
-    var price;
 
-    // get the price
-    var t = require('./db.js');
-        // SQL query for registering new user
-    var qString = 'SELECT price FROM products WHERE product_id = ?';
-    t.query(qString, [product_id], function (err, result, fields)
+    var price = new Promise(function(resolve, reject)
     {
-        if (err)
+        // get the price
+        var t = require('./db.js');
+        // SQL query for registering new user
+        var qString = 'SELECT price FROM products WHERE product_id = ?';
+        t.query(qString, [product_id], function (err, result, fields)
         {
-            console.log(err);
-        }
-        else
-        {
-            price = result[0].price;
-            console.log('product\'s price: ' + price);
-        }
-    });
-    t.execute();
-    //alert(typeof price);
-    //console.log(String(Number(price) * Number(product_num)));
-
-    // SQL statement
-    var iString = 'INSERT INTO orders SET ? ';
-    var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending' };
-
-    console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending");
-
-    // bank connection needed
-
-
-    // inserting current items in shopping cart
-    q.query( iString, p, function( err, result, fields ){
-        // when SQL error
-        if (err) {
-            console.log(err);
-            return res.json( { status: 0, message: "Wrong parameter..."} );
-        }
-        // when SQL success
-        else {
-            var items = result;
-            console.log(result);
-
-            // show empty list in shopping cart
-            res.json({ status: 1 , message: "Success...", account: 'temp_account2'});
-        }
+            if (err)
+            {
+                console.log(err);
+                reject();
+            }
+            else
+            {
+                price = result[0].price;
+                console.log('product\'s price: ' + price);
+                resolve();
+            }
+        });
+        //t.execute();
     });
 
-    // execute SQL
-    q.execute();
+    price.then(function()
+    { 
+        price = String(Number(price) * Number(product_num));
+        // SQL statement
+        var iString = 'INSERT INTO orders SET ? ';
+        var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending', total: price };
+
+        console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending" + ", " + price);
+
+        // bank connection needed
+
+
+        // inserting current items in shopping cart
+        q.query( iString, p, function( err, result, fields ){
+            // when SQL error
+            if (err) {
+                console.log(err);
+                return res.json( { status: 0, message: "Wrong parameter..."} );
+            }
+            // when SQL success
+            else {
+                var items = result;
+                console.log(result);
+
+                // show empty list in shopping cart
+                res.json({ status: 1 , message: "Success...", account: 'temp_account2'});
+            }
+        });
+
+        // execute SQL
+        q.execute();
+    }).catch(function()
+    {
+        console.log('error while querying the price');
+    })
+
+
 });
 
 
