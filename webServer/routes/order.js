@@ -25,6 +25,35 @@ router.get('/', function(req, res, next)
   });
 
   q.execute();
+
+  //updateUserBankID(2);
 });
+
+function getUserBankID()
+{
+    // bank connected needed
+    return "dummy_bank_id";
+}
+
+function updateUserBankID(order_id)
+{
+  var userBankID = getUserBankID();
+  var uString = 'UPDATE orders SET bank_id = \'' + String(userBankID) + '\' WHERE order_id = ' + String(order_id);
+  q.query(uString, function( err, result, fields )
+  {
+    if (err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      console.log(result);
+      res.json( { status: 1, message: 'Updated the user\'s bank id' } );
+    }
+  });
+
+  q.execute();
+}
+
 
 module.exports = router;

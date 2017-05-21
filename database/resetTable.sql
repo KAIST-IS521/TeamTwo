@@ -55,7 +55,7 @@ CREATE TABLE  shopping_cart (
 CREATE TABLE  orders (
     order_id             int  NOT NULL  AUTO_INCREMENT,
     user_id              varchar(30)  NOT NULL  ,
-    bank_id		 		 varchar(32)  NOT NULL  ,
+    bank_id		 		 varchar(32),
     product_id           int  NOT NULL ,
     product_num          int  NOT NULL  ,
     status				 varchar(30) NOT NULL DEFAULT 'pending',
