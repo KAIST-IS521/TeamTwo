@@ -33,13 +33,12 @@ $(document).ready(function() {
                 success: function(result) {
                     var account = '';
                     if (result.status != 1) {
-                        account = 'error'
+                        alert(result.message);
                     } else  {
                         account = result.account;
+                        $('#account-container').text(' Account: ' + account + ' ');
+                        $('div#order-popup').show();
                     }
-
-                    $('#account-container').text(' Account: ' + account + ' ');
-                    $('div#order-popup').show();
                 }
         });
     });
