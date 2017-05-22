@@ -44,10 +44,10 @@
         <h3 class="text-center"> Orders </h3>
         <p class="text-center"> Check your orders :/ </p>
 
-        <!-- TEST LOOP -->
+        <!-- Start of order loop -->
         <% orders.forEach( function(order, index) { %>
           <% if( index == 0 || orders[index].order_id != orders[index-1].order_id) { %> 
-        
+
             <% if(order.status == 'pending') { %>
             <div class="panel panel-primary order-item">
             <% } else if (order.status == 'completed'){ %>
@@ -65,14 +65,13 @@
               <div class="order-status">
                 <%= order.status %>
               </div>
-            <% } %>
 
               <div class="list-group order-item-list">
+            <% } %>
                 <div class="list-group-item">
                   <%= order.name %>
                   <span class="badge"> <%= order.num %> </span>
                 </div>
-
               <% if((index == orders.length -1) || (orders[index].order_id != orders[index+1].order_id)) { %>
                 <strong> Order time : <%= order.time %> </strong>
                 </br>
@@ -80,9 +79,9 @@
               </div>
             </div>
           </div>
-         <% } %>       
-        <% })%>
-        <!-- end of TEST LOOP -->
+              <% } %>   
+        <% });%>
+        <!-- End of order loop -->
 
       </div> <!-- end of container -->
     </div> <!-- end of order Main -->
