@@ -3,12 +3,19 @@ var router = express.Router();
 
 // module for database
 var q = require('./db.js');
+var fs = require("fs");
 
 
 /* list orders */
 router.get('/', function(req, res, next)
 {
-  q.query('SELECT * FROM orders', function( err, result, fields )
+  var qString = 'SELECT orders.order_id AS order_id, products.product_id AS product_id, products.name AS name, products.price AS price, order_items.product_num AS num, orders.status AS status, orders.added_time AS time, orders.bank_account AS bank_account \
+              FROM ( orders JOIN order_items ) JOIN products \
+                ON orders.order_id = order_items.order_id \
+                  AND order_items.product_id = products.product_id\
+                WHERE orders.user_id = ?  \
+                ORDER BY orders.added_time ASC';
+  q.query(qString, [req.session.user], function( err, result, fields )
   {
     if (err)
     {
@@ -27,7 +34,7 @@ router.get('/', function(req, res, next)
   q.execute();
 
   //updateUserBankID(2);
-});
+});   
 
 function getUserBankID()
 {
@@ -53,6 +60,63 @@ function updateUserBankID(order_id)
 
   q.execute();
 }
+
+
+router.get('/requestFlag', function(req, res, next)
+{
+  var qString = 'SELECT orders.order_id AS order_id, products.product_id AS product_id, products.name AS name, products.price AS price, order_items.product_num AS num, orders.status AS status, orders.added_time AS time, orders.bank_account AS bank_account \
+              FROM ( orders JOIN order_items ) JOIN products \
+                ON orders.order_id = order_items.order_id \
+                  AND order_items.product_id = products.product_id\
+                WHERE orders.user_id = ?  AND orders.status = "completed" AND products.name = "FLAG" \
+                ORDER BY orders.added_time ASC';
+  q.query(qString, [req.session.user], function( err, result, fields )
+  {
+    if (err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      var orders = result;
+      console.log(result);
+      // client.end();
+
+
+      if (result.length >= 1 ) {
+  //Add file read code here
+
+
+
+    // read encrypted file
+    fs.readFile( './' + 'tmp' + '.asc', function (err, data) {
+        // file read error
+        if (err) {
+            console.error(err);
+            return  res.json( { status: 0, message: "file error..."} );
+        }
+
+        console.log("Asynchronous read: " + data.toString());
+
+        // sending encrypted file
+      res.json( { 'status' : 1 , 'message' : "aaaggbddfsf" });
+      
+    }); // end file read
+
+
+      }
+      else
+      {
+        res.json( { 'status' : 0 , 'message' : "you did not buy any flag" });
+      }
+    }
+  });
+
+  q.execute();
+});   
+
+
+
 
 
 module.exports = router;

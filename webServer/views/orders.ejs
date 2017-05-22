@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/order.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/order.js"></script>
+    <script src="/js/order.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -44,40 +44,48 @@
         <p class="text-center"> Check your orders :/ </p>
 
         <!-- TEST LOOP -->
-        <% orders.forEach( function(order) { %>
+        <% orders.forEach( function(order, index) { %>
+          <% if( index == 0 || orders[index].order_id != orders[index-1].order_id) { %> 
         
-        <% if(order.status == 'pending') { %>
-          <div class="panel panel-primary order-item">
-        <% } else if (order.status == 'completed'){ %>
-          <div class="panel panel-success order-item">
-        <% } else { %>
-          <div class="panel panel-danger order-item">
-        <% } %>
+          <% if(order.status == 'pending') { %>
+            <div class="panel panel-primary order-item">
+          <% } else if (order.status == 'completed'){ %>
+            <div class="panel panel-success order-item">
+          <% } else { %>
+            <div class="panel panel-danger order-item">
+          <% } %>
 
-        
-          <div class="panel-heading order-item-head">
-            <%= order.product_id %>
-            <div class="account-number"> Account: <%= order.user_id %> </div>
-          </div>
-          <div cl.ass="panel-body">
-
-            <div class="order-status">
-              <%= order.status %>
+          
+            <div class="panel-heading order-item-head">
+              Order #<%= order.order_id %>
+              <div class="account-number"> Account: <%= order.bank_account %> </div>
             </div>
+            <div cl.ass="panel-body">
 
-            <div class="list-group order-item-list">
-              <div class="list-group-item">
-                <%= order.product_id %>
-                <span class="badge"> <%= order.product_num %> </span>
+              <div class="order-status">
+                <%= order.status %>
               </div>
-              <strong> Order time : <%= order.added_time %> </strong>
-              </br>
-              <strong> Total : <%= order.total %> won </strong>
+          
+            <div class="list-group order-item-list">
+            <% } %>
+
+              <div class="list-group-item">
+                <%= order.name %>
+                <span class="badge"> <%= order.num %> </span>
+              </div>
+
+              <% if((index == orders.length -1) || (orders[index].order_id != orders[index+1].order_id)) { %> 
+                <strong> Order time : <%= order.time %> </strong>
+                </br>
+                <strong> Total : <!--<%= order.total %>-->50 won </strong>
+              
 
             </div>
 
           </div>
+          <% } %>
         </div>
+        
         <% })%>
         <!-- end of TEST LOOP -->
 
