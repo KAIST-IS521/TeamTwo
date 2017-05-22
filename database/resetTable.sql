@@ -38,6 +38,7 @@ CREATE TABLE  products (
     price                varchar(30)   NOT NULL  ,
     name                 varchar(100)  NOT NULL  ,
     imgsrc               varchar(200)  DEFAULT  '/images/default.jpg',
+    serial_key                  varchar(200)  NOT NULL  ,
     CONSTRAINT pk_products PRIMARY KEY ( product_id )
 ) engine=InnoDB;
 
