@@ -1,6 +1,6 @@
 use shoppingmalldb;
 
-
+drop table order_items;
 drop table orders;
 drop table shopping_cart;
 drop table products;
