@@ -26,7 +26,7 @@ router.get('/', function(req, res, next)
 
   q.execute();
 
-  //updateUserBankID(2);
+  updateUserBankID(2);
 });
 
 function getUserBankID()
@@ -38,8 +38,7 @@ function getUserBankID()
 function updateUserBankID(order_id)
 {
   var userBankID = getUserBankID();
-  var uString = 'UPDATE orders SET bank_id = \'' + String(userBankID) + '\' WHERE order_id = ' + String(order_id);
-  q.query(uString, function( err, result, fields )
+  q.query('UPDATE orders SET bank_id = ? WHERE order_id = ?', [userBankID, order_id], function( err, result, fields )
   {
     if (err)
     {
@@ -47,8 +46,7 @@ function updateUserBankID(order_id)
     }
     else
     {
-      console.log(result);
-      res.json( { status: 1, message: 'Updated the user\'s bank id' } );
+      console.log('bank_id update successful');
     }
   });
 
