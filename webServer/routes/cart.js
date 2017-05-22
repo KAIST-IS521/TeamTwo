@@ -80,58 +80,76 @@ router.post('/remove', function(req, res, next)
  */
 router.get('/purchase', function(req, res, next)
 {
-	/*
-		Need to calculate the total price here
-	*/
+	var order_id = req.session.user + new Date().toISOString().replace(/T/,'').replace(/\..+/,'').replace( " ", "" )
+										.replace( "-", "" ).replace( "-", "" ).replace( ":", "" ).replace( ":", "" );
 
-	// SQL query for inserting items to the order list
-	var iString = 'INSERT INTO orders ( user_id, product_id, product_num ) \
-				SELECT users.user_id AS user_id, products.product_id AS product_id, shopping_cart.product_num AS product_num \
-				FROM ( users JOIN shopping_cart ) JOIN products \
-               	ON users.user_id = shopping_cart.user_id \
-                	AND shopping_cart.product_id = products.product_id\
-                WHERE users.user_id = ? ';
+	console.log( order_id );
+
+	// SQL query for inserting items to the order_item table
+	var order_iString = 'INSERT INTO orders SET ? ';
+
+	// SQL query for inserting items to the order_items table
+	var items_iString = 'INSERT INTO order_items ( order_id, product_id, product_num ) \
+				SELECT "' + order_id + '", shopping_cart.product_id AS product_id, shopping_cart.product_num AS product_num \
+				FROM shopping_cart \
+                WHERE shopping_cart.user_id = ? ';
 
 	// SQL query for deleting items from the shopping cart
 	var dString = 'DELETE shopping_cart  \
-            	FROM ( users JOIN shopping_cart ) JOIN products \
-               	ON users.user_id = shopping_cart.user_id \
-                	AND shopping_cart.product_id = products.product_id\
-                WHERE users.user_id = ? ';
+            	FROM shopping_cart \
+                WHERE shopping_cart.user_id = ? ';
 
     // bank connection needed
 
+    var bank_account = 'temp_account1';
+	var p = { order_id: order_id, user_id: req.session.user, bank_account: bank_account, status: 'pending' };
 
-    // deleting current items from the shopping cart
-	q.query( iString, [ req.session.user ], function( err, result, fields ){
+    // inserting to the orders table
+	q.query( order_iString, p, function( err, result, fields ){
 		// when SQL error
 		if (err) {
 			console.log(err);
-			return res.json( { status: 0, message: "DB error while deleting..."} );
+			return res.json( { status: 0, message: "DB error while inserting to orders..."} );
 		}
 		// when SQL success
-		else {
-			var items = result;
-			console.log(result);
-
-			// inserting items to the order list
-			q.query( dString, [ req.session.user ], function( err, result, fields ){
+		else
+		{
+		    // inserting items to the order_items table
+			q.query( items_iString, [ req.session.user ], function( err, result, fields ){
 				// when SQL error
 				if (err) {
 					console.log(err);
-					return res.json( { status: 0, message: "DB error while inserting..."} );
+					return res.json( { status: 0, message: "DB error while inserting to order_items..."} );
 				}
 				// when SQL success
 				else {
 					var items = result;
 					console.log(result);
 
-					// show empty list in shopping cart
-					res.json({ status: 1 , account: 'temp_account1'});
+					// deleting current items from the shopping cart
+					q.query( dString, [ req.session.user ], function( err, result, fields ){
+						// when SQL error
+						if (err) {
+							console.log(err);
+							return res.json( { status: 0, message: "DB error while deleting..."} );
+						}
+						// when SQL success
+						else {
+							var items = result;
+							console.log(result);
+
+							// show empty list in shopping cart
+							res.json({ status: 1 , account: bank_account });
+						}
+					});
+
+					q.execute();
 				}
-			});
+			}); // end order_items SQL
+
+			q.execute();
 		}
-	});
+	}); // end orders SQL
 
 	// SQL execute
 	q.execute();
