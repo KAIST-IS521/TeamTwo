@@ -24,9 +24,9 @@ int base64_encode(const unsigned char *input, size_t length, char **output)
 
     /* get result in output pointer */
     /* NOTE: +1 for null char */
-    *output = (char *) malloc((buf->length + 1));
+    *output = (char *) malloc(buf->length + 1);
     memcpy(*output, buf->data, buf->length);
-    *output[buf->length] = '\0';
+    (*output)[buf->length] = '\0';
 
     /* clean up */
     BIO_free_all(bio);
