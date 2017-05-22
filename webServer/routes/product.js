@@ -82,66 +82,58 @@ router.get('/purchase', function(req, res, next)
     var product_id = req.param('product-id');
     var product_num = req.param('product-num');
 
-    var price = new Promise(function(resolve, reject)
-    {
-        // get the price
-        var t = require('./db.js');
-        // SQL query for registering new user
-        var qString = 'SELECT price FROM products WHERE product_id = ?';
-        t.query(qString, [product_id], function (err, result, fields)
-        {
-            if (err)
-            {
-                console.log(err);
-                reject();
-            }
-            else
-            {
-                price = result[0].price;
-                console.log('product\'s price: ' + price);
-                resolve();
-            }
-        });
-        //t.execute();
+    // order_id
+    var order_id = req.session.user + new Date().toISOString().replace(/T/,'').replace(/\..+/,'').replace( " ", "" )
+                                        .replace( "-", "" ).replace( "-", "" ).replace( ":", "" ).replace( ":", "" );
+    console.log( order_id );
+
+    // bank connection needed
+
+
+    // bank account
+    var bank_account = 'temp_account2';
+
+    // SQL statement
+    var order_iString = 'INSERT INTO orders SET ? ';
+    var item_iString = 'INSERT INTO order_items SET ? ';
+
+    var order_p = { order_id: order_id, user_id: req.session.user, bank_account: bank_account, status: 'pending' };
+    var item_p = { order_id: order_id, product_id: product_id, product_num: product_num };
+
+
+    // inserting current items in order_item table
+    q.query( order_iString, order_p, function( err, result, fields ){
+        // when SQL error
+        if (err) {
+            console.log(err);
+            return res.json( { status: 0, message: "Error while inserting data to orders..."} );
+        }
+        // when SQL success
+        else {
+            // inserting current items in order_item table
+            q.query( item_iString, item_p, function( err, result, fields ){
+                // when SQL error
+                if (err) {
+                    console.log(err);
+                    return res.json( { status: 0, message: "Error while inserting data to order_items..."} );
+                }
+                // when SQL success
+                else {
+                    var items = result;
+                    console.log(result);
+
+                    // show empty list in shopping cart
+                    res.json({ status: 1 , message: "Success...", account: bank_account });
+                }
+            });
+
+            // execute SQL
+            q.execute();
+        }
     });
 
-    price.then(function()
-    { 
-        price = String(Number(price) * Number(product_num));
-        // SQL statement
-        var iString = 'INSERT INTO orders SET ? ';
-        var p = { user_id: req.session.user, product_id: product_id, product_num: product_num, status: 'pending', total: price};
-
-        console.log( iString + ", " + req.session.user +  ", " + product_id + ", " + product_num + ", pending" + ", " + price);
-
-        // bank connection needed
-
-
-        // inserting current items in shopping cart
-        q.query( iString, p, function( err, result, fields ){
-            // when SQL error
-            if (err) {
-                console.log(err);
-                return res.json( { status: 0, message: "Wrong parameter..."} );
-            }
-            // when SQL success
-            else {
-                var items = result;
-                console.log(result);
-
-                // show empty list in shopping cart
-                res.json({ status: 1 , message: "Success...", account: 'temp_account2'});
-            }
-        });
-
-        // execute SQL
-        q.execute();
-    }).catch(function()
-    {
-        console.log('error while querying the price');
-    })
-
-
+    // execute SQL
+    q.execute();
 });
 
 module.exports = router;
