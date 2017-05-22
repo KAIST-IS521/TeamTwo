@@ -45,6 +45,7 @@
         <p class="text-center"> Check your orders :/ </p>
 
         <!-- Start of order loop -->
+        <% var order_price = 0; %>
         <% orders.forEach( function(order, index) { %>
           <% if( index == 0 || orders[index].order_id != orders[index-1].order_id) { %> 
 
@@ -72,13 +73,15 @@
                   <%= order.name %>
                   <span class="badge"> <%= order.num %> </span>
                 </div>
+                <% order_price += (Number(order.price) * Number(order.num)); %>
               <% if((index == orders.length -1) || (orders[index].order_id != orders[index+1].order_id)) { %>
                 <strong> Order time : <%= order.time %> </strong>
                 </br>
-                <strong> Total : <!--<%= order.total %>-->50 won </strong>
+                <strong> Total : <%= order_price %> won </strong>
               </div>
             </div>
           </div>
+              <% order_price = 0; %>
               <% } %>   
         <% });%>
         <!-- End of order loop -->
