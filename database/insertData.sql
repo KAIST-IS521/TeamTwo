@@ -1,3 +1,5 @@
+use shoppingmalldb;
+
 INSERT INTO github_users ( github_id, email ) VALUES('alinghi', 'alinghi@kaist.ac.kr');
 INSERT INTO github_users ( github_id, email ) VALUES('asdfljh', 'cjdhlds08@gmail.com');
 INSERT INTO github_users ( github_id, email ) VALUES('bjgwak', 'bjgwak@kaist.ac.kr');
