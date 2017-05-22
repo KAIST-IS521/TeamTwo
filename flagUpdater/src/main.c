@@ -7,6 +7,7 @@
 #include "sock.h"
 #include "gpg.h"
 #include "json.h"
+#include "base64.h"
 
 #define MAX_BUF (1024 * 8)
 #define GPG_PRIV_KEY "priv_key.asc"
@@ -104,12 +105,52 @@ int authenticate(int sockfd, char *username, char **fpr)
     return (r2 == r ? 0 : 1);
 }
 
+int parse_flag_data(const char *json_text,
+                    char **signer, char **flag, char **signature)
+{
+    int ret;
+    json_t *root, *value;
+
+    /* parse json data */
+    ret = json_parse(json_text, &root);
+    if (ret < 0) {
+        log_err("could not parse json");
+        return -1;
+    }
+
+    /* get data */
+    value = json_object_get(root, "signer");
+    if (!json_is_string(value) || strlen(json_string_value(value)) < 1) {
+        log_errf("json missing signer");
+        return 1;
+    }
+    *signer = strdup(json_string_value(value));
+
+    value = json_object_get(root, "newflag");
+    if (!json_is_string(value) || strlen(json_string_value(value)) < 1) {
+        log_errf("json missing newflag");
+        return 1;
+    }
+    *flag = strdup(json_string_value(value));
+
+    value = json_object_get(root, "signature");
+    if (!json_is_string(value) || strlen(json_string_value(value)) < 1) {
+        log_errf("json missing signature");
+        return 1;
+    }
+    *signature = strdup(json_string_value(value));
+
+    return 0;
+}
+
 void new_client_cb(int sockfd)
 {
     int ret;
     char buf[MAX_BUF] = { '\0' };
-    char *s, *username, *fpr, *json_text;
-    json_t *json;
+    char *s, *username, *fpr;
+
+    char *json_text, *json_signer, *json_flag, *json_sign;
+    char *json_sign_pgp, *json_sign_plain;
 
     log_infof("=========== sock %d ===========", sockfd);
 
@@ -146,8 +187,6 @@ void new_client_cb(int sockfd)
     bzero(buf, MAX_BUF);
     sock_read_multiline(sockfd, buf, MAX_BUF, GPG_PATTERN);
 
-    log_infof("got encrypted json:\n%s", buf);
-
     /* decrypt json data */
     ret = gpg_decrypt(buf, &json_text);
     if (ret < 0) {
@@ -157,25 +196,65 @@ void new_client_cb(int sockfd)
         return;
     }
 
+    /* parse json data */
+    ret = parse_flag_data(json_text, &json_signer, &json_flag, &json_sign);
+    if (ret != 0) {
+        if (ret < 0) {
+            s = "invalid json";
+        } else if (ret > 0) {
+            s = "invalid flag data";
+        }
+        sock_write(sockfd, s, strlen(s));
+    }
+
     log_infof("got decrypted json:\n%s", json_text);
 
-    /* parse json data */
-    ret = json_parse(json_text, &json);
-    if (ret < 0) {
-        log_err("could not parse json");
-        s = "invalid json";
-        sock_write(sockfd, s, strlen(s));
+    /* check signer matches */
+    if (strncmp(username, json_signer, strlen(username)) != 0) {
+        log_errf("json has invalid signer '%s'", json_signer);
         return;
     }
 
-    log_info("got json:");
-    json_print(json);
+    /* decode signature */
+    size_t json_sign_len;
+    ret = base64_decode(json_sign, (unsigned char **) &json_sign_pgp, &json_sign_len);
+    if (ret < 0) {
+        log_err("failed to decode base64 flag signature");
+        return;
+    }
+
+    log_info("flag signature verified successfully");
+
+    /* verify signature */
+    ret = gpg_verify(fpr, json_sign_pgp, &json_sign_plain);
+    if (ret < 0) {
+        log_err("failed to verify flag signature");
+        return;
+    }
+
+    /* compare decrypted signature */
+    bzero(buf, MAX_BUF);
+    sprintf(buf, "%s:%s", username, json_flag);
+    if (strncmp(buf, json_sign_plain, strlen(username) + strlen(json_flag) + 1) != 0) {
+        log_errf("flag signature does not match"
+                 "\nwant: %s\ngot: %s", buf, json_sign_plain);
+        return;
+    }
+
+    log_infof("SUCCESS");
 
     /* send last result */
     sprintf(buf, "so long, and thanks for all the fish\n");
     sock_write(sockfd, buf, strlen(buf));
 
     log_info("===============================");
+
+    /* clean up */
+    free(json_signer);
+    free(json_flag);
+    free(json_sign);
+    free(json_sign_pgp);
+    free(json_sign_plain);
 }
 
 int main(int argc, char *argv[])
@@ -185,10 +264,14 @@ int main(int argc, char *argv[])
     int port;
     int srv_fd;
 
-    if (argc < 3) {
-        log_errf("usage: %s <ip> <port>", argv[0]);
-        exit(EXIT_FAILURE);
-    }
+    /* if (argc < 3) { */
+    /*     log_errf("usage: %s <ip> <port>", argv[0]); */
+    /*     exit(EXIT_FAILURE); */
+    /* } */
+
+    /* DEBUG */
+    ip = "127.0.0.1";
+    port = 1337;
 
     gpg_init(GPG_PRIV_KEY);
 
