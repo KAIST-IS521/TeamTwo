@@ -67,23 +67,20 @@
               </div>
             <% } %>
 
-            <div class="list-group order-item-list">
-              <div class="list-group-item">
-                <%= order.name %>
-                <span class="badge"> <%= order.num %> </span>
-              </div>
-              <% if((index == orders.length -1) || (orders[index].order_id != orders[index+1].order_id)) { %> 
+              <div class="list-group order-item-list">
+                <div class="list-group-item">
+                  <%= order.name %>
+                  <span class="badge"> <%= order.num %> </span>
+                </div>
+
+              <% if((index == orders.length -1) || (orders[index].order_id != orders[index+1].order_id)) { %>
                 <strong> Order time : <%= order.time %> </strong>
                 </br>
                 <strong> Total : <!--<%= order.total %>-->50 won </strong>
-              
-
+              </div>
             </div>
-
           </div>
-        <% } %>
-        </div>
-        
+         <% } %>       
         <% })%>
         <!-- end of TEST LOOP -->
 
