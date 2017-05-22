@@ -6,7 +6,7 @@ var client = mysql.createConnection({
   host : 'localhost',
   database : 'shoppingmalldb',
   user: 'root',
-  password : 'is521'
+  password : 'dinggul330'
 });
 
 // running queries as normal...
