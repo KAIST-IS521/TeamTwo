@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <jansson.h>
 
 #include "logger.h"
 #include "ip.h"
 #include "sock.h"
 #include "gpg.h"
+#include "json.h"
 
 #define MAX_BUF (1024 * 8)
 #define GPG_PRIV_KEY "priv_key.asc"
@@ -106,7 +108,8 @@ void new_client_cb(int sockfd)
 {
     int ret;
     char buf[MAX_BUF] = { '\0' };
-    char *s, *username, *fpr;
+    char *s, *username, *fpr, *json_text;
+    json_t *json;
 
     log_infof("=========== sock %d ===========", sockfd);
 
@@ -138,6 +141,41 @@ void new_client_cb(int sockfd)
         s = "authentication failed\n";
         sock_write(sockfd, s, strlen(s));
     }
+
+    /* read encrypted json */
+    bzero(buf, MAX_BUF);
+    sock_read_multiline(sockfd, buf, MAX_BUF, GPG_PATTERN);
+
+    log_infof("got encrypted json:\n%s", buf);
+
+    /* decrypt json data */
+    ret = gpg_decrypt(buf, &json_text);
+    if (ret < 0) {
+        log_warn("failed to decrypt json");
+        s = "invalid pgp block";
+        sock_write(sockfd, s, strlen(s));
+        return;
+    }
+
+    log_infof("got decrypted json:\n%s", json_text);
+
+    /* parse json data */
+    ret = json_parse(json_text, &json);
+    if (ret < 0) {
+        log_err("could not parse json");
+        s = "invalid json";
+        sock_write(sockfd, s, strlen(s));
+        return;
+    }
+
+    log_info("got json:");
+    json_print(json);
+
+    /* send last result */
+    sprintf(buf, "so long, and thanks for all the fish\n");
+    sock_write(sockfd, buf, strlen(buf));
+
+    log_info("===============================");
 }
 
 int main(int argc, char *argv[])
