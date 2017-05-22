@@ -38,6 +38,7 @@ function getUserBankID()
 function updateUserBankID(order_id)
 {
   var userBankID = getUserBankID();
+  
   q.query('UPDATE orders SET bank_id = ? WHERE order_id = ?', [userBankID, order_id], function( err, result, fields )
   {
     if (err)
