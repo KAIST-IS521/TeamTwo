@@ -7,12 +7,15 @@ $(document).ready(function() {
 
 
     $('.list-group-item').click(function() {
-        $.ajax({url: '/order/requestFlag',
-                method: 'get',
-                dataType: 'json',
-                success: function(result) {
-                    alert(result.message);
-                }
-        });
+
+        if ( $(this)[0].innerText.substring(0,4) == "FLAG" ) {
+            $.ajax({url: '/order/requestFlag',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(result) {
+                        alert(result.message);
+                    }
+            });
+        }
     });
 });
