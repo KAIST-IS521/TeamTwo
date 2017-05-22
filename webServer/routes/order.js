@@ -10,11 +10,11 @@ var fs = require("fs");
 router.get('/', function(req, res, next)
 {
   var qString = 'SELECT orders.order_id AS order_id, products.product_id AS product_id, products.name AS name, products.price AS price, order_items.product_num AS num, orders.status AS status, orders.added_time AS time, orders.bank_account AS bank_account \
-              FROM ( orders JOIN order_items ) JOIN products \
+                FROM ( orders JOIN order_items ) JOIN products \
                 ON orders.order_id = order_items.order_id \
-                  AND order_items.product_id = products.product_id\
+                    AND order_items.product_id = products.product_id\
                 WHERE orders.user_id = ?  \
-                ORDER BY orders.added_time ASC';
+                ORDER BY orders.added_time DESC';
   q.query(qString, [req.session.user], function( err, result, fields )
   {
     if (err)
@@ -34,7 +34,7 @@ router.get('/', function(req, res, next)
   q.execute();
 
   //updateUserBankID(2);
-});   
+});
 
 function getUserBankID()
 {
@@ -48,12 +48,10 @@ function updateUserBankID(order_id)
 
   q.query('UPDATE orders SET bank_id = ? WHERE order_id = ?', [userBankID, order_id], function( err, result, fields )
   {
-    if (err)
-    {
+    if (err) {
       console.log(err);
     }
-    else
-    {
+    else {
       console.log('bank_id update successful');
     }
   });
@@ -67,18 +65,18 @@ router.get('/requestFlag', function(req, res, next)
                 FROM ( orders JOIN order_items ) JOIN products \
                   ON orders.order_id = order_items.order_id \
                     AND order_items.product_id = products.product_id\
-                  WHERE orders.user_id = ?  AND orders.status = "completed" AND products.name = "FLAG" \
-                  ORDER BY orders.added_time ASC';
+                  WHERE orders.user_id = ?  AND orders.status = "completed" AND products.name = "FLAG"';
+
   q.query(qString, [req.session.user], function(err, result, fields)
   {
-    if(err)
-    {
+    if(err) {
       console.log(err);
+      return res.json( { 'status' : 0, 'message' : "SQL error..."});
     }
-    else
-    {
+    else {
       var orders = result;
       console.log(result);
+
       if (result.length >= 1)
       {
         // read encrypted file
@@ -93,11 +91,15 @@ router.get('/requestFlag', function(req, res, next)
           }
           console.log("Asynchronous read: " + data.toString());
           // sending encrypted file
-          res.json( { 'status' : 1 , 'message' : data.toString() }); 
+          res.json( { 'status' : 1 , 'message' : data.toString() });
         });
+      }
+      else {
+          return res.json( { 'status' : 0, 'message' : "You didn't buy FLAG item yet..."});
       }
     }
   });
+
   q.execute();
 });
 
