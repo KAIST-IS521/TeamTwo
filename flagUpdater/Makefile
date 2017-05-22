@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -std=gnu99
-CLIBS = -lgpgme -ljansson
+CLIBS = -lgpgme -ljansson -lcrypto -m
 
 SDIR = src
 ODIR = build
