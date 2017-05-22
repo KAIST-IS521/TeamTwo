@@ -26,15 +26,13 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">WELCOME <%= user %></a></li>
-            <li><a href="main.html">HOME</a></li>
-            <li><a href="main.html#product">PRODUCT</a></li>
-            <li><a href="main.html#contact">CONTACT</a></li>
-            <li><a href="cart.html">CART</a></li>
-            <li><a href="order.html">ORDERS</a></li>
-            <li><a href="mypage.html">MYPAGE</a></li>
-            <li><a href="login.html">LOGIN</a></li>
-            <li><a href="logout.html">LOGOUT</a></li>
-            <li><a href="search.html"><span class="glyphicon glyphicon-search"></span></a></li>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/#product">PRODUCT</a></li>
+            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="/cart">CART</a></li>
+            <li><a href="/order">ORDERS</a></li>
+            <li><a href="/mypage">MYPAGE</a></li>
+            <li><a href="/logout">LOGOUT</a></li>
           </ul>
         </div> <!-- end of menues -->
       </div>
@@ -45,10 +43,10 @@
         <h3 class="text-center"> Orders </h3>
         <p class="text-center"> Check your orders :/ </p>
 
-        <% orders.forEach(order, index) { %>
-        <% if (orders.length != 0) { %>
-        <% if (index == 0 || ordres[index].order_id != orders[index-1].order_id) { %>
         <% var total = 0; %>
+        <% orders.forEach( function(order, index) { %>
+        <% if (index == 0 || orders[index].order_id != orders[index-1].order_id) { %>
+        <% total = 0; %>
         <% if (order.status == 'pending') { %>
         <div class="panel panel-primary order-item">
         <% } else if (order.status == 'completed') { %>
@@ -78,21 +76,20 @@
                 <% } %>
                 <span class="badge"> <%= order.num %> </span>
               </div>
-              <% total += order.price * order.num %>
+              <% total += order.price * order.num; %>
 
-        <% if (index == order.length-1 || ordres[index].order_id != orders[index+1].order_id) { %>
+        <% if (index == orders.length-1 || orders[index].order_id != orders[index+1].order_id) { %>
               <strong> Order time : <%= order.time %> </strong>
               </br>
               <strong> Total : <%= total %> won </strong>
               </br>
               <strong> <%= order.status %> </strong>
             </div>
-            <% } %>
 
           </div>
         </div>
         <% } %>
-        <% } %>
+        <% }); %>
 
         <!--
         <div class="panel panel-primary order-item">

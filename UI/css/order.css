@@ -193,3 +193,7 @@ span.psw {
     float: right;
     font-weight: bold;
 }
+
+.id-store {
+    display: none;
+}
