@@ -264,14 +264,10 @@ int main(int argc, char *argv[])
     int port;
     int srv_fd;
 
-    /* if (argc < 3) { */
-    /*     log_errf("usage: %s <ip> <port>", argv[0]); */
-    /*     exit(EXIT_FAILURE); */
-    /* } */
-
-    /* DEBUG */
-    ip = "127.0.0.1";
-    port = 1337;
+    if (argc < 3) {
+        log_errf("usage: %s <ip> <port>", argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
     gpg_init(GPG_PRIV_KEY);
 
