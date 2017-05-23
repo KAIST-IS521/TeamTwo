@@ -33,7 +33,6 @@ app.use( session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(fileUpload({ safeFileNames: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // function for checking session

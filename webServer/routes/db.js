@@ -1,13 +1,9 @@
 // node-mysql
+var config = require('./config.js');
 var mysql = require('mysql');
 
 // DataBase Config
-var client = mysql.createConnection({
-  host : 'localhost',
-  database : 'shoppingmalldb',
-  user: 'root',
-  password : 'dinggul330'
-});
+var client = mysql.createConnection( config.database );
 
 // running queries as normal...
 client.query('USE shoppingmalldb');
