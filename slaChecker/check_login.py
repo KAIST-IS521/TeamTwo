@@ -3,6 +3,7 @@ import requests
 import colorlog
 import logging
 import inspect
+import sys
 
 colorlog.basicConfig(level=logging.INFO)
 
@@ -26,7 +27,7 @@ def check_login():
 
         cookie = r.headers['set-cookie']
 
-    except requests.exceptions.ConnectionError:
+    except:
         colorlog.error('"{}" failed'.format(current_function_name))
         exit(2)
         return
@@ -66,7 +67,7 @@ def check_logout(cookie):
             exit(1)
             return
 
-    except requests.exceptions.ConnectionError:
+    except:
         colorlog.error('"{}" failed'.format(current_function_name))
         exit(2)
         return
@@ -75,6 +76,10 @@ def check_logout(cookie):
     return
 
 if __name__ == '__main__':
+    if len(sys.argv) == 3:
+        HOST = sys.argv[1]
+        PORT = sys.argv[2]
+
     cookie = check_login()
     check_logout(cookie)
     exit(0)
