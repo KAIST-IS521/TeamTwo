@@ -44,5 +44,4 @@ pw_candidate = b64e(os.urandom(ID_PW_LEN))
 
 ID, PW = new_account(id_candidate, pw_candidate)
 
-print ID
-print PW
+print ID, PW
