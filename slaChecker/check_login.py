@@ -26,17 +26,15 @@ def check_login():
             os._exit(1)
             return
 
-        cookie = r.headers['set-cookie']
-
     except:
         colorlog.error('"{}" failed'.format(current_function_name))
         os._exit(2)
         return
 
     colorlog.info('"{}" passed'.format(current_function_name))
-    return cookie
+    return
 
-def check_logout(cookie):
+def check_logout():
     frame = inspect.currentframe()
     current_function_name = inspect.getframeinfo(frame).function
 
@@ -81,6 +79,6 @@ if __name__ == '__main__':
         HOST = sys.argv[1]
         PORT = sys.argv[2]
 
-    cookie = check_login()
-    check_logout(cookie)
+    check_login()
+    check_logout()
     os._exit(0)

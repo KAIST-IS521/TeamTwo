@@ -7,8 +7,8 @@ from check_cart import check_cart
 def main():
     check_connection()
 
-    cookie = check_login()
-    check_logout(cookie)
+    check_login()
+    check_logout()
 
     check_search()
 
