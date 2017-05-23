@@ -8,12 +8,18 @@
 #include "gpg.h"
 #include "json.h"
 #include "base64.h"
+#include "file.h"
+#include "time.h"
 
 #define MAX_BUF (1024 * 8)
+
 #define GPG_PRIV_KEY "priv_key.asc"
 #define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
+
+#define FLAG_DIR "/var/ctf"
+#define FLAG_PATH "/var/ctf/shoppingmall.flag"
 
 int authenticate(int sockfd, char *username, char **fpr)
 {
@@ -143,16 +149,78 @@ int parse_flag_data(const char *json_text,
     return 0;
 }
 
+int validate_flag_data(const char *username, const char *fpr,
+                       const char *signer, const char *flag, const char *signature)
+{
+    int ret;
+    char buf[MAX_BUF] = { '\0' };
+    char *json_sign_pgp, *json_sign_plain;
+
+    /* check signer matches */
+    if (strncmp(username, signer, strlen(username)) != 0) {
+        log_errf("json has invalid signer '%s'", signer);
+        return -1;
+    }
+
+    /* decode signature */
+    size_t json_sign_len;
+    ret = base64_decode(signature, (unsigned char **) &json_sign_pgp, &json_sign_len);
+    if (ret < 0) {
+        log_err("failed to decode base64 flag signature");
+        return -1;
+    }
+
+    /* verify signature */
+    ret = gpg_verify(fpr, json_sign_pgp, &json_sign_plain);
+    if (ret < 0) {
+        log_err("failed to verify flag signature");
+        return -1;
+    }
+
+    /* compare decrypted signature */
+    sprintf(buf, "%s:%s", username, flag);
+    if (strncmp(buf, json_sign_plain, strlen(username) + strlen(flag) + 1) != 0) {
+        log_errf("flag signature does not match"
+                 "\nwant: %s\ngot: %s", buf, json_sign_plain);
+        return -1;
+    }
+
+    /* clean up */
+    free(json_sign_pgp);
+    free(json_sign_plain);
+
+    return 0;
+}
+
+int update_flag(const char *path, const char *flag)
+{
+    int ret;
+
+    /* log whether flag already exists */
+    if (!file_exists(path)) {
+        log_infof("init flag '%s'", path);
+    }
+
+    /* write new flag */
+    ret = file_write(path, flag);
+    if (ret < 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
 void new_client_cb(int sockfd)
 {
     int ret;
     char buf[MAX_BUF] = { '\0' };
-    char *s, *username, *fpr;
+    char *time, *username, *fpr, *json_text,
+        *json_signer, *json_flag, *json_sign;
 
-    char *json_text, *json_signer, *json_flag, *json_sign;
-    char *json_sign_pgp, *json_sign_plain;
+    time = time_now();
 
-    log_infof("=========== sock %d ===========", sockfd);
+    log_infof("=========== sock %02d ===========", sockfd);
+    log_infof("time: %s", time);
 
     /* prompt for username */
     sprintf(buf, "username: ");
@@ -168,19 +236,19 @@ void new_client_cb(int sockfd)
     /* try to authenticate client */
     ret = authenticate(sockfd, username, &fpr);
     if (ret == 0) {
-        log_infof("authentication successful!");
-        s = "authentication successful\n";
-        sock_write(sockfd, s, strlen(s));
+        log_infof("authentication successful");
+        sprintf(buf, "authentication successful\n");
+        sock_write(sockfd, buf, strlen(buf));
     }
     else if (ret == 1) {
         log_infof("access denied");
-        s = "authentication failed\n";
-        sock_write(sockfd, s, strlen(s));
+        sprintf(buf, "authentication failed\n");
+        sock_write(sockfd, buf, strlen(buf));
     }
     else {
         log_errf("authentication failed");
-        s = "authentication failed\n";
-        sock_write(sockfd, s, strlen(s));
+        sprintf(buf, "authentication failed\n");
+        sock_write(sockfd, buf, strlen(buf));
     }
 
     /* read encrypted json */
@@ -191,8 +259,8 @@ void new_client_cb(int sockfd)
     ret = gpg_decrypt(buf, &json_text);
     if (ret < 0) {
         log_warn("failed to decrypt json");
-        s = "invalid pgp block";
-        sock_write(sockfd, s, strlen(s));
+        sprintf(buf, "invalid pgp block\n");
+        sock_write(sockfd, buf, strlen(buf));
         return;
     }
 
@@ -200,51 +268,45 @@ void new_client_cb(int sockfd)
     ret = parse_flag_data(json_text, &json_signer, &json_flag, &json_sign);
     if (ret != 0) {
         if (ret < 0) {
-            s = "invalid json";
+            sprintf(buf, "invalid json\n");
+            sock_write(sockfd, buf, strlen(buf));
         } else if (ret > 0) {
-            s = "invalid flag data";
+            sprintf(buf, "invalid flag data\n");
+            sock_write(sockfd, buf, strlen(buf));
         }
-        sock_write(sockfd, s, strlen(s));
+
+        /* json error message has already been printed */
+        return;
     }
 
     log_infof("got decrypted json:\n%s", json_text);
 
-    /* check signer matches */
-    if (strncmp(username, json_signer, strlen(username)) != 0) {
-        log_errf("json has invalid signer '%s'", json_signer);
-        return;
-    }
-
-    /* decode signature */
-    size_t json_sign_len;
-    ret = base64_decode(json_sign, (unsigned char **) &json_sign_pgp, &json_sign_len);
+    /* validate flag signature */
+    ret = validate_flag_data(username, fpr, json_signer, json_flag, json_sign);
     if (ret < 0) {
-        log_err("failed to decode base64 flag signature");
+        log_errf("failed to validate new flag");
+        sprintf(buf, "invalid flag data\n");
+        sock_write(sockfd, buf, strlen(buf));
         return;
     }
 
-    log_info("flag signature verified successfully");
+    log_info("flag signature verified");
 
-    /* verify signature */
-    ret = gpg_verify(fpr, json_sign_pgp, &json_sign_plain);
-    if (ret < 0) {
-        log_err("failed to verify flag signature");
-        return;
-    }
-
-    /* compare decrypted signature */
+    /* update flag */
     bzero(buf, MAX_BUF);
-    sprintf(buf, "%s:%s", username, json_flag);
-    if (strncmp(buf, json_sign_plain, strlen(username) + strlen(json_flag) + 1) != 0) {
-        log_errf("flag signature does not match"
-                 "\nwant: %s\ngot: %s", buf, json_sign_plain);
+    sprintf(buf, "%s\n", json_flag);
+    ret = update_flag(FLAG_PATH, buf);
+    if (ret < 0) {
+        log_err("failed to update flag");
+        sprintf(buf, "failed to update flag\n");
+        sock_write(sockfd, buf, strlen(buf));
         return;
     }
 
-    log_infof("SUCCESS");
+    log_info("flag updated");
 
     /* send last result */
-    sprintf(buf, "so long, and thanks for all the fish\n");
+    sprintf(buf, "successfully updated flag\n");
     sock_write(sockfd, buf, strlen(buf));
 
     log_info("===============================");
@@ -253,8 +315,7 @@ void new_client_cb(int sockfd)
     free(json_signer);
     free(json_flag);
     free(json_sign);
-    free(json_sign_pgp);
-    free(json_sign_plain);
+    free(time);
 }
 
 int main(int argc, char *argv[])
@@ -269,6 +330,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /* init crypto engine and keys */
     gpg_init(GPG_PRIV_KEY);
 
     /* parse ip */
@@ -280,6 +342,16 @@ int main(int argc, char *argv[])
 
     /* parse port */
     port = atoi(argv[2]);
+
+    /* check that /var/ctf exists */
+    if (!file_exists(FLAG_DIR)) {
+        log_info("init directory '" FLAG_DIR "'");
+        ret = file_mkdir(FLAG_DIR);
+        if (ret < 0) {
+            log_errf("could not make dir '%s'", FLAG_DIR);
+            exit(EXIT_FAILURE);
+        }
+    }
 
     /* open socket */
     srv_fd = sock_open(ip, port);
