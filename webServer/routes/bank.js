@@ -8,6 +8,10 @@ var bank = {};
 
 /*
  * This function is called as a callback function 1 minute after purchasing item.
+ * TODO : this function can not be implemented because other team's dependency...
+ *        So we just implemented the simple scenario with dummy data...
+ *        and we said this situation to the professor...
+ *        He said these kind of integration issue will be continued next week.
  */
 bank.checkBankAccount = function( )
 {
@@ -43,7 +47,7 @@ bank.checkBankAccount = function( )
 			// SQL query for updating status
 	        if ( stdout.toString().substring(0,6) == 'success' ) {
 	        	// var uString = 'UPDATE orders SET status = "completed" WHERE order_id = ? ';
-	        	var uString = 'UPDATE orders SET status = "completed"';
+	        	var uString = 'UPDATE orders SET status = "completed" WHERE status = "pending" ';
 
 	        	// update the status in order table
 		        q.query( uString, /* [ item.order_id ],*/ function( err, result, fields )
@@ -63,7 +67,7 @@ bank.checkBankAccount = function( )
 	        }
 	        // else {
 	        	// var uString = 'UPDATE orders SET status = "abort" WHERE order_id = ? ';
-	       		var uString = 'UPDATE orders SET status = "abort"';
+	       		var uString = 'UPDATE orders SET status = "abort" WHERE status = "pending" ';
 
 	        	// update the status in order table
 		        q.query( uString, /* [ item.order_id ],*/ function( err, result, fields )
