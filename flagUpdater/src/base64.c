@@ -48,7 +48,7 @@ int base64_decode(const char *input, unsigned char **output, size_t *out_len)
     (*output)[len] = '\0';
 
     /* initialize BIO */
-    bio = BIO_new_mem_buf(input, -1);
+    bio = BIO_new_mem_buf((char *) input, -1);
     b64 = BIO_new(BIO_f_base64());
     bio = BIO_push(b64, bio);
 
