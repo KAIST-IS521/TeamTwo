@@ -1,6 +1,7 @@
 all: packages database webServer flagUpdater
 
 packages:
+	sudo apt-get -yy update
 	sudo apt-get install -yy python-pip
 	sudo pip install requests
 	sudo pip install colorlog
