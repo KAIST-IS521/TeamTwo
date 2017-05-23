@@ -24,6 +24,7 @@ router.get('/', function(req, res, next)
                 ON orders.order_id = order_items.order_id \
                     AND order_items.product_id = products.product_id\
                 WHERE orders.user_id = ?  \
+                    AND orders.status != "abort" \
                 ORDER BY orders.added_time DESC';
 
   // query result handling logic
