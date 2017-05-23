@@ -1,26 +1,33 @@
 # TeamOne Shopping Mall
-We developed a web shopping mall based on Express Web Engine on `Node.js`,`MySQL`, and `GnuPG`.
+We developed shopping mall service by using `MySQL`, `GnuPG`, and `Express` framework on `Node.js`.
 
 ## Intro
 
-Our shopping is a kind of web service, so we think you can figure out how to use.
+Our shopping mall is web service, so we expect you can easily figure out how to use without any comment.
 The following screen shot will be helpful to understand our service.
 
 ### Main page
 ![main](./README_img/main.png)
 
+### Sign-up page
 ![register](./README_img/register.png)
 
+### Log-in page
 ![login](./README_img/login.png)
 
+### Product page
 ![product](./README_img/product.png)
 
+### Detail item view
 ![detail](./README_img/detail.png)
 
+### Shopping cart page
 ![shopping cart](./README_img/cart.png)
 
+### Order list
 ![order](./README_img/order.png)
 
+### Message to admin
 ![mypage](./README_img/mypage.png)
 
 
