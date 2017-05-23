@@ -4,6 +4,7 @@ import colorlog
 import logging
 import inspect
 import sys
+import os
 
 colorlog.basicConfig(level=logging.INFO)
 
@@ -16,10 +17,11 @@ def check_connection():
 
         if r.status_code != 200:
             colorlog.error('"{}" failed'.format(current_function_name))
+            os._exit(1)
 
     except:
         colorlog.error('"{}" failed'.format(current_function_name))
-        exit(2)
+        os._exit(2)
 
     colorlog.info('"{}" passed'.format(current_function_name))
     return
@@ -30,4 +32,4 @@ if __name__ == '__main__':
         PORT = sys.argv[2]
 
     check_connection()
-    exit(0)
+    os._exit(0)
