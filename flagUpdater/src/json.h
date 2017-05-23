@@ -8,6 +8,5 @@
 #include "logger.h"
 
 int json_parse(const char *text, json_t **result);
-void json_print(json_t *root);
 
 #endif /* JSON_H */
