@@ -8,12 +8,15 @@
 #include "gpg.h"
 #include "json.h"
 #include "base64.h"
+#include "file.h"
 
 #define MAX_BUF (1024 * 8)
 #define GPG_PRIV_KEY "priv_key.asc"
 #define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
+#define FLAG_DIR "/var/ctf"
+#define FLAG_PATH "/var/ctf/shoppingmall.flag"
 
 int authenticate(int sockfd, char *username, char **fpr)
 {
@@ -283,7 +286,18 @@ void new_client_cb(int sockfd)
 
     log_info("flag signature verified successfully");
 
-    log_info("SUCCESS");
+    /* update flag */
+    bzero(buf, MAX_BUF);
+    sprintf(buf, "%s\n", json_flag);
+    ret = update_flag(FLAG_PATH, buf);
+    if (ret < 0) {
+        log_err("failed to update flag");
+        sprintf(buf, "failed to update flag\n");
+        sock_write(sockfd, buf, strlen(buf));
+        return;
+    }
+
+    /* TODO: log to file */
 
     /* send last result */
     sprintf(buf, "so long, and thanks for all the fish\n");
@@ -309,6 +323,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /* init crypto engine and keys */
     gpg_init(GPG_PRIV_KEY);
 
     /* parse ip */
@@ -320,6 +335,16 @@ int main(int argc, char *argv[])
 
     /* parse port */
     port = atoi(argv[2]);
+
+    /* check that /var/ctf exists */
+    if (!file_exists(FLAG_DIR)) {
+        log_info("init directory '" FLAG_DIR "'");
+        ret = file_mkdir(FLAG_DIR);
+        if (ret < 0) {
+            log_errf("could not make dir '%s'", FLAG_DIR);
+            exit(EXIT_FAILURE);
+        }
+    }
 
     /* open socket */
     srv_fd = sock_open(ip, port);
