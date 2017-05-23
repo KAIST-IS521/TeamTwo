@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
-// module for database
-var q = require('./db.js');
 var fs = require("fs");
 
+// module for database and configuration
+var q = require('./db.js');
+var config = require('./config.js');
 
 /*
  * This function shows order list.
@@ -49,22 +49,15 @@ router.get('/', function(req, res, next)
 /*
  * This function query the detail information of the ordered item.
  */
-router.get('/requestDetail', function(req, res, next)
+router.post('/requestKey', function(req, res, next)
 {
   // parameter from user
-  var order_id = req.param('order-id');
-  var product_id = req.param('product-id');
+  var order_id = req.param('order_id');
+  var product_id = req.param('game_id');
 
   // SQL query
-  var qString = 'SELECT orders.order_id AS order_id, \
-                        orders.status AS status, \
-                        orders.added_time AS time, \
-                        orders.bank_account AS bank_account \
-                        order_items.product_num AS num, \
-                        products.product_id AS product_id, \
-                        products.name AS name, \
-                        products.price AS price, \
-                        products.serial_key AS serial_key, \
+  var qString = 'SELECT products.name AS name, \
+                        products.serial_key AS serial_key \
                 FROM ( orders JOIN order_items ) JOIN products \
                 ON orders.order_id = order_items.order_id \
                         AND order_items.product_id = products.product_id\
@@ -86,24 +79,22 @@ router.get('/requestDetail', function(req, res, next)
 
       if (result.length == 1 && result[0].name == "FLAG")
       {
-        // read encrypted file
+        // read file
         // File path and name to be edited in the final version
-        fs.readFile( './' + 'tmp' + '.asc', function (err, data) {
+        fs.readFile( config.flag_path, function (err, data) {
           // file read error
           if (err)
           {
             console.error(err);
             return  res.json( { 'status' : 0, 'message' : "file error..."});
           }
-          console.log("Asynchronous read: " + data.toString());
 
-          result[0].serial_key = data.toString();
-          // sending encrypted file
-          res.json( { 'status' : 1 , 'result' : result[0] });
+          // sending text in FLAG file
+          res.json( { 'status' : 1 , 'message' : data.toString() });
         });
       }
       else if ( result.length == 1 ) {
-          return res.json( { 'status' : 1 , 'result' : result[0] });
+          return res.json( { 'status' : 1 , 'message' : result[0].serial_key });
       }
       else {
           return res.json( { 'status' : 0, 'message' : "You didn't buy the item yet..."});
