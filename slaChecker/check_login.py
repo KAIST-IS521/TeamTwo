@@ -13,6 +13,7 @@ def check_login():
     current_function_name = inspect.getframeinfo(frame).function
 
     try:
+        # checks valid login process
         data = {
                 'id': ID,
                 'pw': PW,
@@ -24,12 +25,24 @@ def check_login():
         if 'set-cookie' not in r.headers:
             colorlog.error('"{}" failed'.format(current_function_name))
             os._exit(1)
-            return
+
+        # checks invalid login process
+        data = {
+                'id': 'asjdkfl;as',
+                'pw': 'qwueioprq'
+        }
+
+        r = requests.post('http://{}:{}/login'.format(HOST, PORT),
+                          data=data,
+                          allow_redirects=False)
+
+        if 'set-cookie' in r.headers:
+            colorlog.error('"{}" failed'.format(current_function_name))
+            os._exit(1)
 
     except:
         colorlog.error('"{}" failed'.format(current_function_name))
         os._exit(2)
-        return
 
     colorlog.info('"{}" passed'.format(current_function_name))
     return
@@ -50,7 +63,6 @@ def check_logout():
         if 'set-cookie' not in r.headers:
             colorlog.error('"{}" failed'.format(current_function_name))
             os._exit(1)
-            return
 
         cookie = r.headers['set-cookie']
         cookie = [i for i in cookie.split(';') if 'connect.sid' in i][0]
@@ -64,12 +76,10 @@ def check_logout():
         if r.status_code == 304:
             colorlog.error('"{}" failed'.format(current_function_name))
             os._exit(1)
-            return
 
     except:
         colorlog.error('"{}" failed'.format(current_function_name))
         os._exit(2)
-        return
 
     colorlog.info('"{}" passed'.format(current_function_name))
     return
