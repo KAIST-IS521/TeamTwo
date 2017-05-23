@@ -11,10 +11,10 @@ packages:
 	ln -s $(PWD)/node-v6.10.3-linux-x86/bin/npm /usr/bin/npm
 
 database:
-	$(MAKE) -c database
+	$(MAKE) -C database
 
 webServer:
-	$(MAKE) -c webServer
+	$(MAKE) -C webServer
 
 flagUpdater:
 	$(MAKE) -C flagUpdater
