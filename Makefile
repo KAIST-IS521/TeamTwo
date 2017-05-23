@@ -1,7 +1,4 @@
-all: packages flagUpdater
-
-flagUpdater:
-	$(MAKE) -C flagUpdater
+all: packages database webServer flagUpdater
 
 packages:
 	sudo apt-get install -yy python-pip
@@ -13,7 +10,13 @@ packages:
 	ln -s $(PWD)/node-v6.10.3-linux-x86/bin/node /usr/bin/node
 	ln -s $(PWD)/node-v6.10.3-linux-x86/bin/npm /usr/bin/npm
 
+database:
+	$(MAKE) -c database
 
+webServer:
+	$(MAKE) -c webServer
 
+flagUpdater:
+	$(MAKE) -C flagUpdater
 
-.PHONY: all flagUpdater packages
+.PHONY: all packages database webServer flagUpdater
