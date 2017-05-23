@@ -1,9 +1,11 @@
-pw="is521"
+pw=is521
 all: mysql
 
 mysql:
 	sudo apt-get update
-	sudo apt-get -y install mysql-server
-	mysql -uroot -p$(pw) < initializeData.sql
+	export DEBIAN_FRONTEND=noninteractive
+	sudo -E apt-get -q -y install mysql-server
+	mysqladmin -u root password $(pw)
+	mysql -uroot -p$(pw) < initallizeData.sql
 
 .PHONY: all mysql
