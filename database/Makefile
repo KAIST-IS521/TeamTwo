@@ -3,8 +3,8 @@ all: mysql
 
 mysql:
 	sudo apt-get update
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $(pw)'
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $(pw)'
+	echo 'mysql-server mysql-server/root_password password $(pw)' | sudo debconf-set-selections
+	echo 'mysql-server mysql-server/root_password_again password $(pw)' | sudo debconf-set-selections
 	sudo apt-get -y install mysql-server
 	mysql -uroot -p$(pw) < initallizeData.sql
 
