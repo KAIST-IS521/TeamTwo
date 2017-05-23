@@ -7,6 +7,21 @@
 ## Install module dependencies:
 	cd webServer && npm install
 
+## Configure
+	configure following info on your platform in `./routes/config.js`
+'''
+	// set your PGP password
+	c.PASSWORD = '******';
+
+	// set your database connection info
+	c.database = {
+	  host : 'localhost',
+	  database : 'shoppingmalldb',
+	  user: 'root',
+	  password : '******'
+	};
+'''
+
 ## Run the app:
 	sudo DEBUG=webserver:* npm start
 
