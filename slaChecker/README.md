@@ -3,7 +3,7 @@
 ## pre-installed
 ```
 # pip2 install requests
-# pip2 install colorlong
+# pip2 install colorlog
 ```
 
 ## How to use
