@@ -1,4 +1,4 @@
-# TeamOne Shopping Mall
+# TeamTwo Shopping Mall
 We developed shopping mall service by using `MySQL`, `GnuPG`, and `Express` framework on `Node.js`.
 
 ## Intro
