@@ -3,9 +3,9 @@ all: mysql
 
 mysql:
 	sudo apt-get update
-	export DEBIAN_FRONTEND=noninteractive
-	sudo -E apt-get -q -y install mysql-server
-	mysqladmin -u root password $(pw)
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $(pw)'
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $(pw)'
+	sudo apt-get -y install mysql-server
 	mysql -uroot -p$(pw) < initallizeData.sql
 
 .PHONY: all mysql
