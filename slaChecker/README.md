@@ -16,6 +16,8 @@ Here is a list for them
 - `check_sendmsg.py`
 - `check_cart.py`
 
+Before run, you must check `config.py` and change ID, PW field.
+
 In general you can run these scripts with follong commands:
 ```
 $ python2 check_<name>.py <ip> <port>
