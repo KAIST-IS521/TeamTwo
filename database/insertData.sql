@@ -46,8 +46,3 @@ INSERT INTO products ( price, name, imgsrc, serial_key ) VALUES ( '10', 'PLANET 
 INSERT INTO products ( price, name, imgsrc, serial_key ) VALUES ( '5', 'REAL WATCH', '/pics/watch.png', 'KDNG-I023-874N-DS82');
 
 INSERT INTO shopping_cart ( user_id, product_id, product_num ) VALUES( 'test', '1', '3' );
-
-INSERT INTO orders (order_id, user_id, status, bank_account) VALUES('1', 'test', 'completed', 'no_account');
-INSERT INTO order_items (order_id, product_id, product_num) VALUES ('1', 2, 18);
-INSERT INTO order_items (order_id, product_id, product_num) VALUES ('1', 1, 1);
-INSERT INTO order_items (order_id, product_id, product_num) VALUES ('1', 3, 2);
