@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -std=gnu99
-CLIBS = -lgpgme -ljansson -lcrypto -lm
+CLIBS = -lgpgme -ljansson -lcrypto -lm -D_FILE_OFFSET_BITS=64
 
 SDIR = src
 ODIR = build
@@ -10,9 +10,9 @@ OBJ = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(SRC))
 
 TARGET = flagUpdater
 
-.PHONY: all debug release clean
+.PHONY: all debug release clean install
 
-all: release
+all: install release
 
 $(ODIR):
 	mkdir -p $@
@@ -28,6 +28,10 @@ release: $(ODIR)/$(TARGET)
 
 debug: CFLAGS += -g -DDEBUG
 debug: $(ODIR)/$(TARGET)
+
+install:
+	sudo apt-get --assume-yes update
+	sudo apt-get --assume-yes install libgpgme11-dev libssl-dev libjansson-dev
 
 clean:
 	rm -rf $(ODIR)/*

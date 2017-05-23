@@ -6,20 +6,10 @@
 #include <string.h>
 #include <errno.h>
 
-#ifdef DEBUG
-
 /* log info */
 #define log_info(msg) fprintf(stdout, "[\x1B[32m*\x1B[0m] " msg "\n");
 /* log formatted info */
 #define log_infof(msg, ...) fprintf(stdout, "[\x1B[32m*\x1B[0m] " msg "\n", ##__VA_ARGS__);
-
-#else
-
-#define log_info(msg)
-#define log_infof(msg, ...)
-
-#endif
-
 /* log warning */
 #define log_warn(msg) fprintf(stderr, "[\x1B[33m?\x1B[0m] " msg "\n");
 /* log formatted warning */
