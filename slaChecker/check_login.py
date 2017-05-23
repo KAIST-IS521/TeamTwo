@@ -21,12 +21,14 @@ def check_login():
 
         if 'set-cookie' not in r.headers:
             colorlog.error('"{}" failed'.format(current_function_name))
+            exit(1)
             return
 
         cookie = r.headers['set-cookie']
 
-    except:
+    except requests.exceptions.ConnectionError:
         colorlog.error('"{}" failed'.format(current_function_name))
+        exit(2)
         return
 
     colorlog.info('"{}" passed'.format(current_function_name))
@@ -47,6 +49,7 @@ def check_logout(cookie):
 
         if 'set-cookie' not in r.headers:
             colorlog.error('"{}" failed'.format(current_function_name))
+            exit(1)
             return
 
         cookie = r.headers['set-cookie']
@@ -60,10 +63,12 @@ def check_logout(cookie):
 
         if r.status_code == 304:
             colorlog.error('"{}" failed'.format(current_function_name))
+            exit(1)
             return
 
-    except:
+    except requests.exceptions.ConnectionError:
         colorlog.error('"{}" failed'.format(current_function_name))
+        exit(2)
         return
 
     colorlog.info('"{}" passed'.format(current_function_name))
@@ -72,3 +77,4 @@ def check_logout(cookie):
 if __name__ == '__main__':
     cookie = check_login()
     check_logout(cookie)
+    exit(0)
