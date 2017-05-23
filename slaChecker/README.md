@@ -13,6 +13,7 @@ Here is a list for them
 - `check_connection.py`
 - `check_login.py`
 - `check_search.py`
+- `check_sendmsg.py`
 
 In general you can run these scripts with follong commands:
 ```
