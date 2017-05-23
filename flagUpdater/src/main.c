@@ -9,12 +9,15 @@
 #include "json.h"
 #include "base64.h"
 #include "file.h"
+#include "time.h"
 
 #define MAX_BUF (1024 * 8)
+
 #define GPG_PRIV_KEY "priv_key.asc"
 #define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
+
 #define FLAG_DIR "/var/ctf"
 #define FLAG_PATH "/var/ctf/shoppingmall.flag"
 
@@ -211,10 +214,13 @@ void new_client_cb(int sockfd)
 {
     int ret;
     char buf[MAX_BUF] = { '\0' };
-    char *username, *fpr, *json_text,
+    char *time, *username, *fpr, *json_text,
         *json_signer, *json_flag, *json_sign;
 
-    log_infof("=========== sock %d ===========", sockfd);
+    time = time_now();
+
+    log_infof("=========== sock %02d ===========", sockfd);
+    log_infof("time: %s", time);
 
     /* prompt for username */
     sprintf(buf, "username: ");
@@ -284,7 +290,7 @@ void new_client_cb(int sockfd)
         return;
     }
 
-    log_info("flag signature verified successfully");
+    log_info("flag signature verified");
 
     /* update flag */
     bzero(buf, MAX_BUF);
@@ -297,10 +303,10 @@ void new_client_cb(int sockfd)
         return;
     }
 
-    /* TODO: log to file */
+    log_info("flag updated");
 
     /* send last result */
-    sprintf(buf, "so long, and thanks for all the fish\n");
+    sprintf(buf, "successfully updated flag\n");
     sock_write(sockfd, buf, strlen(buf));
 
     log_info("===============================");
@@ -309,6 +315,7 @@ void new_client_cb(int sockfd)
     free(json_signer);
     free(json_flag);
     free(json_sign);
+    free(time);
 }
 
 int main(int argc, char *argv[])
