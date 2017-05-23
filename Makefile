@@ -1,7 +1,7 @@
 all: packages database webServer flagUpdater
 
 packages:
-	./set_timezone.sh
+	sudo ./set_timezone.sh
 	sudo apt-get -yy update
 	sudo apt-get install -yy python-pip
 	sudo pip install requests
