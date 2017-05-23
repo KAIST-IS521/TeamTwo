@@ -1,13 +1,6 @@
+DROP DATABASE IF EXISTS shoppingmalldb;
+CREATE DATABASE shoppingmalldb;
 use shoppingmalldb;
-
-drop table order_items;
-drop table orders;
-drop table shopping_cart;
-drop table products;
-drop table messages;
-drop table users;
-drop table github_users;
-
 
 CREATE TABLE  github_users (
     github_id           varchar(32)   NOT NULL ,
