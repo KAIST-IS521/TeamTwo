@@ -125,47 +125,56 @@ router.post('/requestPGP', function(req, res, next)
                 // random number for verifying user
                 var random_num = Math.floor(Math.random() * (config.MAX - config.MIN));
 
-                // file write
-                fs.writeFile( './tmp/' + result[0].id + '.txt', random_num.toString(),  function(err) {
-                    // file error
-                    if (err) {
+                // GPG excution.
+                cp.exec( 'rm -rf ./tmp/' + result[0].id + '* ;', function(error, stdout, stderr)
+                {
+                    // GPG error
+                    if (error) {
                         console.error(err);
-                        return res.json( { status: 0, message: "file error..."} );
+                        return  res.json( { status: 0, message: "File delete..."} );
                     }
 
-                    console.log( result[0].id + ".txt: Data written successfully!" );
-
-                    // GPG excution.
-                    cp.exec('gpg --armor --encrypt --yes --recipient '
-                                + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
-                                // + 'cp ./tmp/' + result[0].id + '.txt.asc ./public/' + result[0].id + '.asc'
-                                , function(error, stdout, stderr)
-                    {
-                        // GPG error
-                        if (error) {
+                    // file write
+                    fs.writeFile( './tmp/' + result[0].id + '.txt', random_num.toString(),  function(err) {
+                        // file error
+                        if (err) {
                             console.error(err);
-                            return  res.json( { status: 0, message: "GPG error..."} );
+                            return res.json( { status: 0, message: "file error..."} );
                         }
 
-                        // read encrypted file
-                        fs.readFile( './tmp/' + result[0].id + '.txt.asc', function (err, data) {
-                            // file read error
-                            if (err) {
+                        console.log( result[0].id + ".txt: Data written successfully!" );
+
+                        // GPG excution.
+                        cp.exec( 'gpg --armor --encrypt --trust-model always --recipient '
+                                    + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
+                                    , function(error, stdout, stderr)
+                        {
+                            // GPG error
+                            if (error) {
                                 console.error(err);
-                                return  res.json( { status: 0, message: "file error..."} );
+                                return  res.json( { status: 0, message: "GPG error..."} );
                             }
 
-                            console.log("Asynchronous read: " + data.toString());
+                            // read encrypted file
+                            fs.readFile( './tmp/' + result[0].id + '.txt.asc', function (err, data) {
+                                // file read error
+                                if (err) {
+                                    console.error(err);
+                                    return  res.json( { status: 0, message: "file error..."} );
+                                }
 
-                            // sending encrypted file
-                            res.json( {
-                                status: 1,
-                                encrypt: data.toString(),
-                                url: req.protocol + '://' + req.host + '/' + result[0].id + '.asc'
-                            });
-                        }); // end file read
-                    }); // end GPG execution
-                }); // end file write
+                                console.log("Asynchronous read: " + data.toString());
+
+                                // sending encrypted file
+                                res.json( {
+                                    status: 1,
+                                    encrypt: data.toString(),
+                                    url: req.protocol + '://' + req.host + '/' + result[0].id + '.asc'
+                                });
+                            }); // end file read
+                        }); // end GPG execution
+                    }); // end file write
+                }); // file delete
             } // end github id checking
 
             // when github id is not exist
