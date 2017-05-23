@@ -2,5 +2,6 @@
 
 ## pre-installed
 ```
+# pip2 install requests
 # pip2 install colorlong
 ```
