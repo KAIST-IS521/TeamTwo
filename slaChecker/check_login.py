@@ -84,6 +84,21 @@ def check_logout():
     colorlog.info('"{}" passed'.format(current_function_name))
     return
 
+def check_auth():
+    frame = inspect.currentframe()
+    current_function_name = inspect.getframeinfo(frame).function
+
+    restricted_pages = ['order', 'cart', 'mypage']
+
+    for page in restricted_pages:
+        r = requests.get('http://{}:{}/order'.format(HOST, PORT))
+
+        if r.url != 'http://{}:{}/'.format(HOST, PORT):
+            colorlog.error('"{}" failed'.format(current_function_name))
+            os._exit(2)
+
+    colorlog.info('"{}" passed'.format(current_function_name))
+
 if __name__ == '__main__':
     if len(sys.argv) == 3:
         HOST = sys.argv[1]
@@ -91,4 +106,5 @@ if __name__ == '__main__':
 
     check_login()
     check_logout()
+    check_auth()
     os._exit(0)

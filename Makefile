@@ -6,6 +6,7 @@ packages:
 	sudo apt-get install -yy python-pip
 	sudo apt-get install -yy unzip
 	sudo pip install requests
+	sudo pip install beautifulsoup4
 	sudo pip install colorlog
 	wget https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x86.tar.xz
 	xz -d node-v6.10.3-linux-x86.tar.xz
