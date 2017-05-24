@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <jansson.h>
 
 #include "logger.h"
@@ -370,7 +371,11 @@ int main(int argc, char *argv[])
 
     log_infof("listening port %d...", port);
 
-    /* TODO: daemonize */
+    /* daemonize */
+#ifndef DEBUG
+    /* first arg: keep working directory so file paths are correct */
+    ret = daemon(1, 1);
+#endif
 
     /* synchronously handle clients */
     ret = sock_listen(srv_fd, new_client_cb);
