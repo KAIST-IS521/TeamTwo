@@ -65,7 +65,7 @@ router.get('/purchase', function(req, res, next)
     }
 
     // order_id
-    var order_id = req.session.user + new Date().toISOString().replace(/T/,'').replace(/\..+/,'').replace( " ", "" )
+    var order_id = req.session.user + (new Date()).getTime().toISOString().replace(/T/,'').replace(/\..+/,'').replace( " ", "" )
                                         .replace( "-", "" ).replace( "-", "" ).replace( ":", "" ).replace( ":", "" );
     console.log( order_id );
 
