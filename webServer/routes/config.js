@@ -20,8 +20,8 @@ c.make_account = './bank/make_account.py'
 c.check_transaction = './bank/check_transection.py';
 c.remove_account = './bank/remove_account.py';
 
-// back account checking time (ms)
-c.TIME_TO_CHECK = 1000*60;
+// bank account checking interval (ms)
+c.TIME_TO_CHECK = 1000*6;
 
 // Random number for user authentication
 c.MAX = 650000;
