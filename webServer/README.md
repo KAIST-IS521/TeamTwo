@@ -1,29 +1,23 @@
 # Web Server
 
 ## Pre-install ( Node.js )
-	sudo apt-get install nodejs
-	sudo apt-get install npm
+Installed by up-level Makefile
 
 ## Install module dependencies:
-	cd webServer && npm install
+Installed by up-level Makefile
 
 ## Configure
-	configure following info on your platform in `./routes/config.js`
-```
-	// set your PGP password
-	c.PASSWORD = '******';
+### IMPORTANT
+** YOU MUST CONFIGURE BEFORE RUNNING WEBSERVER **
 
-	// set your database connection info
-	c.database = {
-	  host : 'localhost',
-	  database : 'shoppingmalldb',
-	  user: 'root',
-	  password : '******'
-	};
-```
+Import server's gpg private key with ** root permission **.
 
 ## Run the app:
-	sudo DEBUG=webserver:* npm start
+
+Prompt will require passphrase of server's private key.
+```
+$ ./run.sh
+```
 
 ## Directory & File info
 
