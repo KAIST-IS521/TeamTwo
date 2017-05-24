@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <jansson.h>
 
 #include "logger.h"
-#include "ip.h"
 #include "sock.h"
 #include "gpg.h"
 #include "json.h"
@@ -13,8 +13,6 @@
 
 #define MAX_BUF (1024 * 8)
 
-#define GPG_PRIV_KEY "priv_key.asc"
-#define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
 
@@ -43,6 +41,9 @@ int authenticate(int sockfd, char *username, char **fpr)
     }
     else if (ret != 0) {
         log_warnf("failed to find key '%s'", keypath);
+
+        sprintf(buf, "authentication failed\n");
+        sock_write(sockfd, buf, strlen(buf));
         return -1;
     }
 
@@ -235,21 +236,12 @@ void new_client_cb(int sockfd)
 
     /* try to authenticate client */
     ret = authenticate(sockfd, username, &fpr);
-    if (ret == 0) {
-        log_infof("authentication successful");
-        sprintf(buf, "authentication successful\n");
-        sock_write(sockfd, buf, strlen(buf));
+    if (ret != 0) {
+        return;
     }
-    else if (ret == 1) {
-        log_infof("access denied");
-        sprintf(buf, "authentication failed\n");
-        sock_write(sockfd, buf, strlen(buf));
-    }
-    else {
-        log_errf("authentication failed");
-        sprintf(buf, "authentication failed\n");
-        sock_write(sockfd, buf, strlen(buf));
-    }
+    log_infof("authentication successful");
+    sprintf(buf, "authentication successful\n");
+    sock_write(sockfd, buf, strlen(buf));
 
     /* read encrypted json */
     bzero(buf, MAX_BUF);
@@ -321,27 +313,32 @@ void new_client_cb(int sockfd)
 int main(int argc, char *argv[])
 {
     int ret;
-    char *ip;
+    char *ip, *priv_key;
     int port;
     int srv_fd;
 
-    if (argc < 3) {
-        log_errf("usage: %s <ip> <port>", argv[0]);
+    if (argc < 2) {
+        log_errf("usage: %s <priv_key>", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    /* set default values */
+    ip = "127.0.0.1";
+    port = 42;
+
+    /* parse private key */
+    priv_key = strdup(argv[1]);
+    if (!file_exists(priv_key)) {
+        log_errf("failed to open private key '%s'", priv_key);
         exit(EXIT_FAILURE);
     }
 
     /* init crypto engine and keys */
-    gpg_init(GPG_PRIV_KEY);
-
-    /* parse ip */
-    ip = strdup(argv[1]);
-    if (!ip_valid(ip)) {
-        log_errf("failed to parse ip '%s'", ip);
+    ret = gpg_init(priv_key);
+    if (ret < 0) {
+        log_errf("failed to init crypto engine");
         exit(EXIT_FAILURE);
     }
-
-    /* parse port */
-    port = atoi(argv[2]);
 
     /* check that /var/ctf exists */
     if (!file_exists(FLAG_DIR)) {
@@ -353,6 +350,12 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* check gpg keys dir exists */
+    if (!file_exists(GPG_KEYS_DIR)) {
+        log_err("failed to open " GPG_KEYS_DIR " directory");
+        exit(EXIT_FAILURE);
+    }
+
     /* open socket */
     srv_fd = sock_open(ip, port);
     if (srv_fd < 0) {
@@ -362,13 +365,21 @@ int main(int argc, char *argv[])
 
     log_infof("listening port %d...", port);
 
+    /* daemonize */
+#ifndef DEBUG
+    /* first arg: keep working directory so file paths are correct */
+    ret = daemon(1, 1);
+#endif
+
     /* synchronously handle clients */
     ret = sock_listen(srv_fd, new_client_cb);
     if (ret < 0) {
         exit(EXIT_FAILURE);
     }
 
+    /* clean up */
     gpg_free();
+    free(priv_key);
 
     return 0;
 }
