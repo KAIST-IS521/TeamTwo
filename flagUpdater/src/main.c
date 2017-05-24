@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
     /* parse private key */
     priv_key = strdup(argv[1]);
     if (!file_exists(priv_key)) {
-        log_errf("no such file '%s'", priv_key);
+        log_errf("failed to open private key '%s'", priv_key);
         exit(EXIT_FAILURE);
     }
 
@@ -355,6 +355,12 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* check gpg keys dir exists */
+    if (!file_exists(GPG_KEYS_DIR)) {
+        log_err("failed to open " GPG_KEYS_DIR " directory");
+        exit(EXIT_FAILURE);
+    }
+
     /* open socket */
     srv_fd = sock_open(ip, port);
     if (srv_fd < 0) {
@@ -372,7 +378,9 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /* clean up */
     gpg_free();
+    free(priv_key);
 
     return 0;
 }
