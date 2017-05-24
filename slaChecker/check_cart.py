@@ -33,7 +33,7 @@ def check_cart():
                 'Cookie': cookie,
         }
 
-        r = requests.get('http://{}:{}/product/add?product-id=1&product-num=10'.format(HOST, PORT),
+        r = requests.get('http://{}:{}/product/add?product-id=1&product-num=8'.format(HOST, PORT),
                 headers=headers)
 
         if r.status_code != 200:
