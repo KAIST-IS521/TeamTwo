@@ -39,13 +39,13 @@ try:
     E_MONEY = int(sys.argv[3])
 
     GET_MONEY_CMD = '''1
-    {id}
-    {pw}
-    1
+{id}
+{pw}
+1
 
-    5
-    3
-    '''.format(**{'id': ID, 'pw': PW})
+5
+3
+'''.format(**{'id': ID, 'pw': PW})
 
     s = socket(AF_INET, SOCK_STREAM)
     s.connect((HOST, PORT))
