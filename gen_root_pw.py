@@ -7,5 +7,5 @@ for i, v in enumerate(pw):
     if not v.isalnum():
         pw[i] = 'A'
 
-with open('rootpw', 'w') as f:
+with open('../rootpw', 'w') as f:
     f.write('A' + ''.join(pw))
