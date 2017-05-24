@@ -121,7 +121,7 @@ router.get('/purchase', function(req, res, next)
                 console.log(result);
 
                 // check bank account after 1 minute
-                setTimeout( bank.checkBankAccount, config.TIME_TO_CHECK );
+                bank.checkAccount();
 
                 // show empty list in shopping cart
                 res.json({ status: 1 , message: "Success...", account: bank_account });

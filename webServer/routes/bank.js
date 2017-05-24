@@ -5,100 +5,142 @@ var q = require('./db.js');
 
 var bank = {};
 
+bank.now_check = false;
+
+
+/*
+ *  This function sets up loop for checking every minute.
+ */
+bank.checkAccount = function()
+{
+	console.log( 'Trigger timer');
+	if ( this.now_check == false )
+		this.now_check = setInterval( bank.connectBank, config.TIME_TO_CHECK );
+};
+
+
+/*
+ *  This function disables the above loop for checking every minute.
+ */
+bank.stopCheck = function()
+{
+	console.log( 'Timer stop');
+	clearInterval( this.now_check );
+	this.now_check = false;
+}
+
 
 /*
  * This function is called as a callback function 1 minute after purchasing item.
- * TODO : this function can not be implemented because other team's dependency...
+ * TODO : this function is implemented, but not tested fully because other team's dependency...
  *        So we just implemented the simple scenario with dummy data...
  *        and we said this situation to the professor...
  *        He said these kind of integration issue will be continued next week.
  */
-bank.checkBankAccount = function( )
+bank.connectBank = function( )
 {
-	var sString = 'SELECT * FROM orders WHERE status = "pending"';
+	console.log( 'Timer function');
 
-	// // update the status in order table
- //    q.query( sString, function( err, result, fields )
- //    {
- //        // when SQL error
- //        if (err) {
- //            console.log(err);
- //            return;
- //        }
+	// SQL query for searching all the pending status orders
+	var sString =  'SELECT orders.order_id AS id, orders.added_time AS time, \
+						orders.bank_account AS account, orders.bank_pw AS pw, \
+						SUM( order_items.product_num * products.price ) AS amount \
+					FROM ( orders JOIN order_items ) JOIN products \
+					ON ( orders.order_id = order_items.order_id ) \
+						AND ( order_items.product_id = products.product_id ) \
+					WHERE orders.status = "pending" \
+					GROUP BY orders.order_id ';
 
-	// 	// when SQL success
-	// 	var item = result[0];
+	// SQL handling
+    q.query( sString, function( err, result, fields )
+    {
+        // when SQL error
+        if (err) {
+            console.log(err);
+            return;
+        }
 
-	// 	console.log(item)
+		// when SQL success
+		var items = result;
+		console.log( result );
 
-	    // check_transaction.py excution.
-	    cp.exec( config.check_transaction + ' ' + 'test1' + ' ' + 'test' + ' 1000', function( error, stdout, stderr )
-	    {
-	        // execution error
-	        if (error) {
-	            console.error(error);
-	            return;
-	        }
+		// when there are no pending order, stop the checking loop
+		if ( items.length == 0 )
+			bank.stopCheck();
 
-	        console.log(stdout);
-	        console.log(stdout.toString());
-	        console.log(stdout.toString().substring(0,7));
+		items.forEach( function( item, index )
+		{
+			console.log( item );
 
-			// SQL query for updating status
-	        if ( stdout.toString().substring(0,6) == 'success' ) {
-	        	// var uString = 'UPDATE orders SET status = "completed" WHERE order_id = ? ';
-	        	var uString = 'UPDATE orders SET status = "completed" WHERE status = "pending" ';
+			var time_now = new Date();
+			var time_order = new Date( item.time );
 
-	        	// update the status in order table
-		        q.query( uString, /* [ item.order_id ],*/ function( err, result, fields )
-		        {
-		            // when SQL error
-		            if (err) {
-		                console.log(err);
-		                return;
-		            }
+			console.log( time_now.getTime() );
+			console.log( time_order.getTime() );
+			console.log( time_order.getTime() + 60000 <= time_now.getTime() );
 
-		            // when SQL success
-		            console.log(result);
-		            return;
-		        });
+			// check one minute later
+			if ( time_order.getTime() + 60000 <= time_now.getTime() )
+			{
+			    // check_transaction.py excution.
+			    //var check_result = cp.execSync( config.check_transaction + ' ' + item.account + ' ' + item.pw + ' ' + item.amount );
+			    var check_result = cp.execSync( config.check_transaction + ' ' + 'test1' + ' ' + 'test' + ' ' + '1000' );
 
-		        q.execute();
-	        }
-	        // else {
-	        	// var uString = 'UPDATE orders SET status = "abort" WHERE order_id = ? ';
-	       		var uString = 'UPDATE orders SET status = "abort" WHERE status = "pending" ';
+				console.log( check_result.toString() );
+				console.log( check_result.toString().substring(0,7) );
 
-	        	// update the status in order table
-		        q.query( uString, /* [ item.order_id ],*/ function( err, result, fields )
-		        {
-		            // when SQL error
-		            if (err) {
-		                console.log(err);
-		                return;
-		            }
+			    if (check_result.toString().substring(0,7) == 'success')
+			    {
+			        console.log('account checked.... success');
 
-		            // when SQL success
-		            console.log(result);
+		        	var uString = 'UPDATE orders SET status = "completed" WHERE order_id = ? ';
 
-	       //    	    // remove_account.py excution.
-				    // cp.exec( config.remove_account + ' ' + item.bank_account + ' ' + item.bank_pw, function( error, stdout, stderr )
-				    // {
-				    //     // execution error
-				    //     if (error) {
-				    //         console.error(error);
-				    //         return;
-				    //     }
+		        	// update the status in order table
+			        q.query( uString, [ item.id ], function( err, result, fields )
+			        {
+			            // when SQL error
+			            if (err) {
+			                console.log(err);
+			                return;
+			            }
 
-				    //     console.log(stdout);
-				    //     return;
-				    // }); // end exec
-		        }); // end SQL query
-	        // } // end else
-	    }); // end exec
+			            // when SQL success
+			            console.log(result);
+			            return;
+			        });
 
-	// }); // end SQL query
+			        q.execute();
+		        }
+			    else {
+			    	console.log('account checked.... fail');
+
+		        	var uString = 'UPDATE orders SET status = "abort" WHERE order_id = ? ';
+
+		        	// update the status in order table
+			        q.query( uString, [ item.id ], function( err, result, fields )
+			        {
+			            // when SQL error
+			            if (err) {
+			                console.log(err);
+			                return;
+			            }
+
+			            // when SQL success
+			            console.log(result);
+
+		          	    // remove_account.py excution.
+					    // cp.execSync( config.remove_account + ' ' + item.account + ' ' + item.pw );
+
+					    console.log('delete temporary account...');
+			        }); // end SQL query
+
+			        q.execute();
+	        	} // end else
+	        } // end if
+		});  // end foreach
+	}); // end SQL query
 };
 
+bank.checkAccount();
 
 module.exports = bank;
