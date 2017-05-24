@@ -96,24 +96,3 @@ function modifyProductQuantity(id, quantity){
     var q = parseInt($("#"+id).val())+parseInt(quantity);
     $("#"+id).val(q);
 };
-
-/*
-function msgFunction(session, comments) {
-    var session = false;
-
-    // if($(comments).value.length < 10)
-    // {
-    //   alert("Please insert more than 10byte.");
-    //   return;
-    // }
-    if(session == true)
-    {
-        //send msg
-        return;
-    }
-    else
-    {
-        alert("If you want to use it, You should Log-in first.");
-    }
-}
-*/
