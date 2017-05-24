@@ -25,36 +25,40 @@ def check_line_by_line(s, keyword):
             break
     return res
 
-HOST = 'localhost'
-PORT = 1588
+try:
+    HOST = 'localhost'
+    PORT = 1588
 
-if len(sys.argv) != 4:
-    print 'Usage: '
-    print '{} <id> <pw> <expected-money>'.format(sys.argv[0])
+    if len(sys.argv) != 4:
+        print 'Usage: '
+        print '{} <id> <pw> <expected-money>'.format(sys.argv[0])
+        exit(1)
+
+    ID = sys.argv[1]
+    PW = sys.argv[2]
+    E_MONEY = int(sys.argv[3])
+
+    GET_MONEY_CMD = '''1
+    {id}
+    {pw}
+    1
+
+    5
+    3
+    '''.format(**{'id': ID, 'pw': PW})
+
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send(GET_MONEY_CMD)
+
+    res = check_line_by_line(s, 'Balance')
+    res = check_line_by_line(s, 'Balance')
+
+    balance = int(re.findall(r'([0-9]+)', res)[-1])
+    s.close()
+except:
+    print 'fail'
     exit(1)
-
-ID = sys.argv[1]
-PW = sys.argv[2]
-E_MONEY = int(sys.argv[3])
-
-GET_MONEY_CMD = '''1
-{id}
-{pw}
-1
-
-5
-3
-'''.format(**{'id': ID, 'pw': PW})
-
-s = socket(AF_INET, SOCK_STREAM)
-s.connect((HOST, PORT))
-s.send(GET_MONEY_CMD)
-
-res = check_line_by_line(s, 'Balance')
-res = check_line_by_line(s, 'Balance')
-
-balance = int(re.findall(r'([0-9]+)', res)[-1])
-s.close()
 
 if balance >= E_MONEY:
     print 'success'
