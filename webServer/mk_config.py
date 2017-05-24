@@ -1,16 +1,25 @@
-// configuration file for global variable
-var c = {};
+#!/usr/bin/python2
+import os
+
+if os.path.exists('routes/config.js'):
+    exit(0)
+
+passphrase = raw_input('input your passpharse of gpg private key: ')
+db_pass = open('../rootpw').read()
+
+config_format = ''' // configuration file for global variable
+var c = {{}};
 
 // set your PGP password
-c.PASSWORD = '******';
+c.PASSWORD = '{}';
 
 // set your database connection info
-c.database = {
+c.database = {{
   host : 'localhost',
   database : 'shoppingmalldb',
   user: 'root',
-  password : 'is521'
-};
+  password : '{}'
+}};
 
 // shoppingmall flag path
 c.flag_path = '/var/ctf/shoppingmall.flag';
@@ -27,4 +36,7 @@ c.TIME_TO_CHECK = 1000*6;
 c.MAX = 650000;
 c.MIN = 0;
 
-module.exports = c;
+module.exports = c;'''
+
+with open('routes/config.js', 'w') as f:
+    f.write(config_format.format(passphrase, db_pass))

@@ -1,4 +1,4 @@
-pw=is521
+pw=$(cat ../gen_root_pw.py)
 all: mysql
 
 mysql:
