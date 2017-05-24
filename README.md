@@ -16,26 +16,52 @@ make
 
 ### Use your web browser to access our service.
 
-### Main page
+
+## Menus
+
+Navigation var includes the all menus such as shopping cart, order, sign-up, login, logout, mypage, etc. But, before log-in, some menus like shopping cart, order and mypage are hiden.
+
+### List of items & Search
+
+Main page includes list of items and search UI. If you push the detail button, you can add the item to the shopping cart or buy it.
+
 ![main](./README_img/main.png)
 
-### Sign-up page
-![register](./README_img/register.png)
-
-### Log-in page
-![login](./README_img/login.png)
-
-### Product page
 ![product](./README_img/product.png)
 
-### Detail item view
 ![detail](./README_img/detail.png)
 
-### Shopping cart page
+
+### Sign-up
+
+We support PGP-based authentication. If you write your GitHub ID and push the request button, you can get the encpryted text. Then you decrypt it with your private key and you have to encryt it with our public key. And you paste the encrypted text in the text area field.
+
+![register](./README_img/register.png)
+
+
+### Log-in page
+
+After sign-up, you can login with ID, PW.
+
+![login](./README_img/login.png)
+
+
+### Shopping cart
+
+This shopping cart page shows your choosen items. If you push order button, you can buy it.
+
 ![shopping cart](./README_img/cart.png)
 
-### Order list
+
+### View Order
+
+You can see the purchased item in order page.
+
 ![order](./README_img/order.png)
 
+
 ### Message to admin
+
+You can send a message to the admin and see the sent messages in mypage.
+
 ![mypage](./README_img/mypage.png)
