@@ -19,4 +19,4 @@ print
 print
 print
 print
-print res.split('\n', 1)[1]
+print res
