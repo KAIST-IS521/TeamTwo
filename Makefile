@@ -4,6 +4,7 @@ packages:
 	sudo ./set_timezone.sh
 	sudo apt-get -yy update
 	sudo apt-get install -yy python-pip
+	sudo apt-get install -yy unzip
 	sudo pip install requests
 	sudo pip install colorlog
 	wget https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x86.tar.xz
