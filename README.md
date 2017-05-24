@@ -6,6 +6,16 @@ We developed shopping mall service by using `MySQL`, `GnuPG`, and `Express` fram
 Our shopping mall is web service, so we expect you can easily figure out how to use without any comment.
 The following screen shot will be helpful to understand our service.
 
+## How to Use
+### Download the source code and build it.
+```
+git clone https://github.com/KAIST-IS521/TeamTwo.git
+cd TeamTwo
+make
+```
+
+### Use your web browser to access our service.
+
 ### Main page
 ![main](./README_img/main.png)
 
@@ -29,14 +39,3 @@ The following screen shot will be helpful to understand our service.
 
 ### Message to admin
 ![mypage](./README_img/mypage.png)
-
-
-## How to Use
-### Download the source code and build it.
-```
-git clone https://github.com/KAIST-IS521/TeamTwo.git
-cd TeamTwo
-make
-```
-
-### Use your web browser to access our service.
