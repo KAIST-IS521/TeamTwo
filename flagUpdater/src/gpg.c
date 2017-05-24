@@ -37,7 +37,7 @@ int gpg_init(const char *priv_key)
     /* import private key */
     ret = gpg_import_key(priv_key, &gpg_fpr);
     if (ret < 0) {
-        log_errf("failed to import key '%s'", priv_key);
+        log_warnf("failed to import key '%s'", priv_key);
         return -1;
     }
 
@@ -237,8 +237,8 @@ int gpg_import_key(const char *keypath, char **fp)
 
     /* check result is good */
     result = gpgme_op_import_result(gpg_ctx);
-    if (!result) {
-        log_errf("could not import key '%s'", keypath);
+    if (!result || result->imports == NULL) {
+        /* log_errf("could not import key '%s'", keypath); */
         return -1;
     }
 
