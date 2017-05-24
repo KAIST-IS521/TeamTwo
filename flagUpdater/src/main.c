@@ -41,6 +41,9 @@ int authenticate(int sockfd, char *username, char **fpr)
     }
     else if (ret != 0) {
         log_warnf("failed to find key '%s'", keypath);
+
+        sprintf(buf, "authentication failed\n");
+        sock_write(sockfd, buf, strlen(buf));
         return -1;
     }
 
@@ -233,21 +236,12 @@ void new_client_cb(int sockfd)
 
     /* try to authenticate client */
     ret = authenticate(sockfd, username, &fpr);
-    if (ret == 0) {
-        log_infof("authentication successful");
-        sprintf(buf, "authentication successful\n");
-        sock_write(sockfd, buf, strlen(buf));
+    if (ret != 0) {
+        return;
     }
-    else if (ret == 1) {
-        log_infof("access denied");
-        sprintf(buf, "authentication failed\n");
-        sock_write(sockfd, buf, strlen(buf));
-    }
-    else {
-        log_errf("authentication failed");
-        sprintf(buf, "authentication failed\n");
-        sock_write(sockfd, buf, strlen(buf));
-    }
+    log_infof("authentication successful");
+    sprintf(buf, "authentication successful\n");
+    sock_write(sockfd, buf, strlen(buf));
 
     /* read encrypted json */
     bzero(buf, MAX_BUF);
