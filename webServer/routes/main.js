@@ -151,7 +151,7 @@ router.post('/requestPGP', function(req, res, next)
                         {
                             // GPG error
                             if (error) {
-                                console.error(err);
+                                console.error(error);
                                 return  res.json( { status: 0, message: "GPG error..."} );
                             }
 
