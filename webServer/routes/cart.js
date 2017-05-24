@@ -83,8 +83,7 @@ router.post('/remove', function(req, res, next)
 router.get('/purchase', function(req, res, next)
 {
 	// making unique order_id
-	var order_id = req.session.user + new Date().toISOString().replace(/T/,'').replace(/\..+/,'').replace( " ", "" )
-										.replace( "-", "" ).replace( "-", "" ).replace( ":", "" ).replace( ":", "" );
+    var order_id = req.session.user + (new Date()).getTime().toString();
 
 	var bank_account;
 	var bank_pw;
