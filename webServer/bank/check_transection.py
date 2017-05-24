@@ -58,11 +58,11 @@ try:
     s.close()
 except:
     print 'fail'
-    exit(1)
+    exit(0)
 
 if balance >= E_MONEY:
     print 'success'
     exit(0)
 else:
     print 'fail'
-    exit(1)
+    exit(0)
