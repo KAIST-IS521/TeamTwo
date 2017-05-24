@@ -15,7 +15,7 @@ Dependencies are listed below and should be installed automatically.
 
 # Usage
 
-    # sudo build/flagUpdater 127.0.0.1 42
+    # sudo build/flagUpdater priv_key.asc
 
 *NOTE:* Root privileges is required to bind port 42 and write to `/var/ctf`.
 

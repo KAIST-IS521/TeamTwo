@@ -3,7 +3,6 @@
 #include <jansson.h>
 
 #include "logger.h"
-#include "ip.h"
 #include "sock.h"
 #include "gpg.h"
 #include "json.h"
@@ -13,8 +12,6 @@
 
 #define MAX_BUF (1024 * 8)
 
-#define GPG_PRIV_KEY "priv_key.asc"
-#define GPG_PUB_KEY "pub_key.asc"
 #define GPG_KEYS_DIR "authorized_keys"
 #define GPG_PATTERN "-----END PGP MESSAGE-----"
 
@@ -321,27 +318,32 @@ void new_client_cb(int sockfd)
 int main(int argc, char *argv[])
 {
     int ret;
-    char *ip;
+    char *ip, *priv_key;
     int port;
     int srv_fd;
 
-    if (argc < 3) {
-        log_errf("usage: %s <ip> <port>", argv[0]);
+    if (argc < 2) {
+        log_errf("usage: %s <priv_key>", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    /* set default values */
+    ip = "127.0.0.1";
+    port = 42;
+
+    /* parse private key */
+    priv_key = strdup(argv[1]);
+    if (!file_exists(priv_key)) {
+        log_errf("no such file '%s'", priv_key);
         exit(EXIT_FAILURE);
     }
 
     /* init crypto engine and keys */
-    gpg_init(GPG_PRIV_KEY);
-
-    /* parse ip */
-    ip = strdup(argv[1]);
-    if (!ip_valid(ip)) {
-        log_errf("failed to parse ip '%s'", ip);
+    ret = gpg_init(priv_key);
+    if (ret < 0) {
+        log_errf("failed to init crypto engine");
         exit(EXIT_FAILURE);
     }
-
-    /* parse port */
-    port = atoi(argv[2]);
 
     /* check that /var/ctf exists */
     if (!file_exists(FLAG_DIR)) {
@@ -361,6 +363,8 @@ int main(int argc, char *argv[])
     }
 
     log_infof("listening port %d...", port);
+
+    /* TODO: daemonize */
 
     /* synchronously handle clients */
     ret = sock_listen(srv_fd, new_client_cb);
