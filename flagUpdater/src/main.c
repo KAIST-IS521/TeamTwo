@@ -179,7 +179,7 @@ int validate_flag_data(const char *username, const char *fpr,
     }
 
     /* compare decrypted signature */
-    sprintf(buf, "%s:%s", username, flag);
+    snprintf(buf, MAX_BUF, "%s:%s", username, flag);
     if (strncmp(buf, json_sign_plain, strlen(username) + strlen(flag) + 1) != 0) {
         log_errf("flag signature does not match"
                  "\nwant: %s\ngot: %s", buf, json_sign_plain);
@@ -286,7 +286,7 @@ void new_client_cb(int sockfd)
 
     /* update flag */
     bzero(buf, MAX_BUF);
-    sprintf(buf, "%s\n", json_flag);
+    snprintf(buf, MAX_BUF, "%s\n", json_flag);
     ret = update_flag(FLAG_PATH, buf);
     if (ret < 0) {
         log_err("failed to update flag");
