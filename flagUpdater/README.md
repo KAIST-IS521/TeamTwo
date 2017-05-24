@@ -20,7 +20,12 @@ Dependencies are listed below and should be installed automatically.
 *NOTE:* Root privileges is required to bind port 42 and write to `/var/ctf`.
 
 The program outputs a lot of useful logging to `stdout` which could be piped to
-a file.
+a file. To conveniently do this, use the script `run.sh`, like so:
+
+    # sudo ./run.sh priv_key.asc
+    
+The logfile is named `flagUpdater.log` and is created in the same directory. The
+file is truncated on each run!
 
 # Documentation
 
