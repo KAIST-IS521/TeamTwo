@@ -4,7 +4,9 @@
 ```
 # pip2 install requests
 # pip2 install colorlog
+# pip2 install beautifulsoup4
 ```
+Also, they are installed by up-level Makefile
 
 ## How to use
 In this directory, there are several programs for SLA checking.
@@ -15,6 +17,7 @@ Here is a list for them
 - `check_search.py`
 - `check_sendmsg.py`
 - `check_cart.py`
+- `check_order.py`
 
 Before run, you must check `config.py` and change ID, PW field.
 
