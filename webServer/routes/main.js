@@ -147,6 +147,9 @@ router.post('/requestPGP', function(req, res, next)
                         // GPG excution.
                         cp.exec( 'gpg --armor --encrypt --trust-model always --recipient '
                                     + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
+                                    + 'gpg -s -o'
+                                    + ' ./tmp/' + result[0].id + '.gpg'
+                                    + ' ./tmp/' + result[0].id + '.txt.asc'
                                     , function(error, stdout, stderr)
                         {
                             // GPG error
@@ -156,7 +159,7 @@ router.post('/requestPGP', function(req, res, next)
                             }
 
                             // read encrypted file
-                            fs.readFile( './tmp/' + result[0].id + '.txt.asc', function (err, data) {
+                            fs.readFile( './tmp/' + result[0].id + '.gpg', function (err, data) {
                                 // file read error
                                 if (err) {
                                     console.error(err);
@@ -168,8 +171,7 @@ router.post('/requestPGP', function(req, res, next)
                                 // sending encrypted file
                                 res.json( {
                                     status: 1,
-                                    encrypt: data.toString(),
-                                    url: req.protocol + '://' + req.host + '/' + result[0].id + '.asc'
+                                    encrypt: data.toString()
                                 });
                             }); // end file read
                         }); // end GPG execution
