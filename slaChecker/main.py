@@ -6,6 +6,7 @@ from check_cart import check_cart
 from check_order import check_order
 
 def main():
+    # run all tests
     check_connection()
 
     check_login()
