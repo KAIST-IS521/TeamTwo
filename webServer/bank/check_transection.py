@@ -2,7 +2,7 @@
 
 '''
 Usage:
-    $ ./check_transection.py <id> <pw> <expected_money>
+    $ ./check_transection.py <HOST> <PORT> <id> <pw> <expected_money>
     result: success/fail (stdout)
 '''
 
@@ -29,14 +29,16 @@ try:
     HOST = 'localhost'
     PORT = 1588
 
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 6:
         print 'Usage: '
-        print '{} <id> <pw> <expected-money>'.format(sys.argv[0])
+        print '{} <HOST> <PORT> <id> <pw> <expected-money>'.format(sys.argv[0])
         exit(1)
 
-    ID = sys.argv[1]
-    PW = sys.argv[2]
-    E_MONEY = int(sys.argv[3])
+    HOST = sys.argv[1]
+    PORT = int(sys.argv[2])
+    ID = sys.argv[3]
+    PW = sys.argv[4]
+    E_MONEY = int(sys.argv[5])
 
     GET_MONEY_CMD = '''1
 {id}

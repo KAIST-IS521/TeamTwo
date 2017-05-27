@@ -8,13 +8,15 @@ HOST = 'localhost'
 PORT = 1588
 
 try:
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 5:
         print 'Usage: '
-        print '{} <id> <pw>'.format(sys.argv[0])
+        print '{} <HOST> <PORT> <id> <pw>'.format(sys.argv[0])
         exit(1)
 
-    ID = sys.argv[1]
-    PW = sys.argv[2]
+    HOST = sys.argv[1]
+    PORT = sys.argv[2]
+    ID = sys.argv[3]
+    PW = sys.argv[4]
 
     REMOVE_CMD = '''1
 {id}
