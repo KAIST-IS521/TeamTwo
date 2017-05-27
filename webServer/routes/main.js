@@ -145,11 +145,10 @@ router.post('/requestPGP', function(req, res, next)
                         console.log( result[0].id + ".txt: Data written successfully!" );
 
                         // GPG excution.
-                        cp.exec( 'gpg --armor --encrypt --trust-model always --recipient '
-                                    + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
-                                    + 'gpg -s -o'
-                                    + ' ./tmp/' + result[0].id + '.gpg'
-                                    + ' ./tmp/' + result[0].id + '.txt.asc'
+                        cp.exec( 'gpg -e -a -s -r ' + result[0].email
+                                    + ' --passphrase ' + config.PASSWORD
+                                    + ' --trust-model always '
+                                    + ' -o ./tmp/' + result[0].id + '.gpg'
                                     , function(error, stdout, stderr)
                         {
                             // GPG error
