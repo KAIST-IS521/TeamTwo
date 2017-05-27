@@ -114,7 +114,7 @@ router.get('/purchase', function(req, res, next)
     {
         // GPG error
         if (error) {
-            console.error(error);
+            console.log(error);
             return  res.json( { status: 0, message: "Bank account error..."} );
         }
 
