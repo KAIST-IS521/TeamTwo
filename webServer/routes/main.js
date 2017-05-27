@@ -149,6 +149,7 @@ router.post('/requestPGP', function(req, res, next)
                                     + ' --passphrase ' + config.PASSWORD
                                     + ' --trust-model always '
                                     + ' -o ./tmp/' + result[0].id + '.gpg'
+                                    + ' ./tmp/' + result[0].id + '.txt'
                                     , function(error, stdout, stderr)
                         {
                             // GPG error
