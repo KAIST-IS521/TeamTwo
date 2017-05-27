@@ -61,6 +61,8 @@ a@a.com
 Y
 '''.format(i, p)
     s.send(cmd)
+    recv_until(s, target='Register complete successfully!')
+    s.close()
     return (i, p)
 
 assert len(sys.argv) == 4
