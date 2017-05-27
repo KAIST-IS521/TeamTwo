@@ -4,6 +4,8 @@ import os
 if os.path.exists('routes/config.js'):
     exit(0)
 
+bank_ip = raw_input('input your ip of bank: ')
+bank_port = raw_input('input your port of bank: ')
 passphrase = raw_input('input your passpharse of gpg private key: ')
 db_pass = open('../rootpw').read()
 
@@ -25,6 +27,8 @@ c.database = {{
 c.flag_path = '/var/ctf/shoppingmall.flag';
 
 // bank account related script python path
+c.bank_ip = '{}'
+c.bank_port = '{}'
 c.make_account = './bank/make_account.py'
 c.check_transaction = './bank/check_transection.py';
 c.remove_account = './bank/remove_account.py';
@@ -39,4 +43,4 @@ c.MIN = 0;
 module.exports = c;'''
 
 with open('routes/config.js', 'w') as f:
-    f.write(config_format.format(passphrase, db_pass))
+    f.write(config_format.format(passphrase.strip(), db_pass.strip(), bank_ip.strip(), bank_port.strip()))
