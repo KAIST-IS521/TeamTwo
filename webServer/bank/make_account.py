@@ -52,8 +52,6 @@ TeamTwo
     res = getoutput('echo "{}" | gpg -d --passphrase {} --trust-model always'.format(res, PASS))
     res = re.findall(r'(0x[0-9a-f]+)', res)[0]
     res = getoutput('echo "{}" | gpg -e -a -r "TeamTwo" --trust-model always'.format(res))
-    print repr(res)
-
     s.send(res+'\n')
     cmd = '''
 {}
