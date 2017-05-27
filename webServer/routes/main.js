@@ -163,6 +163,9 @@ router.post('/requestPGP', function(req, res, next)
                                 console.error(error);
                                 return  res.json( { status: 0, message: "GPG error..."} );
                             }
+                            console.log(error);
+                            console.log(stdout);
+                            console.log(stderr);
 
                             // read encrypted file
                             fs.readFile( './tmp/' + result[0].id + '.gpg', function (err, data) {
