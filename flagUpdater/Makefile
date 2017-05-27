@@ -30,7 +30,6 @@ debug: CFLAGS += -g -DDEBUG
 debug: $(ODIR)/$(TARGET)
 
 install:
-	apt-get --assume-yes update
 	apt-get --assume-yes install libgpgme11-dev libssl-dev libjansson-dev
 
 clean:
