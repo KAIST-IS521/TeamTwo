@@ -241,7 +241,7 @@ router.post('/register', function(req, res, next)
                     console.log( result[0].github_id + "_client.asc: saved!" );
 
                     // GPG excution.
-                    cp.exec('gpg --passphrase ' + config.PASSWORD + '-o ./tmp/' + result[0].github_id + '_client.txt'
+                    cp.exec('gpg --passphrase ' + config.PASSWORD + ' -o ./tmp/' + result[0].github_id + '_client.txt'
                                 + ' --decrypt ./tmp/' + result[0].github_id + '_client.asc ' , function(error, stdout, stderr)
                     {
                         // when GPG error
