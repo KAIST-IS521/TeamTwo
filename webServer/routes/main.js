@@ -145,7 +145,7 @@ router.post('/requestPGP', function(req, res, next)
                         console.log( result[0].id + ".txt: Data written successfully!" );
 
                         // GPG excution.
-                        cp.exec( 'gpg --armor --encrypt --trust-model always --recipient '
+                        cp.exec( 'gpg --no-tty --armor --encrypt --trust-model always --recipient '
                                     + result[0].email + ' ./tmp/' + result[0].id + '.txt ;'
                                     , function(error, stdout, stderr)
                         {
@@ -241,7 +241,7 @@ router.post('/register', function(req, res, next)
                     console.log( result[0].github_id + "_client.asc: saved!" );
 
                     // GPG excution.
-                    cp.exec('gpg --passphrase ' + config.PASSWORD
+                    cp.exec('gpg --no-tty --passphrase ' + config.PASSWORD
                                 + ' --decrypt ./tmp/' + result[0].github_id + '_client.asc '
                                 + ' > ./tmp/' + result[0].github_id + '_client.txt', function(error, stdout, stderr)
                     {
