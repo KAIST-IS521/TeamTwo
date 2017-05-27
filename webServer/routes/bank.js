@@ -82,8 +82,12 @@ bank.connectBank = function( )
             if ( time_order.getTime() + 60000 <= time_now.getTime() )
             {
                 // check_transaction.py excution.
-                //var check_result = cp.execSync( config.check_transaction + ' ' + item.account + ' ' + item.pw + ' ' + item.amount );
-                var check_result = cp.execSync( config.check_transaction + ' ' + 'test1' + ' ' + 'test' + ' ' + '1000' );
+                var check_result = cp.execSync( config.check_transaction
+                                        + ' ' + config.bank_ip      // IP
+                                        + ' ' + config.bank_port    // port
+                                        + ' ' + item.account        // id
+                                        + ' ' + item.pw             // pw
+                                        + ' ' + item.amount );      // money
 
                 console.log( check_result.toString() );
                 console.log( check_result.toString().substring(0,7) );
@@ -128,7 +132,11 @@ bank.connectBank = function( )
                         console.log(result);
 
                         // remove_account.py excution.
-                        // cp.execSync( config.remove_account + ' ' + item.account + ' ' + item.pw );
+                        cp.execSync( config.remove_account
+                                    + ' ' + config.bank_ip      // IP
+                                    + ' ' + config.bank_port    // port
+                                    + ' ' + item.account        // id
+                                    + ' ' + item.pw );          // pw
 
                         console.log('delete temporary account...');
                     }); // end SQL query

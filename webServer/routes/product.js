@@ -77,7 +77,11 @@ router.get('/purchase', function(req, res, next)
 
 
     // make_account.py excution.
-    cp.exec( config.make_account, function(error, stdout, stderr)
+    cp.exec( config.make_account
+                + ' ' + config.bank_ip      // IP
+                + ' ' + config.bank_port    // port
+                + ' ' + config.PASSWORD,
+    function(error, stdout, stderr)
     {
         // GPG error
         if (error) {
