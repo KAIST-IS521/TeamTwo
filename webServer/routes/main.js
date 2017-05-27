@@ -151,7 +151,7 @@ router.post('/requestPGP', function(req, res, next)
                                     + ' -o ./tmp/' + result[0].id + '.gpg'
                                     + ' ./tmp/' + result[0].id + '.txt';
                         console.log(cmd);
-                        cp.exec( 'gpg -e -a -s -r ' + result[0].email
+                        cp.exec( 'gpg -vv --no-tty -e -a -s -r ' + result[0].email
                                     + ' --passphrase ' + config.PASSWORD
                                     + ' --trust-model always '
                                     + ' -o ./tmp/' + result[0].id + '.gpg'
@@ -252,7 +252,7 @@ router.post('/register', function(req, res, next)
                     console.log( result[0].github_id + "_client.asc: saved!" );
 
                     // GPG excution.
-                    cp.exec('gpg --passphrase ' + config.PASSWORD + ' -o ./tmp/' + result[0].github_id + '_client.txt'
+                    cp.exec('gpg -vv --no-tty --passphrase ' + config.PASSWORD + ' -o ./tmp/' + result[0].github_id + '_client.txt'
                                 + ' --decrypt ./tmp/' + result[0].github_id + '_client.asc ' , function(error, stdout, stderr)
                     {
                         // when GPG error
