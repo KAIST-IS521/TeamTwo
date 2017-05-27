@@ -84,10 +84,11 @@ router.get('/purchase', function(req, res, next)
     function(error, stdout, stderr)
     {
         // GPG error
+        /*
         if (error) {
             console.error(error);
             return  res.json( { status: 0, message: "Bank account error..."} );
-        }
+        } */
 
         console.log(stdout);
 
