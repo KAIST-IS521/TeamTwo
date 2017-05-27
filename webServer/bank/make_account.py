@@ -49,9 +49,9 @@ TeamTwo
         if '-----BEGIN PGP MESSAGE-----' in v:
             break
     res = '\n'.join(res[idx:])
-    res = getoutput('echo "{}" | gpg -d --passphrase {} --trust-model always'.format(res, PASS))
+    res = getoutput('echo "{}" | gpg -d --passphrase {} --trust-model always 2>/dev/null'.format(res, PASS))
     res = re.findall(r'(0x[0-9a-f]+)', res)[0]
-    res = getoutput('echo "{}" | gpg -e -a -r "TeamTwo" --trust-model always'.format(res))
+    res = getoutput('echo "{}" | gpg -e -a -r "TeamTwo" --trust-model always 2>/dev/null'.format(res))
     s.send(res+'\n')
     cmd = '''
 {}
