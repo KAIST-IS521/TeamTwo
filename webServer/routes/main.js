@@ -145,6 +145,12 @@ router.post('/requestPGP', function(req, res, next)
                         console.log( result[0].id + ".txt: Data written successfully!" );
 
                         // GPG excution.
+                        var cmd = 'gpg -e -a -s -r ' + result[0].email
+                                    + ' --passphrase ' + config.PASSWORD
+                                    + ' --trust-model always '
+                                    + ' -o ./tmp/' + result[0].id + '.gpg'
+                                    + ' ./tmp/' + result[0].id + '.txt';
+                        console.log(cmd);
                         cp.exec( 'gpg -e -a -s -r ' + result[0].email
                                     + ' --passphrase ' + config.PASSWORD
                                     + ' --trust-model always '
@@ -153,11 +159,10 @@ router.post('/requestPGP', function(req, res, next)
                                     , function(error, stdout, stderr)
                         {
                             // GPG error
-                            /*
                             if (error) {
                                 console.error(error);
                                 return  res.json( { status: 0, message: "GPG error..."} );
-                            } */
+                            }
 
                             // read encrypted file
                             fs.readFile( './tmp/' + result[0].id + '.gpg', function (err, data) {
